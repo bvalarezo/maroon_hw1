@@ -1,6 +1,8 @@
 body,
 html {
     height: 100%;
+    font-family: 'Charm';
+    color: white;
 }
 
 .bg {
@@ -22,28 +24,32 @@ form {
     background-color: #000000;
     max-width: 80%;
     margin: auto;
+    max-height: 500px;
+    transform: translate(0, 20%);
+    border-radius: 10px;
 }
 
 /* Full-width inputs */
 input[type=text],
 input[type=password] {
-    width: 100%;
+    width: 50%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
-    border: 1px solid #ccc;
+    border: 3px solid gold;
+    border-style: groove;
     box-sizing: border-box;
+/*    transform: translate(0, -500%);*/
+    border-radius: 10px;
+    background-color: #1f1f1f;
+    color: white;
 }
 
 /* Set a style for all buttons */
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
+#login {
     border: none;
     cursor: pointer;
-    width: 100%;
+    width: 80%;
 }
 
 /* Add a hover effect for buttons */
@@ -58,21 +64,17 @@ button:hover {
     background-color: #f44336;
 }
 
-/* Center the avatar image inside this container */
-.imgcontainer {
-    text-align: center;
-    margin: 24px 0 12px 0;
-}
-
 /* Avatar image */
 img.avatar {
-    width: 40%;
-    border-radius: 50%;
+    width: 110%;
+    transform: translate(0, -40%)
 }
 
 /* Add padding to containers */
 .container {
     padding: 16px;
+    transform: translate(0, -80%)
+    margin: auto;
 }
 
 /* The "Forgot password" text */
