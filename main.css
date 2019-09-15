@@ -18,6 +18,23 @@ html {
     background-size: cover;
 }
 
+.menuholder {
+    border: 8px solid #800000;
+    border-style: double;
+    background-color: #000000;
+    max-width: 80%;
+    margin: auto;
+    z-index:1;
+}
+
+.leaderboard {
+    background-color: #654321;
+    margin: auto;
+    width: 40%;
+    height: 10%;
+    z-index: 3;
+}
+
 form {
     border: 8px solid #800000;
     border-style: double;
