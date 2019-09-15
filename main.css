@@ -61,10 +61,10 @@ input[type=password] {
 }
 
 /* Set a style for all buttons */
-#login {
+.button {
     border: none;
     cursor: pointer;
-    width: 80%;
+    width: 20%;
 }
 
 /* Add a hover effect for buttons */
