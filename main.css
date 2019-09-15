@@ -22,7 +22,6 @@ html {
     background-color: #000000;
     max-width: 80%;
     margin: auto;
-    z-index:1;
 }
 
 .leaderboard {
@@ -30,7 +29,6 @@ html {
     margin: auto;
     width: 40%;
     height: 10%;
-    z-index: 3;
 }
 
 form {
@@ -79,7 +77,6 @@ button:hover {
 .imgcontainer {
     text-align: center;
     margin: 24px 0 12px 0;
-    z-index: 2;
 }
 
 /* Avatar image */
