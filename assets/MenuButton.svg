@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1366 768" style="enable-background:new 0 0 1366 768;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:url(#SVGID_1_);stroke:#000000;stroke-width:3;stroke-miterlimit:10;}
+	.st1{fill:#ED1C24;stroke:#FFFFFF;stroke-miterlimit:10;}
+	.st2{font-family:'Luminari-Regular';}
+	.st3{font-size:36.3846px;}
+</style>
+<g>
+	
+		<radialGradient id="SVGID_1_" cx="549.5" cy="469" r="69.3298" gradientTransform="matrix(1 0 0 -1 0 770)" gradientUnits="userSpaceOnUse">
+		<stop  offset="0" style="stop-color:#C7B299"/>
+		<stop  offset="0.3416" style="stop-color:#A67C52"/>
+		<stop  offset="0.7685" style="stop-color:#603813"/>
+		<stop  offset="1" style="stop-color:#42210B"/>
+	</radialGradient>
+	<path class="st0" d="M621.44,337.5H477.56c-10.53,0-19.06-8.53-19.06-19.06v-34.88c0-10.53,8.53-19.06,19.06-19.06h143.88
+		c10.53,0,19.06,8.53,19.06,19.06v34.88C640.5,328.97,631.97,337.5,621.44,337.5z"/>
+	<text transform="matrix(1.1647 0 0 1 490.5332 311.8438)" class="st1 st2 st3">Menu</text>
+</g>
+</svg>
