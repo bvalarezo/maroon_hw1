@@ -1,9 +1,21 @@
+.background {
+    background-image:url(images/bg.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .playbutton,
-.rulesbutton,
+.rulesbutton {
+    width: 30%;
+    height: 30%;
+    transform: translate(50%, -10%);
+}
+
 .logoutbutton {
     width: 30%;
     height: 30%;
-    transform: translate(50%, 0);
+    transform: translate(50%, -50%);
 }
 
 .playbuttonholder,
@@ -14,28 +26,25 @@
 
 .logo {
     width: 110%;
-    transform: translate(0%, -40%);
 }
 
-form {
+.menuholder {
     display: table;
     vertical-align: middle;
     border: 8px solid #800000;
     border-style: double;
     background-color: #000000;
-    width: 40%;
+    width: 30%;
     margin: auto;
-    height: 40%;
+    height: 30%;
     transform: translate(0, 20%);
     border-radius: 10px;
     overflow: auto;
 }
 
 .leaderboard {
-    background-color: #fbceb1;
     width: 15%;
-    height: 50%;
-    transform: translate(224%, -85%);
+    transform: translate(240%, -100%);
 }
 
 .imgcontainer {
