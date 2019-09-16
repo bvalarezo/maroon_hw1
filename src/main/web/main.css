@@ -30,7 +30,6 @@ form {
     transform: translate(0, 20%);
     border-radius: 10px;
     overflow: auto;
-    max-height: 800vh;
 }
 
 /* Full-width inputs */
@@ -53,6 +52,10 @@ input[type=password] {
     border: none;
     cursor: pointer;
     width: 20%;
+}
+
+.button:hover {
+    opacity: 0.5;
 }
 
 #signup {

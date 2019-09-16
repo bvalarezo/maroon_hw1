@@ -1,11 +1,33 @@
-.playbutton {
-    max-width: 10%;
-    max-height: 10%;
+.playbutton, .rulesbutton {
+    width: 20%;
+    height: 20%;
     transform: translate(50%, 0);
 }
 
-.logo {
-    max-width: 50%;
-    max-height: 50%;
-    transform: translate(50%, 0);
+.playbuttonholder {
+	    transform: translate(50%, 0);
 }
+
+	.logo {
+	    width: 110%;
+	    transform: translate(0%, -40%);
+	}
+
+	.menuholder {
+	    position: relative;
+	    border: 8px solid #800000;
+	    border-style: double;
+	    background-color: #000000;
+	    max-width: 80%;
+	    margin: auto;
+	    height: 80%;
+	    transform: translate(0, 20%);
+	    border-radius: 10px;
+	}
+
+	.leaderboard {
+	    background-color: #A52A2A;
+	    width: 30%;
+	    height: 60%;
+	    transform: translate(60%, -80%);
+	}

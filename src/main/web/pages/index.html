@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../main.css">
     <link href='https://fonts.googleapis.com/css?family=Charm' rel='stylesheet'>
+    <script>
+        var bleep = new Audio();
+        bleep.src = "../audio/button.wav";
+    </script>
 </head>
 
 <body>
@@ -23,8 +27,8 @@
                 <input type="password" placeholder="Enter Password" name="psw" required>
                 <br>
             </div>
-            <img class="button" id="signup" src="../assets/signupbutton.svg">
-            <img class="button" id="login" src="../assets/rulesbutton.svg">
+            <img class="button" id="signup" src="../assets/signupbutton.svg" onmousedown="bleep.play()">
+            <img class="button" id="login" src="../assets/rulesbutton.svg" onmousedown="bleep.play()">
         </form>
     </div>
 </body>
