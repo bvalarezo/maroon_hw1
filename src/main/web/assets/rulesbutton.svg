@@ -4,13 +4,13 @@
 	 viewBox="0 0 1366 768" style="enable-background:new 0 0 1366 768;" xml:space="preserve">
 <style type="text/css">
 	.st0{fill:url(#SVGID_1_);stroke:#000000;stroke-width:8;stroke-miterlimit:10;}
-	.st1{fill:#FF0000;stroke:#FFFFFF;stroke-width:8;stroke-miterlimit:10;}
+	.st1{fill:#FF0000;stroke:#FFFFFF;stroke-width:3;stroke-miterlimit:10;}
 	.st2{font-family:'MonotypeCorsiva';}
-	.st3{font-size:470.2625px;}
+	.st3{font-size:300px;}
 </style>
 <g>
 	
-		<radialGradient id="SVGID_1_" cx="695.25" cy="-102.919" r="472.1666" gradientTransform="matrix(1 0 0 1 0 482)" gradientUnits="userSpaceOnUse">
+		<radialGradient id="SVGID_1_" cx="695.2501" cy="870.9" r="472.1716" gradientTransform="matrix(1 0 0 -1 0 1250)" gradientUnits="userSpaceOnUse">
 		<stop  offset="0" style="stop-color:#C7B299"/>
 		<stop  offset="0.3416" style="stop-color:#A67C52"/>
 		<stop  offset="0.7685" style="stop-color:#603813"/>
@@ -18,6 +18,6 @@
 	</radialGradient>
 	<path class="st0" d="M1185.2,627.7H205.3c-71.7,0-129.8-58.1-129.8-129.8V260.3c0-71.7,58.1-129.8,129.8-129.8h979.9
 		c71.7,0,129.8,58.1,129.8,129.8v237.5C1315,569.6,1256.9,627.7,1185.2,627.7z"/>
-	<text transform="matrix(1.1647 0 0 1 126.332 504.2383)" class="st1 st2 st3">Rules</text>
+	<text transform="matrix(1.1647 0 0 1 339.3325 456.2383)" class="st1 st2 st3">Rules</text>
 </g>
 </svg>
