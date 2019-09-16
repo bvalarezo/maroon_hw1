@@ -19,7 +19,7 @@
 	</radialGradient>
 	<path class="st0" d="M1187.7,644.6H160.3c-75.2,0-136.1-60.9-136.1-136.1v-249c0-75.2,60.9-136.1,136.1-136.1h1027.3
 		c75.2,0,136.1,60.9,136.1,136.1v249C1323.8,583.7,1262.8,644.6,1187.7,644.6z"/>
-	<text transform="matrix(1.1647 0 0 1 311.6328 463.3906)" class="st1 st2 st3">Rules</text>
+	<text transform="matrix(1.1647 0 0 1 337.6328 463.3906)" class="st1 st2 st3">Exit</text>
 	<rect x="666" y="397" class="st4" width="236" height="6"/>
 </g>
 </svg>
