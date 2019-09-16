@@ -1,0 +1,21 @@
+Notes on how to use Maven to compile my Java Code
+
+$ mvn compile
+
+This will compile the java code. Be sure to run this command in the same directory as the pom.xml file.
+
+$ mvn package
+
+This will package the java code into a JAR file. We can then use java to execute our java program.
+Besure to run this command in the same dirrectory as the pom.xml file.
+
+>> pom.xml
+
+This file is important because it is the basic instructions on how maven will compile and build
+the java code. Edit this file as you increase the scope of the program.
+
+$ java -jar /target/*.jar
+
+Maven will put our .jar files in the ~/target/ directory. We can use java to execute the .jars
+
+
