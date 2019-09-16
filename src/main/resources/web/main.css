@@ -19,14 +19,18 @@ html {
 }
 
 form {
+    display: table;
+    vertical-align: middle;
     border: 8px solid #800000;
     border-style: double;
     background-color: #000000;
     max-width: 80%;
     margin: auto;
-    max-height: 500px;
+    max-height: 80%;
     transform: translate(0, 20%);
     border-radius: 10px;
+    overflow:auto;
+    max-height: 800vh;
 }
 
 /* Full-width inputs */
@@ -34,15 +38,16 @@ input[type=text],
 input[type=password] {
     width: 50%;
     padding: 12px 20px;
-    margin: 8px 0;
     display: inline-block;
     border: 3px solid gold;
     border-style: groove;
     box-sizing: border-box;
-/*    transform: translate(0, -500%);*/
     border-radius: 10px;
     background-color: #1f1f1f;
     color: white;
+    position: relative;
+/*    display: block;*/
+    margin: 0 auto;
 }
 
 /* Set a style for all buttons */
@@ -50,37 +55,29 @@ input[type=password] {
     border: none;
     cursor: pointer;
     width: 20%;
+    padding-top: 30px;
 }
 
-/* Avatar image */
-img. {
+#signup {
+    float: left;
+}
+
+#login {
+    float: right;
+}
+
+img {
     width: 110%;
     transform: translate(0, -40%);
 }
 
 /* Add padding to containers */
 .container {
+    /*    position: relative;*/
+    /*    position: absolute;*/
     padding: 16px;
     transform: translate(0, -80%);
     margin: auto;
     max-width: 80%;
     margin: auto;
-}
-
-/* The "Forgot password" text */
-span.psw {
-    float: right;
-    padding-top: 16px;
-}
-
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-    span.psw {
-        display: block;
-        float: none;
-    }
-
-    .cancelbtn {
-        width: 100%;
-    }
 }
