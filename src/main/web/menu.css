@@ -1,33 +1,38 @@
-.playbutton, .rulesbutton {
-    width: 20%;
-    height: 20%;
-    transform: translate(50%, 0);
+.playbutton, .rulesbutton, .logoutbutton {
+width: 30%;
+height: 30%;
+transform: translate(50%, 0);
 }
 
-.playbuttonholder {
-	    transform: translate(50%, 0);
+.playbuttonholder, .rulesbuttonholder, .logoutbuttonholder{
+transform: translate(40%, -150%);
 }
 
-	.logo {
-	    width: 110%;
-	    transform: translate(0%, -40%);
-	}
+.logo {
+width: 110%;
+transform: translate(0%, -40%);
+}
+.menuholder {
+display: table;
+vertical-align: middle;
+border: 8px solid #800000;
+border-style: double;
+background-color: #000000;
+width: 40%;
+margin: auto;
+height: 40%;
+transform: translate(0, 20%);
+border-radius: 10px;
+overflow: auto;
+}
 
-	.menuholder {
-	    position: relative;
-	    border: 8px solid #800000;
-	    border-style: double;
-	    background-color: #000000;
-	    max-width: 80%;
-	    margin: auto;
-	    height: 80%;
-	    transform: translate(0, 20%);
-	    border-radius: 10px;
-	}
+.leaderboard {
+background-color: #fbceb1;
+width: 15%;
+height: 50%;
+transform: translate(220%, -85%);
+}
 
-	.leaderboard {
-	    background-color: #A52A2A;
-	    width: 30%;
-	    height: 60%;
-	    transform: translate(60%, -80%);
-	}
+.imgcontainer {
+transform: translate(3%,0%);
+}
