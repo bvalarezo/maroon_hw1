@@ -17,7 +17,7 @@
     transform: translate(0%, -40%);
 }
 
-.menuholder {
+form {
     display: table;
     vertical-align: middle;
     border: 8px solid #800000;
