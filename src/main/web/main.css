@@ -29,14 +29,14 @@ form {
     max-height: 80%;
     transform: translate(0, 20%);
     border-radius: 10px;
-    overflow:auto;
+    overflow: auto;
     max-height: 800vh;
 }
 
 /* Full-width inputs */
 input[type=text],
 input[type=password] {
-    width: 50%;
+    width: 100%;
     padding: 12px 20px;
     display: inline-block;
     border: 3px solid gold;
@@ -45,9 +45,7 @@ input[type=password] {
     border-radius: 10px;
     background-color: #1f1f1f;
     color: white;
-    position: relative;
-/*    display: block;*/
-    margin: 0 auto;
+/*    padding-bottom:5px;*/
 }
 
 /* Set a style for all buttons */
@@ -55,15 +53,16 @@ input[type=password] {
     border: none;
     cursor: pointer;
     width: 20%;
-    padding-top: 30px;
 }
 
 #signup {
     float: left;
+    padding-left: 10px;
 }
 
 #login {
     float: right;
+    padding-right: 10px;
 }
 
 img {
@@ -73,10 +72,8 @@ img {
 
 /* Add padding to containers */
 .container {
-    /*    position: relative;*/
-    /*    position: absolute;*/
-    padding: 16px;
-    transform: translate(0, -80%);
+/*    padding: 16px;*/
+    transform: translate(0, -100%);
     margin: auto;
     max-width: 80%;
     margin: auto;
