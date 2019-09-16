@@ -35,7 +35,7 @@
     background-color: #fbceb1;
     width: 15%;
     height: 50%;
-    transform: translate(220%, -85%);
+    transform: translate(224%, -85%);
 }
 
 .imgcontainer {
@@ -43,9 +43,11 @@
 }
 
 #topbar {
-
+width: 20%;
+transform: translate(151%,-4010%);
 }
 
 #bottombar {
-
+width: 20%;
+transform: translate(151%,-1959%);
 }
