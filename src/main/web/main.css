@@ -36,7 +36,7 @@ form {
 /* Full-width inputs */
 input[type=text],
 input[type=password] {
-    width: 50%;
+    width: 100%;
     padding: 12px 20px;
     display: inline-block;
     border: 3px solid gold;
@@ -45,10 +45,7 @@ input[type=password] {
     border-radius: 10px;
     background-color: #1f1f1f;
     color: white;
-    position: relative;
-/*        display: block;*/
-    margin: auto;
-/*        transform: translate(0, -80%);*/
+/*    padding-bottom:5px;*/
 }
 
 /* Set a style for all buttons */
@@ -76,7 +73,7 @@ img {
 /* Add padding to containers */
 .container {
 /*    padding: 16px;*/
-    transform: translate(0, -150%);
+    transform: translate(0, -100%);
     margin: auto;
     max-width: 80%;
     margin: auto;
