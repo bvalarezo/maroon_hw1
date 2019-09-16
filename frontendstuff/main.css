@@ -53,7 +53,7 @@ input[type=password] {
 }
 
 /* Avatar image */
-img.avatar {
+img. {
     width: 110%;
     transform: translate(0, -40%);
 }

@@ -1,0 +1,11 @@
+.playbutton {
+    max-width: 10%;
+    max-height: 10%;
+    transform: translate(50%, 0);
+}
+
+.logo {
+    max-width: 50%;
+    max-height: 50%;
+    transform: translate(50%, 0);
+}
