@@ -34,7 +34,7 @@
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         
                     <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
-                    <h4><a href="${contextPath}/registration">Create an account</a></h4>
+                    <h4><a href="${contextPath}/register">Create an account</a></h4>
                 </div>
             </form>
 <!--            <label for="uname"><b>Username</b></label>
