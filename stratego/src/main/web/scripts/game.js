@@ -74,7 +74,7 @@ function drawPieces(ctx, images){
 				draw(ctx, images[i]);
 			}, 50);
 		}
-		ctx.drawImage(images[i], 40*i, 0, 100, 100);
+		ctx.drawImage(images[i], 60*i, (i%5)*50, 100, 100);
 	}
 }
 
