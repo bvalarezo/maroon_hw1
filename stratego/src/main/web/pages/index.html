@@ -1,3 +1,9 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
 <!DOCTYPE html>
 <html>
 
@@ -14,7 +20,7 @@
 
 <body>
     <div class="bg">
-        <form action="action_page.php">
+        <form method="POST" action="${contextPath}/index">
             <img src="../assets/logo.svg" alt="Avatar" class="avatar">
             <div class="container">
                 <label for="uname"><b>Username</b></label>
@@ -27,7 +33,7 @@
                 <input type="password" placeholder="Enter Password" name="psw" required>
                 <br>
             </div>
-            <img class="button" id="signup" src="../assets/signupbutton.svg" onmousedown="bleep.play()">
+            <a href="register.jsp"><img class="button" id="signup" src="../assets/signupbutton.svg" onmousedown="bleep.play()"></a>
             <img class="button" id="login" src="../assets/signin.svg" onmousedown="bleep.play()">
         </form>
     </div>
