@@ -3,7 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en">
 <head>
     <title>Maroon_HW1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">

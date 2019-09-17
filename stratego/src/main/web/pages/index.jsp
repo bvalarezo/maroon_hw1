@@ -20,10 +20,24 @@
 
 <body>
     <div class="bg">
-        <form method="POST" action="${contextPath}/index">
             <img src="../assets/logo.svg" alt="Avatar" class="avatar">
             <div class="container">
-                <label for="uname"><b>Username</b></label>
+
+            <form method="POST" action="${contextPath}/login" class="form-signin">
+                <h2>Log in</h2>
+        
+                <div class="form-group ${error != null ? 'has-error' : ''}">
+                    <span>${message}</span>
+                    <input name="username" type="text" placeholder="Username" autofocus="true"/>
+                    <input name="password" type="password" placeholder="Password"/>
+                    <span>${error}</span>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+                    <h4><a href="${contextPath}/registration">Create an account</a></h4>
+                </div>
+            </form>
+<!--            <label for="uname"><b>Username</b></label>
                 <br>
                 <input type="text" placeholder="Enter Username" name="uname" required>
                 <br>
@@ -32,10 +46,10 @@
                 <br>
                 <input type="password" placeholder="Enter Password" name="psw" required>
                 <br>
+-->
             </div>
             <a href="register.jsp"><img class="button" id="signup" src="../assets/signupbutton.svg" onmousedown="bleep.play()"></a>
             <img class="button" id="login" src="../assets/signin.svg" onmousedown="bleep.play()">
-        </form>
     </div>
 </body>
 
