@@ -39,13 +39,12 @@ form {
 .logoutbutton {
     width: 30%;
     height: 30%;
-    /*    transform: translate(50%, -10%);*/
+    margin: 3%;
 }
 
 .buttons {
     transform: translate(0%, -50%);
     cursor: pointer;
-    /*    width: 20%;*/
 }
 
 .buttons > img:hover {
