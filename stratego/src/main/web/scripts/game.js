@@ -5,7 +5,7 @@ canvas.height = canvas.scrollHeight;
 
 let ctx = canvas.getContext('2d');
 let images = [];
-
+let board = new Image();
 /*
 * 1 flag
 * 6 bomb
@@ -74,9 +74,24 @@ function drawPieces(ctx, images){
 				draw(ctx, images[i]);
 			}, 50);
 		}
-		ctx.drawImage(images[i], 60*i, (i%5)*50, 100, 100);
+		ctx.drawImage(images[i], (i%5)*70, (Math.floor(i/5)*70)+150, 100, 100);
 	}
 }
 
+function drawBoard(ctx, board) {
+	if (!board.complete){
+		setTimeout(function(){
+			draw(ctx, board);
+		}, 500);
+	}
+	
+	ctx.drawImage(board, 100, 0);	
+}
+
+board.onload = function () {
+	drawBoard(ctx, board);
+}
+
+board.src = "../assets/map.svg"
 images = generateArray(images);
 drawPieces(ctx, images);
