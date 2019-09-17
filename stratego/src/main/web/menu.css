@@ -11,10 +11,10 @@
     transform: translate(50%, -50%);
 }
 
-.playbuttonholder,
-.rulesbuttonholder,
-.logoutbuttonholder {
-    transform: translate(40%, -150%);
+.buttons {
+    /*    transform: translate(40%, -150%);*/
+    cursor: pointer;
+/*    width: 20%;*/
 }
 
 .logo {
@@ -27,17 +27,19 @@
     border: 8px solid #800000;
     border-style: double;
     background-color: #000000;
-    width: 30%;
+    max-width: 80%;
     margin: auto;
-    height: 30%;
+    max-height: 80%;
     transform: translate(0, 20%);
     border-radius: 10px;
     overflow: auto;
 }
 
 .leaderboard {
-    width: 15%;
-    transform: translate(240%, -100%);
+    position: relative;
+    float: left;
+    max-width: 50%;
+    /*    transform: translate(240%, -100%);*/
 }
 
 .imgcontainer {
