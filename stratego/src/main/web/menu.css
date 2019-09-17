@@ -11,10 +11,10 @@
     transform: translate(50%, -50%);
 }
 
-.playbuttonholder,
-.rulesbuttonholder,
-.logoutbuttonholder {
-    transform: translate(40%, -150%);
+.buttons {
+    /*    transform: translate(40%, -150%);*/
+    cursor: pointer;
+/*    width: 20%;*/
 }
 
 .logo {
@@ -37,8 +37,9 @@
 
 .leaderboard {
     position: relative;
-    max-width: 100px;
-    transform: translate(240%, -100%);
+    float: left;
+    max-width: 50%;
+    /*    transform: translate(240%, -100%);*/
 }
 
 .imgcontainer {
