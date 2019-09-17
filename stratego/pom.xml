@@ -11,8 +11,8 @@
 	<groupId>maroon</groupId>
 	<artifactId>stratego</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
-	<description>Demo project for Spring Boot</description>
+	<name>Maroon HW1 | Stratego</name>
+	<description>A web application that plays the popular game, Stratego.</description>
 
 	<properties>
 		<java.version>1.8</java.version>

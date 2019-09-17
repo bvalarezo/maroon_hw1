@@ -10,16 +10,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection ="user")
 public class User {
     @Id
-    private String id;
+    private Long id;
+    @Indexed(unique = true, direction = IndexDirection.DESCENDING, dropDups = true)
     private String username;
     private String password;
     private String passwordConfirm;
+    @DBRef
+    private Set<Role> roles;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id){
+    public void setId(Long id){
         this.id = id;
     }
 
@@ -46,5 +49,11 @@ public class User {
     public void setPasswordConfirm(String passwordConfirm) {
         this.passwordConfirm = passwordConfirm;
     }
+    public Set<Role> getRoles() {
+        return roles;
+    }
 
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 }
