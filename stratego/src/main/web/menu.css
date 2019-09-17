@@ -27,16 +27,17 @@
     border: 8px solid #800000;
     border-style: double;
     background-color: #000000;
-    width: 30%;
+    max-width: 80%;
     margin: auto;
-    height: 30%;
+    max-height: 80%;
     transform: translate(0, 20%);
     border-radius: 10px;
     overflow: auto;
 }
 
 .leaderboard {
-    width: 15%;
+    position: relative;
+    max-width: 100px;
     transform: translate(240%, -100%);
 }
 
