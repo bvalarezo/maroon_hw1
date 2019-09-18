@@ -1,0 +1,65 @@
+body,
+html {
+    height: 100%;
+    font-family: 'Charm';
+    color: white;
+}
+
+.bg {
+    /* The image used */
+    background-image: url("images/bg.jpg");
+
+    /* Full height */
+    height: 100%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+form {
+    display: table;
+    vertical-align: middle;
+    border: 8px solid #800000;
+    border-style: double;
+    background-color: #000000;
+    max-width: 80%;
+    margin: auto;
+    max-height: 80%;
+    transform: translate(0, 20%);
+    border-radius: 10px;
+    box-sizing:border-box;
+}
+
+
+.playbutton,
+.rulesbutton,
+.logoutbutton {
+    width: 30%;
+    height: 30%;
+    margin: 3%;
+}
+
+.buttons {
+    transform: translate(0%, -50%);
+    cursor: pointer;
+}
+
+.buttons > img:hover {
+    opacity: 0.5;
+}
+
+img {
+    width: 110%;
+    transform: translate(0, -40%);
+}
+
+.leaderboard {
+    position: relative;
+    float: left;
+    max-width: 50%;
+    margin: 3%;
+    transform: translate(0%, -70%);
+}
