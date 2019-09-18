@@ -3,26 +3,20 @@ let canvas = document.getElementById('canvas');
 canvas.width = canvas.scrollWidth;
 canvas.height = canvas.scrollHeight;
 
-let ctx = canvas.getContext('2d');
-let images = [];
-let board = new Image();
-let redButton = new Image();
-let blueButton = new Image();
-let logo = new Image();
 /*
-* 1 flag
-* 6 bomb
-* 1 spy
-* 8 scouts
-* 5 miners
-* 4 sergants
-* 4 lieutenants
-* 4 captains
-* 3 majors
-* 2 colonels
-* 1 general
-* 1 marshall
-*/
+ * 1 flag
+ * 6 bomb
+ * 1 spy
+ * 8 scouts
+ * 5 miners
+ * 4 sergants
+ * 4 lieutenants
+ * 4 captains
+ * 3 majors
+ * 2 colonels
+ * 1 general
+ * 1 marshall
+ */
 
 function generateArray(array){
 	for (var i = 0; i < 40; i++) {
@@ -74,8 +68,8 @@ function drawPieces(ctx, images){
 	for (var i = 0; i < images.length; i++){
 		if (!images[i].complete){
 			setTimeout(function(){
-				draw(ctx, images[i]);
-			}, 50);
+					draw(ctx, images[i]);
+					}, 50);
 		}
 		ctx.drawImage(images[i], (i%5)*70, (Math.floor(i/5)*70)+150, 100, 100);
 	}
@@ -84,18 +78,18 @@ function drawPieces(ctx, images){
 function drawBoard(ctx, board) {
 	if (!board.complete){
 		setTimeout(function(){
-			draw(ctx, board);
-		}, 500);
+				draw(ctx, board);
+				}, 500);
 	}
-	
+
 	ctx.drawImage(board, 150, 0);	
 }
 
 function drawRedButton(ctx, redButton) {
 	if (!redButton.complete){
 		setTimeout(function(){
-			draw(ctx, redButton);
-		}, 50);
+				draw(ctx, redButton);
+				}, 50);
 	}
 	ctx.drawImage(redButton, -30, 830, 175, 100);
 }
@@ -103,8 +97,8 @@ function drawRedButton(ctx, redButton) {
 function drawBlueButton(ctx, blueButton) {
 	if (!blueButton.complete){
 		setTimeout(function(){
-			draw(ctx, blueButton);
-		}, 50);
+				draw(ctx, blueButton);
+				}, 50);
 	}
 	ctx.drawImage(blueButton, 1750, 0,175,100);
 }
@@ -112,13 +106,12 @@ function drawBlueButton(ctx, blueButton) {
 function drawLogo(ctx, logo) {
 	if (!logo.complete){
 		setTimeout(function(){
-			draw(ctx, logo);
-		}, 500);
+				draw(ctx, logo);
+				}, 500);
 	}
-	
+
 	ctx.drawImage(logo, 25, -25, 500, 300);	
 }
-
 
 board.onload = function () {
 	drawBoard(ctx, board);
@@ -126,12 +119,10 @@ board.onload = function () {
 
 redButton.onload = function () {
 	drawRedButton(ctx, redButton);
-	console.log("yeet2");
 }
 
 blueButton.onload = function () {
 	drawBlueButton(ctx, blueButton);
-	console.log("Yerr");
 }
 
 logo.onload = function () {
