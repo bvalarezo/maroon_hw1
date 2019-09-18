@@ -6,6 +6,9 @@ canvas.height = canvas.scrollHeight;
 let ctx = canvas.getContext('2d');
 let images = [];
 let board = new Image();
+let redButton = new Image();
+let blueButton = new Image();
+let logo = new Image();
 /*
 * 1 flag
 * 6 bomb
@@ -85,13 +88,59 @@ function drawBoard(ctx, board) {
 		}, 500);
 	}
 	
-	ctx.drawImage(board, 100, 0);	
+	ctx.drawImage(board, 150, 0);	
 }
+
+function drawRedButton(ctx, redButton) {
+	if (!redButton.complete){
+		setTimeout(function(){
+			draw(ctx, redButton);
+		}, 50);
+	}
+	ctx.drawImage(redButton, -30, 830, 175, 100);
+}
+
+function drawBlueButton(ctx, blueButton) {
+	if (!blueButton.complete){
+		setTimeout(function(){
+			draw(ctx, blueButton);
+		}, 50);
+	}
+	ctx.drawImage(blueButton, 1750, 0,175,100);
+}
+
+function drawLogo(ctx, logo) {
+	if (!logo.complete){
+		setTimeout(function(){
+			draw(ctx, logo);
+		}, 500);
+	}
+	
+	ctx.drawImage(logo, 25, -25, 500, 300);	
+}
+
 
 board.onload = function () {
 	drawBoard(ctx, board);
 }
 
-board.src = "../assets/map.svg"
+redButton.onload = function () {
+	drawRedButton(ctx, redButton);
+	console.log("yeet2");
+}
+
+blueButton.onload = function () {
+	drawBlueButton(ctx, blueButton);
+	console.log("Yerr");
+}
+
+logo.onload = function () {
+	drawLogo(ctx, logo);
+}
+
+board.src = "../assets/map.svg";
+redButton.src = "../assets/redbutton.svg";
+blueButton.src = "../assets/bluebutton.svg";
+logo.src = "../assets/logo.svg";
 images = generateArray(images);
 drawPieces(ctx, images);
