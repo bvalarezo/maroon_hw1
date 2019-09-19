@@ -1,9 +1,8 @@
 
 package maroon.auth.repository;
 
-import com.stratego.springbootmongodbsecurity.domain.User;
-import org.springframework.data.mongodb.repository.MongoRepository;
 import maroon.auth.base.User;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface UserRepository extends MongoRepository<User, String> {
     

@@ -47,12 +47,8 @@
 	<build>
 		<plugins>
 			<plugin>
-			<!-- Build an executable JAR -->
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-maven-plugin</artifactId>
-			<configuration>
-				<mainClass>maroon.auth.WebApplication</mainClass>
-			</configuration>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
