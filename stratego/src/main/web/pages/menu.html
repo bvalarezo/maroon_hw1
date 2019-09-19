@@ -3,8 +3,6 @@
 <head>
     <title>Maroon_HW1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../main.css">
     <link rel="stylesheet" href="../menu.css">
 
     <script>
@@ -16,22 +14,17 @@
 
 <body>
     <div class="bg">
-        <div class="menuholder">
-            <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-            <div class="imgcontainer">
-                <img src="../assets/logo.svg" alt="Avatar" class="logo">
-                <img src="../assets/leaderboard.svg" class="leaderboard">
-                <div class="buttons">
-                    <img src="../assets/playbutton.svg" class="playbutton" onmousedown="bleep.play()">
-<!--                </div>-->
-<!--                <div class="rulesbuttonholder">-->
-                    <img src="../assets/rulesbutton.svg" class="rulesbutton" onmousedown="bleep.play()">
-<!--                </div>-->
-<!--                <div class="logoutbuttonholder">-->
-                    <img src="../assets/logoutbutton.svg" class="logoutbutton" onmousedown="bleep.play()">
-                </div>
-            </div>
-        </div>
+        <form action="action_page.php">
+            <img src="../assets/logo.svg" alt="Avatar" class="avatar">
+            <div class="container">	
+		<img src="../assets/leaderboard.svg" class="leaderboard">
+            	<div class="buttons">
+            	    <img src="../assets/playbutton.svg" class="playbutton" onmousedown="bleep.play()">
+                	<img src="../assets/rulesbutton.svg" class="rulesbutton" onmousedown="bleep.play()">
+                	<img src="../assets/logoutbutton.svg" class="logoutbutton" onmousedown="bleep.play()">
+            	</div>
+	    </div>	
+        </form>
     </div>
 </body>
 
