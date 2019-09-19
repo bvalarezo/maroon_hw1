@@ -3,10 +3,12 @@ let canvas = document.getElementById('canvas');
 canvas.width = canvas.scrollWidth;
 canvas.height = canvas.scrollHeight;
 
-let images = [];
+let pieces = [];
 let ctx = canvas.getContext('2d');
 let redButton = new Image();
 let blueButton = new Image();
+let board = new Image();
+let logo = new Image();
 let canvasOffset=$("#canvas").offset();
 let offsetX=canvasOffset.left;
 let offsetY=canvasOffset.top;
@@ -29,47 +31,48 @@ let isDragging=false;
  * 1 marshall
  */
 
-function generateArray(array){
+function generatePieces(array){
 	for (var i = 0; i < 40; i++) {
 		//40 pieces
 		let temp = new Image();
 		if (i == 0) {
 			//1 flag
-			temp.src = "../assets/stratego-flag.svg";
+			temp.src = "../../resources/static/assets/stratego-flag.svg";
 		} else if (i > 0 && i < 7) {
 			//6 bombs
-			temp.src = "../assets/stratego-bomb.svg";
+			temp.src = "../../resources/static/assets/stratego-bomb.svg";
 		} else if (i == 7) {
 			//1 spy
-			temp.src = "../assets/stratego-spy.svg";
+			temp.src = "../../resources/static/assets/stratego-spy.svg";
 		} else if (i >= 8 && i < 16) {
 			//8 scouts
-			temp.src = "../assets/stratego-scout.svg";
+			temp.src = "../../resources/static/assets/stratego-scout.svg";
 		} else if (i >= 16 && i < 21) {
 			//5 miners
-			temp.src = "../assets/stratego-miner.svg";
+			temp.src = "../../resources/static/assets/stratego-miner.svg";
 		} else if (i >= 21 && i < 25) {
 			//4 sergants
-			temp.src = "../assets/stratego-sergeant.svg";
+			temp.src = "../../resources/static/assets/stratego-sergeant.svg";
 		} else if (i >= 25 && i < 29) {
 			//4 lieutenants
-			temp.src = "../assets/stratego-lieutenant.svg";
+			temp.src = "../../resources/static/assets/stratego-lieutenant.svg";
 		} else if (i >= 29 && i < 33) {
 			//4 captains
-			temp.src = "../assets/stratego-captain.svg";
+			temp.src = "../../resources/static/assets/stratego-captain.svg";
 		} else if (i >= 33 && i < 36) {
 			//3 majors
-			temp.src = "../assets/stratego-major.svg";
+			temp.src = "../../resources/static/assets/stratego-major.svg";
 		} else if (i >= 36 && i < 38) {
 			//2 colonels
-			temp.src = "../assets/stratego-colonel.svg";
+			temp.src = "../../resources/static/assets/stratego-colonel.svg";
 		} else if (i == 38) {
 			//1 general
-			temp.src = "../assets/stratego-general.svg";
+			temp.src = "../../resources/static/assets/stratego-general.svg";
 		} else if (i == 39) {
 			//1 marshall
-			temp.src = "../assets/stratego-marshal.svg";
+			temp.src = "../../resources/static/assets/stratego-marshal.svg";
 		}
+		temp.isDragging = false;
 		array.push(temp);
 		$("#canvas").mousemove(function(e){handleMouseMove(e,ctx,temp);});
 	}
@@ -83,6 +86,10 @@ function drawPieces(ctx, images){
 					draw(ctx, images[i]);
 					}, 50);
 		}
+		images[i].currentX = (i%5)*70;
+		images[i].currentY = (Math.floor(i/5)*70)+150;
+		images[i].currentWidth = 100;
+		images[i].currentHeight = 100;
 		ctx.drawImage(images[i], (i%5)*70, (Math.floor(i/5)*70)+150, 100, 100);
 	}
 }
@@ -93,7 +100,10 @@ function drawBoard(ctx, board) {
 				draw(ctx, board);
 				}, 500);
 	}
-
+	board.currentX = 150;
+	board.currentY = 0;
+	board.currentWidth = board.width;
+	board.currentHeight = board.height;
 	ctx.drawImage(board, 150, 0);	
 }
 
@@ -103,6 +113,10 @@ function drawRedButton(ctx, redButton) {
 				draw(ctx, redButton);
 				}, 50);
 	}
+	redButton.currentX = -30;
+	redButton.currentY = 830;
+	redButton.currentWidth = 175;
+	redButton.currentHeight = 100;
 	ctx.drawImage(redButton, -30, 830, 175, 100);
 }
 
@@ -112,7 +126,11 @@ function drawBlueButton(ctx, blueButton) {
 				draw(ctx, blueButton);
 				}, 50);
 	}
-	ctx.drawImage(blueButton, 1750, 0,175,100);
+	blueButton.currentX = 1750;
+	blueButton.currentY = 0;
+	blueButton.currentWidth = 175;
+	blueButton.currentHeight = 100;
+	ctx.drawImage(blueButton, 1750, 0, 175,100);
 }
 
 function drawLogo(ctx, logo) {
@@ -121,7 +139,10 @@ function drawLogo(ctx, logo) {
 				draw(ctx, logo);
 				}, 500);
 	}
-
+	logo.currentX = 25;
+	logo.currentY = -25;
+	logo.currentWidth = 500;
+	logo.currentHeight = 300;
 	ctx.drawImage(logo, 25, -25, 500, 300);	
 }
 
@@ -147,11 +168,16 @@ function handleMouseOut(e){
 }
 
 function handleMouseMove(e, ctx, img){
+	//We want to adjust it so it works for each individual object and keeps the other images drawn.
+	//NOW WE GOT THE OBJECT ARRAY WITH ALL THE CURRENT X AND Y VALUES, NOW CREATE THE FOR LOOP CHECKING IF THE DRAGGED OBJECT IS BEING HOVERED OVER THE RADIUS OF OTHER OBJECTS
 	canMouseX=parseInt(e.clientX-offsetX);
 	canMouseY=parseInt(e.clientY-offsetY);
 	// if the drag flag is set, clear the canvas and draw the image
 	if(isDragging){
-		ctx.clearRect(0,0,canvasWidth,canvasHeight);
+		console.log(e);
+		//ctx.clearRect(0,0,canvasWidth,canvasHeight);
+		//only clear the area in which the image being drawn is located and redraw images that are within the path of it
+
 		ctx.drawImage(img,canMouseX-128/2,canMouseY-120/2,128,120);
 	}
 }
@@ -176,9 +202,12 @@ $("#canvas").mousedown(function(e){handleMouseDown(e);});
 $("#canvas").mouseup(function(e){handleMouseUp(e);});
 $("#canvas").mouseout(function(e){handleMouseOut(e);});
 
-board.src = "../assets/map.svg";
-redButton.src = "../assets/redbutton.svg";
-blueButton.src = "../assets/bluebutton.svg";
-logo.src = "../assets/logo.svg";
-images = generateArray(images);
-drawPieces(ctx, images);
+board.src = "../../resources/static/assets/map.svg";
+redButton.src = "../../resources/static/assets/redbutton.svg";
+blueButton.src = "../../resources/static/assets/bluebutton.svg";
+logo.src = "../../resources/static/assets/logo.svg";
+pieces = generatePieces(pieces);
+drawPieces(ctx, pieces);
+let objects = [...pieces];
+objects.push(redButton, blueButton, logo, board);
+
