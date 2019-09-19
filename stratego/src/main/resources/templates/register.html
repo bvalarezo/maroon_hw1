@@ -3,7 +3,7 @@
 <head>
     <title>Maroon_HW1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
     <link href='https://fonts.googleapis.com/css?family=Charm' rel='stylesheet'>
     <script>
         var bleep = new Audio();
@@ -13,9 +13,9 @@
 
 <body>
     <div class="bg">
-        <div class="container">
-            <img src="../static/assets/logo.svg" alt="Avatar" class="avatar">
-            <form method="POST" th:action="@{/register}">
+            <img th:src="@{/assets/logo.svg}" alt="Avatar" class="avatar">
+                <div class="container">
+                <form method="POST" th:action="@{/register}">
                 <h2>Register your account.</h2>
                 <div th:if="${param.error}">
                     Invalid username and password.
