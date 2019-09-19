@@ -3,6 +3,17 @@ let canvas = document.getElementById('canvas');
 canvas.width = canvas.scrollWidth;
 canvas.height = canvas.scrollHeight;
 
+let images = [];
+let ctx = canvas.getContext('2d');
+let redButton = new Image();
+let blueButton = new Image();
+let canvasOffset=$("#canvas").offset();
+let offsetX=canvasOffset.left;
+let offsetY=canvasOffset.top;
+let canvasWidth=canvas.width;
+let canvasHeight=canvas.height;
+let isDragging=false;
+
 /*
  * 1 flag
  * 6 bomb
@@ -21,7 +32,7 @@ canvas.height = canvas.scrollHeight;
 function generateArray(array){
 	for (var i = 0; i < 40; i++) {
 		//40 pieces
-		var temp = new Image();
+		let temp = new Image();
 		if (i == 0) {
 			//1 flag
 			temp.src = "../assets/stratego-flag.svg";
@@ -60,6 +71,7 @@ function generateArray(array){
 			temp.src = "../assets/stratego-marshal.svg";
 		}
 		array.push(temp);
+		$("#canvas").mousemove(function(e){handleMouseMove(e,ctx,temp);});
 	}
 	return array;
 }
@@ -113,6 +125,37 @@ function drawLogo(ctx, logo) {
 	ctx.drawImage(logo, 25, -25, 500, 300);	
 }
 
+function handleMouseDown(e){
+	canMouseX=parseInt(e.clientX-offsetX);
+	canMouseY=parseInt(e.clientY-offsetY);
+	// set the drag flag
+	isDragging=true;
+}
+
+function handleMouseUp(e){
+	canMouseX=parseInt(e.clientX-offsetX);
+	canMouseY=parseInt(e.clientY-offsetY);
+	// clear the drag flag
+	isDragging=false;
+}
+
+function handleMouseOut(e){
+	canMouseX=parseInt(e.clientX-offsetX);
+	canMouseY=parseInt(e.clientY-offsetY);
+	// user has left the canvas, so clear the drag flag
+	//isDragging=false;
+}
+
+function handleMouseMove(e, ctx, img){
+	canMouseX=parseInt(e.clientX-offsetX);
+	canMouseY=parseInt(e.clientY-offsetY);
+	// if the drag flag is set, clear the canvas and draw the image
+	if(isDragging){
+		ctx.clearRect(0,0,canvasWidth,canvasHeight);
+		ctx.drawImage(img,canMouseX-128/2,canMouseY-120/2,128,120);
+	}
+}
+
 board.onload = function () {
 	drawBoard(ctx, board);
 }
@@ -128,6 +171,10 @@ blueButton.onload = function () {
 logo.onload = function () {
 	drawLogo(ctx, logo);
 }
+
+$("#canvas").mousedown(function(e){handleMouseDown(e);});
+$("#canvas").mouseup(function(e){handleMouseUp(e);});
+$("#canvas").mouseout(function(e){handleMouseOut(e);});
 
 board.src = "../assets/map.svg";
 redButton.src = "../assets/redbutton.svg";
