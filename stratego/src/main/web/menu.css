@@ -17,39 +17,39 @@ html {
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
-/*    overflow: hidden;*/
 }
 
 .placer {
-    display: block;
+    display: table;
     vertical-align: middle;
     border: 8px solid #800000;
     border-style: double;
     background-color: #000000;
     max-width: 80%;
-    width: 450px;
+    min-width: 480px;
     margin: auto;
-/*    max-height: 80vh;*/
+    max-height: 80%;
     transform: translate(0, 15%);
     border-radius: 10px;
-/*    box-sizing:border-box;*/
+    box-sizing: border-box;
 }
 
 .container {
-    display: flex;
+/*    display: flex;*/
     padding: 12px 20px;
-    transform:translateY(-40%);
+    transform: translateY(-500%);
     width: 100%;
     margin: 0 auto;
-    max-height: inherit;
+    box-sizing: border-box;
 }
 
 .buttons {
-    display: inline-block;
-    width:35%;
+    width: 35%;
+    max-height: 100%;
     padding-right: 2%;
     float: right;
     cursor: pointer;
+    margin: auto;
 }
 
 .buttons > img:hover {
@@ -62,8 +62,7 @@ html {
 }
 
 .leaderboard {
-/*    position: relative;*/
-    display: block;
-    width: 50%;
+    max-width: 50%;
     margin: 2%;
+    float: left;
 }
