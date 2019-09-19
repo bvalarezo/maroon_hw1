@@ -19,47 +19,50 @@ html {
     position: relative;
 }
 
-form {
+.placer {
     display: table;
     vertical-align: middle;
     border: 8px solid #800000;
     border-style: double;
     background-color: #000000;
     max-width: 80%;
+    min-width: 480px;
     margin: auto;
     max-height: 80%;
-    transform: translate(0, 20%);
+    transform: translate(0, 15%);
     border-radius: 10px;
-    box-sizing:border-box;
+    box-sizing: border-box;
 }
 
-
-.playbutton,
-.rulesbutton,
-.logoutbutton {
-    width: 30%;
-    height: 30%;
-    margin: 3%;
+.container {
+/*    display: flex;*/
+    padding: 12px 20px;
+    transform: translateY(-500%);
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
 .buttons {
-    transform: translate(0%, -50%);
+    width: 35%;
+    max-height: 100%;
+    padding-right: 2%;
+    float: right;
     cursor: pointer;
+    margin: auto;
 }
 
 .buttons > img:hover {
     opacity: 0.5;
 }
 
-img {
+.avatar {
     width: 110%;
     transform: translate(0, -40%);
 }
 
 .leaderboard {
-    position: relative;
-    float: left;
     max-width: 50%;
-    margin: 3%;
-    transform: translate(0%, -70%);
+    margin: 2%;
+    float: left;
 }
