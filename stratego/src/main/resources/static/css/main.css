@@ -7,7 +7,7 @@ html {
 
 .bg {
     /* The image used */
-    background-image: url("images/bg.jpg");
+    background-image: url("../images/bg.jpg");
 
     /* Full height */
     height: 100%;
@@ -65,7 +65,7 @@ input[type=password] {
 }
 
 #signup2 {
-    background-image: url("assets/signupbutton.svg") no-repeat;
+    background-image: url("/../assets/signupbutton.svg") no-repeat;
     background-size: cover;
     cursor: pointer;
     display: inline-block;

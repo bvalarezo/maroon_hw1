@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Maroon_HW1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/menu.css">
+
+    <script>
+        var bleep = new Audio();
+        bleep.src = "../audio/button.wav";
+    </script>
+
+</head>
+
+<body>
+    <div class="bg">
+        <div class="placer">
+            <img src="../assets/logo.svg" alt="Avatar" class="avatar">
+            <div class="container">
+                <img src="../assets/leaderboard.svg" class="leaderboard">
+                <div class="buttons">
+                    <img src="../assets/playbutton.svg"  onmousedown="bleep.play()">
+                    <img src="../assets/rulesbutton.svg"  onmousedown="bleep.play()">
+                    <img src="../assets/logoutbutton.svg" onmousedown="bleep.play()">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
