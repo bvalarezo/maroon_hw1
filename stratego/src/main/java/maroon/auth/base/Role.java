@@ -7,18 +7,17 @@ import org.springframework.data.mongodb.core.index.Indexed;
 
 @Document(collection = "role")
 public class Role {
-
     @Id
-    private Long id;
+    private String id;
     @Indexed(unique = true, direction = IndexDirection.DESCENDING, dropDups = true)
     private String name;
     private String role;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
