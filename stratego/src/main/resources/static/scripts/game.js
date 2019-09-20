@@ -174,11 +174,17 @@ function handleMouseMove(e, ctx, img){
 	canMouseY=parseInt(e.clientY-offsetY);
 	// if the drag flag is set, clear the canvas and draw the image
 	if(isDragging){
-		console.log(e);
-		//ctx.clearRect(0,0,canvasWidth,canvasHeight);
+		ctx.clearRect(e.clientX-50,e.clientY-50,100,100);
 		//only clear the area in which the image being drawn is located and redraw images that are within the path of it
-
-		ctx.drawImage(img,canMouseX-128/2,canMouseY-120/2,128,120);
+		for (var i = 0; i < pieces.length; i++){
+			//Now create a for loop checking each object in the pieces array and check if it needs to be redrawn 
+			//detect mouse movement
+			if (canMouseX-100/2 > pieces[i].currentX && canMouseX-100/2 < pieces[i].currentX + pieces[i].currentWidth && canMouseY-100/2 > pieces[i].currentY && canMouseY-100/2 < pieces[i].currentY + pieces[i].currentHeight) {
+				//if its within X boundaries
+				ctx.drawImage(pieces[i], pieces[i].currentX, pieces[i].currentY, pieces[i].currentWidth, pieces[i].currentHeight);
+			}
+		}
+		ctx.drawImage(img,canMouseX-100/2,canMouseY-100/2,100,100);
 	}
 }
 
@@ -210,4 +216,3 @@ pieces = generatePieces(pieces);
 drawPieces(ctx, pieces);
 let objects = [...pieces];
 objects.push(redButton, blueButton, logo, board);
-
