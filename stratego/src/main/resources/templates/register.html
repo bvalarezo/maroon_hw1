@@ -21,12 +21,9 @@
 
 <body>
     <div class="bg">
-
+        <img th:src="@{/assets/logo.svg}" alt="Avatar" class="avatar">
+        <!--                <img src="../static/assets/logo.svg" alt="Avatar" class="avatar">-->
         <div class="container">
-
-            <img th:src="@{/assets/logo.svg}" alt="Avatar" class="avatar">
-            <!--                <img src="../static/assets/logo.svg" alt="Avatar" class="avatar">-->
-
 
             <form th:action="@{/register}" th:object="${userForm}" method="post">
 
