@@ -4,10 +4,14 @@
 <head>
     <title>Maroon_HW1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+-->
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
-    
+
     <link href='https://fonts.googleapis.com/css?family=Charm' rel='stylesheet'>
     <script>
         var bleep = new Audio();
@@ -17,31 +21,31 @@
 
 <body>
     <div class="bg">
-        
         <div class="container">
             <img th:src="@{/assets/logo.png}" alt="Avatar" class="avatar">
+<!--            <img src="../static/assets/logo.png" alt="Avatar" class="avatar">-->
             <form th:action="@{/login}" method="post">
                 <div th:if="${param.error}">
+                    <br><br>
                     <div>Invalid username or
                         password.</div>
                 </div>
                 <div th:if="${param.logout}">
+                    <br><br>
                     <div>You have been logged out.</div>
                 </div>
-
-                <label for="username">Username</label>: <input type="text" id="username" name="username"
-                    autofocus="autofocus" placeholder="Username" />
-
-
-                <label for="password">Password</label>: <input type="password" id="password" name="password"
-                    placeholder="Password" />
+                <br><br>
+                <label for="username">Username</label>: <input type="text" id="username" name="username" autofocus="autofocus" placeholder="Username" />
+                <br><br>
+                <label for="password">Password</label>: <input type="password" id="password" name="password" placeholder="Password" />
 
                 <input type="submit" name="login-submit" class="button" value="Log In" />
-
+                <br><br>
                 <span>New user? <a href="/" th:href="@{/register}">Register
                         here</a></span>
             </form>
         </div>
+    </div>
 </body>
 
 </html>
