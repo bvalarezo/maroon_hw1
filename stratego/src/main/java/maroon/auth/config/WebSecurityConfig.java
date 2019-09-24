@@ -1,5 +1,6 @@
 package maroon.auth.config;
 
+import maroon.auth.config.CustomAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
     
+    @Autowired
+    CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -25,17 +29,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
             .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
-                .antMatchers("/menu").hasRole("user").anyRequest().authenticated()
+                .antMatchers("/menu").hasAnyAuthority("USER")
+                .anyRequest().authenticated()
                 .and()
             .formLogin()
-                .loginPage("/login").failureUrl("/login?error=true")
-                .usernameParameter("username")
-                .passwordParameter("password")
+                .successHandler(customAuthenticationSuccessHandler)
+                .loginPage("/login")
+                .permitAll()
                 .and()
             .logout()
                 .permitAll();

@@ -25,9 +25,7 @@ public class WebApplication extends SpringBootServletInitializer {
 
     @Bean
     CommandLineRunner init(RoleRepository roleRepository) {
-
         return args -> {
-            
             Role userRole = roleRepository.findByRole("USER");
             if (userRole == null) {
                 Role newUserRole = new Role();
