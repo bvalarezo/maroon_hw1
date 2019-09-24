@@ -40,10 +40,9 @@
                 <br><br>
                 <label for="password">Password</label>: <input type="password" id="password" name="password" placeholder="Password" />
 
-                <input type="submit" name="login-submit" class="button" value="Log In" />
+                <input type="submit" name="login-submit" class="button" value="Log In" onmousedown="bleep.play()"/>
                 <br><br>
-                <span>New user? <a href="/" th:href="@{/register}">Register
-                        here</a></span>
+                <span>New user? <a href="/" th:href="@{/register}">Register here</a></span>
             </form>
         </div>
     </div>
