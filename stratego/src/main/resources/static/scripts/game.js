@@ -26,6 +26,7 @@ let selection = null;
 let dragoffx = 0;
 let dragoffy = 0;
 let valid = false;
+let interval = 30;
 /*
  * 1 flag
  * 6 bomb
@@ -107,7 +108,6 @@ function drawPiecesInitial(ctx, images){
 function drawBoard(ctx, board) {
 	if (!board.complete){
 		setTimeout(function(){
-				draw(ctx, board);
 				}, 500);
 	}
 	board.currentX = 150;
@@ -166,15 +166,13 @@ function handleMouseDown(e) {
 			var mySel = pieces[i];
 			// Keep track of where in the object we clicked
 			// so we can move it smoothly (see mousemove)
-			dragoffx = mx - mySel.x;
-			dragoffy = my - mySel.y;
-			dragging = true;
+			dragoffx = mx - mySel.currentX;
+			dragoffy = my - mySel.currentY;
+			isDragging = true;
 			selection = mySel;
 			valid = false;
-			console.log("REEE")
 			return;
 		}
-		console.log("currentX = ", pieces[i].currentX, "currentY = ", pieces[i].currentY, "mx = ", mx, "my = ", my, "pieces[i] = ", pieces[i], "currentWidth = ", pieces[i].currentWidth, "currentHeight = ", pieces[i].currentHeight);
 	}
 	// havent returned means we have failed to select anything.
 	// If there was an object selected, we deselect it
@@ -192,8 +190,8 @@ function handleMouseMove(e) {
 		var mouse = getMouse(e);
 		// We don't want to drag the object by its top-left corner, we want to drag it
 		// from where we clicked. Thats why we saved the offset and use it here
-		selection.x = mouse.x - dragoffx;
-		selection.y = mouse.y - dragoffy;   
+		selection.currentX = mouse.x - dragoffx;
+		selection.currentY = mouse.y - dragoffy;   
 		valid = false; // Something's dragging so we must redraw
 	}
 }
@@ -235,6 +233,37 @@ logo.onload = function () {
 	drawLogo(ctx, logo);
 }
 
+function drawNonMovableStuff(){
+	drawBoard(ctx, board);
+	drawRedButton(ctx, redButton);
+	drawBlueButton(ctx, blueButton);
+	drawLogo(ctx, logo);
+}
+
+function drawPieces(){
+	console.log(valid);
+	if (!valid) {
+		// CLear canvas
+		ctx.clearRect(0,0,canvas.width, canvas.height);	
+		// Draw background stuff
+		drawNonMovableStuff();
+		// draw all pieces
+		var l = pieces.length;
+		for (var i = 0; i < l; i++) {
+			var shape = pieces[i];
+			// We can skip the drawing of elements that have moved off the screen:
+			if (shape.currentX > canvas.width || shape.currentY > canvas.height ||
+					shape.CurrentX + shape.currentY < 0 || shape.currentY + shape.currentHeight < 0) continue;
+			ctx.drawImage(pieces[i], pieces[i].currentX, pieces[i].currentY, pieces[i].currentWidth, pieces[i].currentHeight);
+		}
+
+		// draw selection
+		// right now this is just a stroke along the edge of the selected Shape
+		valid = true;
+	}	
+	return;
+}
+
 $("#canvas").mousedown(function(e){handleMouseDown(e);});
 $("#canvas").mouseup(function(e){handleMouseUp(e);});
 $("#canvas").mousemove(function(e){handleMouseMove(e);});
@@ -246,3 +275,4 @@ pieces = generatePieces(pieces);
 drawPiecesInitial(ctx, pieces);
 let objects = [...pieces];
 objects.push(redButton, blueButton, logo, board);
+setInterval(function() { drawPieces(); }, interval);
