@@ -1,10 +1,14 @@
 package maroon.auth.service;
 
+import maroon.auth.base.Role;
 import maroon.auth.base.User;
 import maroon.auth.repository.UserRepository;
 import maroon.auth.repository.RoleRepository;
 import maroon.auth.service.UserService;
+
+import java.util.Arrays;
 import java.util.HashSet;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,7 +24,8 @@ public class UserServiceImpl implements UserService {
 
     public void saveUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<>(roleRepository.findAll()));
+        Role userRole = roleRepository.findByRole("USER");
+        user.setRoles(new HashSet<>(Arrays.asList(userRole)));
         userRepository.save(user);
     }
     

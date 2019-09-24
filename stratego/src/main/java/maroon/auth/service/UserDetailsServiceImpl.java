@@ -4,9 +4,7 @@ import maroon.auth.base.User;
 import maroon.auth.base.Role;
 import maroon.auth.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,20 +25,11 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         if (user == null) {
             throw new UsernameNotFoundException("username not found");
         }
-        else{
-            List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());   
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        for (Role role : user.getRoles()){
+            authorities.add(new SimpleGrantedAuthority(role.getRole()));
         }
-    }
-
-    private List<GrantedAuthority> getUserAuthority(Set<Role> userRoles) {
-        Set<GrantedAuthority> roles = new HashSet<>();
-        userRoles.forEach((role) -> {
-            roles.add(new SimpleGrantedAuthority(role.getRole()));
-        });
-    
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>(roles);
-        return grantedAuthorities;
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 
 }

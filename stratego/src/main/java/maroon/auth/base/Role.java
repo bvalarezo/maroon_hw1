@@ -1,5 +1,7 @@
 package maroon.auth.base;
 
+import java.util.Set;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.index.IndexDirection;
@@ -10,8 +12,8 @@ public class Role {
     @Id
     private String id;
     @Indexed(unique = true, direction = IndexDirection.DESCENDING, dropDups = true)
-    private String name;
     private String role;
+    private Set<User> users;
 
     public String getId() {
         return id;
@@ -21,11 +23,21 @@ public class Role {
         this.id = id;
     }
 
-    public String getRole() {
+    public String getRole(){
         return role;
     }
-
-    public void setRole(String role) {
+    public void setRole(String role){
         this.role = role;
     }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users){
+        this.users = users;
+    }
+
+
+
 }
