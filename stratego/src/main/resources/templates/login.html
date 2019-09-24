@@ -28,8 +28,10 @@
     <div class="bg">
         <div class="container">
 
-            <img th:src="@{/assets/logo.svg}" alt="Avatar" class="avatar">
-            <!--            <img src="../static/assets/logo.svg" alt="Avatar" class="avatar">-->
+            <object data="@{/assets/logo.svg}" type="image/svg+xml">
+                <img th:src="@{/assets/logo.svg}" alt="Avatar" class="avatar">
+                <!--                <img src="../static/assets/logo.svg" alt="Avatar" class="avatar">-->
+            </object>
 
             <form th:action="@{/login}" method="post">
                 <br><br>
