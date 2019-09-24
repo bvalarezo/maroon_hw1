@@ -76,7 +76,6 @@ input[type=password] {
     margin: 0 auto;
     display: block;
     transform: translate(5%, 60%);
-    margin-bottom: -5%;
 }
 
 .container {
