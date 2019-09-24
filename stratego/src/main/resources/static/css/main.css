@@ -69,15 +69,20 @@ input[type=password] {
     opacity: 50%;
 }
 
-.avatar {
+/* .avatar {
     max-width: 80%;
     max-height: 350px;
     z-index: 5 !important;
     margin: 0 auto;
 /*    display: inline-block;*/
-    transform: translate(20%, 60%);
-}
+    /*transform: translate(20%, 60%);
+} */
 
 .container {
-    transform: translate(0, -18%);
+    padding-top:6%;
+}
+.logo {
+    width: 40%;
+    margin: 0 auto;
+    margin-bottom: -20%;
 }
