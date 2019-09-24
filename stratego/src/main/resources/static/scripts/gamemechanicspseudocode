@@ -1,0 +1,27 @@
+RULES OF THE GAME
+
+1. Each piece can only move once
+2. Goal is to capture flag
+3. Bomb kills everything except Miner
+4. Spy kills Marshal
+5. Every role has a number and beats the other piece if the number is higher
+6. If numbers are equal then they both die
+
+#SNAPPING ONTO THE BOARD
+if (mouseup and was dragging piece) {
+	On an interval for the center of each slot on the board check which position the mouse is closest to to snap onto that piece
+}
+
+#ACTUAL GAME MECHANICS
+Have the user place all their pieces on the on their side, must create a 10x4 rectangle with pieces, no space inbetween
+Afterwards the game starts
+
+#AI
+Use the following setup
+https://www.ultraboardgames.com/stratego/gfx/setup31.jpg
+If the AI runs into an enemy piece, jot down the value of the enemy piece in a hashmap(?) and try to place itself in more situations where its more likely to win
+Marshal General and 2 Colonels should mostly be played defensively, never have them attack pieces that haven't moved or are unsure of its value
+# ONLY MOVE THEM MID/LATE GAME or when theyre within reach of a piece that you are sure has a lower rank than them
+Also try to utilize scouts towards the end so they have more value
+Reserve spy until you see marshall, keep it close to the general (the only piece that can capture a general is a marshall, and if that happens you can trade with spy)
+As your opponent reveals more of his pieces try to position your pieces that are closest to that rank to that piece (ex: if your opponent reveals a 4 then try to bring a 5 closer to it if possible, if it isnt get a 6, 7, etc.)
