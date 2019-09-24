@@ -17,6 +17,7 @@ html {
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
+    min-width: 1000px;
 }
 
 form {
