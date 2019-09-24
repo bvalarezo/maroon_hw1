@@ -15,7 +15,18 @@ let offsetY=canvasOffset.top;
 let canvasWidth=canvas.width;
 let canvasHeight=canvas.height;
 let isDragging=false;
-
+let stylePaddingLeft = parseInt(document.defaultView.getComputedStyle(canvas, null)['paddingLeft'], 10)      || 0;
+let stylePaddingTop  = parseInt(document.defaultView.getComputedStyle(canvas, null)['paddingTop'], 10)       || 0;
+let styleBorderLeft  = parseInt(document.defaultView.getComputedStyle(canvas, null)['borderLeftWidth'], 10)  || 0;
+let styleBorderTop   = parseInt(document.defaultView.getComputedStyle(canvas, null)['borderTopWidth'], 10)   || 0;
+let html = document.body.parentNode;
+let htmlTop = html.offsetTop;
+let htmlLeft = html.offsetLeft;
+let selection = null;
+let dragoffx = 0;
+let dragoffy = 0;
+let valid = false;
+let interval = 30;
 /*
  * 1 flag
  * 6 bomb
@@ -79,7 +90,7 @@ function generatePieces(array){
 	return array;
 }
 
-function drawPieces(ctx, images){
+function drawPiecesInitial(ctx, images){
 	for (var i = 0; i < images.length; i++){
 		if (!images[i].complete){
 			setTimeout(function(){
@@ -97,7 +108,6 @@ function drawPieces(ctx, images){
 function drawBoard(ctx, board) {
 	if (!board.complete){
 		setTimeout(function(){
-				draw(ctx, board);
 				}, 500);
 	}
 	board.currentX = 150;
@@ -146,46 +156,65 @@ function drawLogo(ctx, logo) {
 	ctx.drawImage(logo, 25, -25, 500, 300);	
 }
 
-function handleMouseDown(e){
-	canMouseX=parseInt(e.clientX-offsetX);
-	canMouseY=parseInt(e.clientY-offsetY);
-	// set the drag flag
-	isDragging=true;
+function handleMouseDown(e) {
+	var mouse = getMouse(e);
+	var mx = mouse.x;
+	var my = mouse.y;
+	var l = pieces.length;
+	for (var i = l-1; i >= 0; i--) {
+		if (pieces[i].currentX <= mx && pieces[i].currentX + pieces[i].currentWidth >= mx && pieces[i].currentY <= my && pieces[i].currentY + pieces[i].currentHeight >= my) {
+			var mySel = pieces[i];
+			// Keep track of where in the object we clicked
+			// so we can move it smoothly (see mousemove)
+			dragoffx = mx - mySel.currentX;
+			dragoffy = my - mySel.currentY;
+			isDragging = true;
+			selection = mySel;
+			valid = false;
+			return;
+		}
+	}
+	// havent returned means we have failed to select anything.
+	// If there was an object selected, we deselect it
+	if (selection) {
+		selection = null;
+		valid = false; // Need to clear the old selection border
+	}
 }
-
 function handleMouseUp(e){
-	canMouseX=parseInt(e.clientX-offsetX);
-	canMouseY=parseInt(e.clientY-offsetY);
-	// clear the drag flag
 	isDragging=false;
 }
 
-function handleMouseOut(e){
-	canMouseX=parseInt(e.clientX-offsetX);
-	canMouseY=parseInt(e.clientY-offsetY);
-	// user has left the canvas, so clear the drag flag
-	//isDragging=false;
+function handleMouseMove(e) {
+	if (isDragging){
+		var mouse = getMouse(e);
+		// We don't want to drag the object by its top-left corner, we want to drag it
+		// from where we clicked. Thats why we saved the offset and use it here
+		selection.currentX = mouse.x - dragoffx;
+		selection.currentY = mouse.y - dragoffy;   
+		valid = false; // Something's dragging so we must redraw
+	}
 }
 
-function handleMouseMove(e, ctx, img){
-	//We want to adjust it so it works for each individual object and keeps the other images drawn.
-	//NOW WE GOT THE OBJECT ARRAY WITH ALL THE CURRENT X AND Y VALUES, NOW CREATE THE FOR LOOP CHECKING IF THE DRAGGED OBJECT IS BEING HOVERED OVER THE RADIUS OF OTHER OBJECTS
-	canMouseX=parseInt(e.clientX-offsetX);
-	canMouseY=parseInt(e.clientY-offsetY);
-	// if the drag flag is set, clear the canvas and draw the image
-	if(isDragging){
-		ctx.clearRect(e.clientX-50,e.clientY-50,100,100);
-		//only clear the area in which the image being drawn is located and redraw images that are within the path of it
-		for (var i = 0; i < pieces.length; i++){
-			//Now create a for loop checking each object in the pieces array and check if it needs to be redrawn 
-			//detect mouse movement
-			if (canMouseX-100/2 > pieces[i].currentX && canMouseX-100/2 < pieces[i].currentX + pieces[i].currentWidth && canMouseY-100/2 > pieces[i].currentY && canMouseY-100/2 < pieces[i].currentY + pieces[i].currentHeight) {
-				//if its within X boundaries
-				ctx.drawImage(pieces[i], pieces[i].currentX, pieces[i].currentY, pieces[i].currentWidth, pieces[i].currentHeight);
-			}
-		}
-		ctx.drawImage(img,canMouseX-100/2,canMouseY-100/2,100,100);
+function getMouse(e) {
+	var element = canvas, offsetX = 0, offsetY = 0, mx, my;
+	// Compute the total offset
+	if (element.offsetParent !== undefined) {
+		do {
+			offsetX += element.offsetLeft;
+			offsetY += element.offsetTop;
+		} while ((element = element.offsetParent));
 	}
+	// Add padding and border style widths to offset
+	// Also add the <html> offsets in case there's a position:fixed bar
+	offsetX += stylePaddingLeft + styleBorderLeft + htmlLeft;
+	offsetY += stylePaddingTop + styleBorderTop + htmlTop;
+
+	mx = e.pageX - offsetX;
+	my = e.pageY - offsetY;
+
+	// We return a simple javascript object (a hash) with x and y defined
+	return {x: mx, y: my};
 }
 
 board.onload = function () {
@@ -204,15 +233,46 @@ logo.onload = function () {
 	drawLogo(ctx, logo);
 }
 
+function drawNonMovableStuff(){
+	drawBoard(ctx, board);
+	drawRedButton(ctx, redButton);
+	drawBlueButton(ctx, blueButton);
+	drawLogo(ctx, logo);
+}
+
+function drawPieces(){
+	console.log(valid);
+	if (!valid) {
+		// CLear canvas
+		ctx.clearRect(0,0,canvas.width, canvas.height);	
+		// Draw background stuff
+		drawNonMovableStuff();
+		// draw all pieces
+		var l = pieces.length;
+		for (var i = 0; i < l; i++) {
+			var shape = pieces[i];
+			// We can skip the drawing of elements that have moved off the screen:
+			if (shape.currentX > canvas.width || shape.currentY > canvas.height ||
+					shape.CurrentX + shape.currentY < 0 || shape.currentY + shape.currentHeight < 0) continue;
+			ctx.drawImage(pieces[i], pieces[i].currentX, pieces[i].currentY, pieces[i].currentWidth, pieces[i].currentHeight);
+		}
+
+		// draw selection
+		// right now this is just a stroke along the edge of the selected Shape
+		valid = true;
+	}	
+	return;
+}
+
 $("#canvas").mousedown(function(e){handleMouseDown(e);});
 $("#canvas").mouseup(function(e){handleMouseUp(e);});
-$("#canvas").mouseout(function(e){handleMouseOut(e);});
-
+$("#canvas").mousemove(function(e){handleMouseMove(e);});
 board.src = "../../resources/static/assets/map.svg";
 redButton.src = "../../resources/static/assets/redbutton.svg";
 blueButton.src = "../../resources/static/assets/bluebutton.svg";
 logo.src = "../../resources/static/assets/logo.svg";
 pieces = generatePieces(pieces);
-drawPieces(ctx, pieces);
+drawPiecesInitial(ctx, pieces);
 let objects = [...pieces];
 objects.push(redButton, blueButton, logo, board);
+setInterval(function() { drawPieces(); }, interval);
