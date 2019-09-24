@@ -74,10 +74,10 @@ input[type=password] {
     max-height: 350px;
     z-index: 5 !important;
     margin: 0 auto;
-    display: block;
-    transform: translate(5%, 60%);
+/*    display: inline-block;*/
+    transform: translate(15%, 60%);
 }
 
 .container {
-    transform: translate(0, -15%);
+    transform: translate(0, -18%);
 }
