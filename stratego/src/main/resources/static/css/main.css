@@ -28,9 +28,10 @@ form {
     max-width: 80%;
     margin: auto;
     max-height: 80%;
-    transform: translate(0, 20%);
+    transform: translate(0, -120%);
     border-radius: 10px;
     overflow: auto;
+    padding: 10px;
 }
 
 /* Full-width inputs */
