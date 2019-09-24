@@ -23,9 +23,16 @@
     <div class="bg">
 
         <div class="container">
+<<<<<<< Updated upstream
 
             <img th:src="@{/assets/logo.svg}" alt="Avatar" class="avatar">
             <!--                <img src="../static/assets/logo.svg" alt="Avatar" class="avatar">-->
+=======
+            <object data="@{/assets/logo.svg}" type="image/svg+xml" height="50" width="50">
+                <img th:src="@{/assets/logo.svg}" alt="Avatar" class="avatar">
+                <!--                <img src="../static/assets/logo.svg" alt="Avatar" class="avatar">-->
+            </object>
+>>>>>>> Stashed changes
 
 
             <form th:action="@{/register}" th:object="${userForm}" method="post">
