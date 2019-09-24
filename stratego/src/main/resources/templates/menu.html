@@ -22,6 +22,9 @@
                     <img src="../assets/playbutton.svg"  onmousedown="bleep.play()">
                     <img src="../assets/rulesbutton.svg"  onmousedown="bleep.play()">
                     <img src="../assets/logoutbutton.svg" onmousedown="bleep.play()">
+                    <form th:action="@{/logout}" method="POST">
+                        <input type="submit" value="Log out"/>
+                    </form>
                 </div>
             </div>
         </div>

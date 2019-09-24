@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Maroon_HW1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,31 +14,30 @@
 
 <body>
     <div class="bg">
-            <img th:src="@{/assets/logo.svg}" alt="Avatar" class="avatar">
-            <div class="container">
-            <form method="POST" th:action="@{/login}">
-                <h2>Log in</h2>
+        <img th:src="@{/assets/logo.svg}" alt="Avatar" class="avatar">
+        <div class="container">
+            <form th:action="@{/login}" method="post">
                 <div th:if="${param.error}">
-                    Invalid username and password.
+                    <div>Invalid username or
+                        password.</div>
                 </div>
                 <div th:if="${param.logout}">
-                    You have been logged out.
+                    <div>You have been logged out.</div>
                 </div>
-                <label for="username"><b>Username</b></label>
-                <br>
-                <input type="username" name="username" placeholder="Enter Username" required="" />
-                <br>
-                <br>
-                <label for="password"><b>Password</b></label>
-                <br>
-                <input type="password" name="password" placeholder="Enter Password"required="" />
-                <br>
-                <button type="submit">Login</button>
+
+                <label for="username">Username</label>: <input type="text" id="username" name="username"
+                    autofocus="autofocus" placeholder="Username" />
+
+
+                <label for="password">Password</label>: <input type="password" id="password" name="password"
+                    placeholder="Password" />
+
+                <input type="submit" name="login-submit" value="Log In" />
+
+                <span>New user? <a href="/" th:href="@{/register}">Register
+                        here</a></span>
             </form>
-            <a th:href="@{/register}">
-                <button type="submit">Register</button>
-            </a>
-    </div>
+        </div>
 </body>
 
 </html>
