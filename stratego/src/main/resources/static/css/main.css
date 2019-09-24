@@ -75,7 +75,7 @@ input[type=password] {
     z-index: 5 !important;
     margin: 0 auto;
 /*    display: inline-block;*/
-    transform: translate(20%, 60%);
+/*    transform: translate(20%, 60%);*/
 }
 
 .container {
