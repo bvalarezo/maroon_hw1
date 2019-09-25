@@ -3,7 +3,12 @@
 <head>
     <title>Maroon_HW1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../static/css/menu.css">
+    
+    <!-- <link rel="stylesheet" href="../static/css/menu.css"> -->
+
+
+    <link rel="stylesheet" th:href="@{/css/menu.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
 
     <script>
         var bleep = new Audio();
@@ -22,7 +27,10 @@
                     <img src="../static/assets/playbutton.svg"  onmousedown="bleep.play()">
                     <img src="../static/assets/rulesbutton.svg"  onmousedown="bleep.play()">
                     <img src="../static/assets/logoutbutton.svg" onmousedown="bleep.play()">
-                    <form th:action="@{/logout}" method="POST">
+                    <form th:action="@{/game}" method="get">
+                        <input type="submit" value="Play Game"/>
+                    </form>
+                    <form th:action="@{/logout}" method="post">
                         <input type="submit" value="Log out"/>
                     </form>
                 </div>
