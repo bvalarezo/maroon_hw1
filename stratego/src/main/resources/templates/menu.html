@@ -3,35 +3,50 @@
 <head>
     <title>Maroon_HW1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <!-- <link rel="stylesheet" href="../static/css/menu.css"> -->
+
+    <link rel="stylesheet" href="../static/css/menu.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+
+    <link href='https://fonts.googleapis.com/css?family=Charm' rel='stylesheet'>
 
 
+    <!--
     <link rel="stylesheet" th:href="@{/css/menu.css}">
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+-->
 
     <script>
         var bleep = new Audio();
-        bleep.src = "../audio/button.wav";
+        bleep.src = "../static/audio/button.wav";
     </script>
 
 </head>
 
 <body>
     <div class="bg">
-        <div class="placer">
-            <img src="../static/assets/logo.png" alt="Avatar" class="avatar">
-            <div class="container">
-                <img src="../static/assets/leaderboard.svg" class="leaderboard">
-                <div class="buttons">
-                    <img src="../static/assets/playbutton.svg"  onmousedown="bleep.play()">
-                    <img src="../static/assets/rulesbutton.svg"  onmousedown="bleep.play()">
-                    <img src="../static/assets/logoutbutton.svg" onmousedown="bleep.play()">
+        <div class="logo">
+            <!--                    <img th:src="@{/assets/logo.svg}" alt="Avatar" class="avatar">-->
+            <img src="../static/assets/logo.svg" alt="Avatar" class="avatar">
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col" id="leaderboard">
+                    <!--                    <img th:src="@{/assets/leaderboard.svg}">-->
+                    <img src="../static/assets/leaderboard.svg">
+                </div>
+
+                <div class="col" id="buttons">
                     <form th:action="@{/game}" method="get">
-                        <input type="submit" value="Play Game"/>
+                        <input type="submit" value="Play Game" style="font-family: 'Charm' !important;" />
                     </form>
+
+                    <form>
+                        <input type="submit" value="Rules" style="font-family: 'Charm' !important;" />
+                    </form>
+
                     <form th:action="@{/logout}" method="post">
-                        <input type="submit" value="Log out"/>
+                        <input type="submit" value="Log Out" style="font-family: 'Charm' !important;" />
                     </form>
                 </div>
             </div>
