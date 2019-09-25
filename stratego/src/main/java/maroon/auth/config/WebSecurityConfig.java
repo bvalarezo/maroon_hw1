@@ -36,6 +36,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register").permitAll()
                 .antMatchers("/menu").hasAnyAuthority("USER")
                 .anyRequest().authenticated()
+                .antMatchers("/game").hasAnyAuthority("USER")
+                .anyRequest().authenticated()
                 .and()
             .formLogin()
                 .successHandler(customAuthenticationSuccessHandler)
