@@ -1,8 +1,8 @@
 body,
 html {
-    height: 100%;
-    font-family: 'Charm';
-    color: white;
+    height: 100% !important;
+    font-family: 'Charm' !important;
+    color: white !important;
 }
 
 .bg {
@@ -19,7 +19,7 @@ html {
     position: relative;
 }
 
-.placer {
+.container {
     display: table;
     vertical-align: middle;
     border: 8px solid #800000;
@@ -34,35 +34,33 @@ html {
     box-sizing: border-box;
 }
 
-.container {
-/*    display: flex;*/
-    padding: 12px 20px;
-    transform: translateY(-500%);
-    width: 100%;
+#buttons {
+    margin-top: 10%;
+}
+
+input[type=submit] {
+    padding-right: 10px;
+    margin: 10%;
+    color: white;
+    background-color: #800000;
+    border: 3px solid gold;
+    border-radius: 10px;
+}
+
+input[type=submit]: hover {
+    color: #800000;
+    background-color: gold;
+    border: 3px solid #800000;
+    opacity: 50%;
+}
+
+.logo {
+    width: 40%;
     margin: 0 auto;
-    box-sizing: border-box;
+    margin-bottom: -20%;
+    padding-left: 1%;
 }
 
-.buttons {
-    width: 35%;
-    max-height: 100%;
-    padding-right: 2%;
-    float: right;
-    cursor: pointer;
-    margin: auto;
-}
-
-.buttons > img:hover {
-    opacity: 0.5;
-}
-
-.avatar {
-    width: 110%;
-    transform: translate(0, -40%);
-}
-
-.leaderboard {
-    max-width: 50%;
-    margin: 2%;
-    float: left;
+#leaderboard {
+    margin: 3%;
 }
