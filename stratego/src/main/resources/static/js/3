@@ -43,45 +43,77 @@ let interval = 30;
  */
 
 function generatePieces(array){
+	let bombCount = 1;
+	let scoutCount = 1;
+	let minerCount = 1;
+	let sergantCount = 1;
+	let lieutenantCount = 1;
+	let captainCount = 1;
+	let majorCount = 1;
+	let colonelCount = 1;
 	for (var i = 0; i < 40; i++) {
 		//40 pieces
 		let temp = new Image();
 		if (i == 0) {
 			//1 flag
-			temp.src = "../../resources/static/assets/stratego-flag.svg";
+			$("#flag1").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-flag.svg"> </object>');		
 		} else if (i > 0 && i < 7) {
 			//6 bombs
-			temp.src = "../../resources/static/assets/stratego-bomb.svg";
+			let bombTag = "#bomb";
+			minertag.concat(bombCount);
+			$(minertag).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-miner.svg"> </object>');
+			bombCount++;
 		} else if (i == 7) {
 			//1 spy
-			temp.src = "../../resources/static/assets/stratego-spy.svg";
+			$("#spy1").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-spy.svg"> </object>');
 		} else if (i >= 8 && i < 16) {
 			//8 scouts
-			temp.src = "../../resources/static/assets/stratego-scout.svg";
+			let scouttag = "#scout";
+			scouttag.concat(scoutCount);
+			$(scouttag).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-scout.svg"> </object>');
+			scoutCount++;
 		} else if (i >= 16 && i < 21) {
 			//5 miners
+			let minertag = "#miner";
+			minertag.concat(minerCount);
 			temp.src = "../../resources/static/assets/stratego-miner.svg";
+			minerCount++;
 		} else if (i >= 21 && i < 25) {
 			//4 sergants
+			let sergeantTag = "#sergeant";
+			minertag.concat(sergeantCount);
 			temp.src = "../../resources/static/assets/stratego-sergeant.svg";
+			sergeantCount++;
 		} else if (i >= 25 && i < 29) {
 			//4 lieutenants
-			temp.src = "../../resources/static/assets/stratego-lieutenant.svg";
+			let minertag = "#miner";
+			minertag.concat(minerCount);
+			temp.src = "../../resources/static/assets/stratego-miner.svg";
+			minerCount++;
 		} else if (i >= 29 && i < 33) {
 			//4 captains
-			temp.src = "../../resources/static/assets/stratego-captain.svg";
+			let minertag = "#miner";
+			minertag.concat(minerCount);
+			$("#flag1").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-flag.svg"> </object>');
+			minerCount++;
 		} else if (i >= 33 && i < 36) {
 			//3 majors
-			temp.src = "../../resources/static/assets/stratego-major.svg";
+			let majortag = "#major";
+			majortag.concat(majorCount);
+			$(majortag).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-major.svg"> </object>');
+			majorCount++; 
 		} else if (i >= 36 && i < 38) {
 			//2 colonels
-			temp.src = "../../resources/static/assets/stratego-colonel.svg";
+			let coloneltag = "#colonel";
+			coloneltag.concat(colonelCount);
+			$(minertag).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-colonel.svg"> </object>');
+			colonelCount++;
 		} else if (i == 38) {
 			//1 general
-			temp.src = "../../resources/static/assets/stratego-general.svg";
+			$("#general1").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-general.svg"> </object>');
 		} else if (i == 39) {
 			//1 marshall
-			temp.src = "../../resources/static/assets/stratego-marshal.svg";
+			$("#marshall1").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-marshall.svg"> </object>');
 		}
 		temp.isDragging = false;
 		array.push(temp);
@@ -94,7 +126,6 @@ function drawPiecesInitial(ctx, images){
 	for (var i = 0; i < images.length; i++){
 		if (!images[i].complete){
 			setTimeout(function(){
-					draw(ctx, images[i]);
 					}, 50);
 		}
 		images[i].currentX = (i%5)*70;
@@ -162,7 +193,7 @@ function handleMouseDown(e) {
 	var my = mouse.y;
 	var l = pieces.length;
 	for (var i = l-1; i >= 0; i--) {
-		if (pieces[i].currentX <= mx && pieces[i].currentX + pieces[i].currentWidth >= mx && pieces[i].currentY <= my && pieces[i].currentY + pieces[i].currentHeight >= my) {
+		if (pieces[i].currentX <= mx && pieces[i].currentX + pieces[i].currentWidth/2 >= mx && pieces[i].currentY <= my && pieces[i].currentY + pieces[i].currentHeight/2 >= my) {
 			var mySel = pieces[i];
 			// Keep track of where in the object we clicked
 			// so we can move it smoothly (see mousemove)
@@ -182,6 +213,22 @@ function handleMouseDown(e) {
 	}
 }
 function handleMouseUp(e){
+	//find a way to identify which piece you were previously dragging(?)
+	var mouse = getMouse(e);
+	var mx = mouse.x;
+	var my = mouse.y;
+	var l = pieces.length; 
+	for (var i = l-1; i >= 0; i--) {
+		if (pieces[i].currentX <= mx && pieces[i].currentX + pieces[i].currentWidth/2 >= mx && pieces[i].currentY <= my && pieces[i].currentY + pieces[i].currentHeight/2 >= my) {
+			var mySel = pieces[i];
+			// Keep track of where in the object we clicked
+			// so we can move it smoothly (see mousemove)
+			console.log(pieces[i], mx, my)
+				snapOntoBoard(mouse, mySel);
+			isDragging = false;
+			return;
+		}
+	}	
 	isDragging=false;
 }
 
@@ -241,7 +288,6 @@ function drawNonMovableStuff(){
 }
 
 function drawPieces(){
-	console.log(valid);
 	if (!valid) {
 		// CLear canvas
 		ctx.clearRect(0,0,canvas.width, canvas.height);	
@@ -264,9 +310,37 @@ function drawPieces(){
 	return;
 }
 
+function snapOntoBoard(mousePosition, piece) {
+	// Width of each tile is about 90
+	// x coordinate of first is about 580
+	// 10x10 board
+	let initialX = 535;
+	let interval = 180;
+	let initialY = 60;
+	let currentX = initialX;
+	let currentY = initialY;
+	for (var y = 0; y < 10; y++){
+		for (var x = 0; x < 10; x++) {
+			if (mousePosition.x <= currentX + interval/2 && mousePosition.x >= currentX - interval/2 && mousePosition.y <= currentY + interval/2 && mousePosition.y <= currentY - interval/2) {
+				console.log("snapOntoBoard works");
+				console.log("mousePosition: ", mousePosition.x, mousePosition.y);
+				console.log("piece: ", piece);
+				console.log("currentX and Y: ", currentX, currentY);
+				piece.currentX = currentX;
+				piece.currentY = currentY;
+				return;
+			}
+			currentX += interval;
+		}
+		currentY += interval;
+		currentX = initialX;
+	}
+}
+
 $("#canvas").mousedown(function(e){handleMouseDown(e);});
 $("#canvas").mouseup(function(e){handleMouseUp(e);});
 $("#canvas").mousemove(function(e){handleMouseMove(e);});
+
 board.src = "../../resources/static/assets/map.svg";
 redButton.src = "../../resources/static/assets/redbutton.svg";
 blueButton.src = "../../resources/static/assets/bluebutton.svg";
@@ -276,3 +350,5 @@ drawPiecesInitial(ctx, pieces);
 let objects = [...pieces];
 objects.push(redButton, blueButton, logo, board);
 setInterval(function() { drawPieces(); }, interval);
+
+
