@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 1366 768" style="enable-background:new 0 0 1366 768;" xml:space="preserve">
 <style type="text/css">
 	.st0{fill:url(#SVGID_1_);stroke:#000000;stroke-width:8;stroke-miterlimit:10;}
 	.st1{fill:#FF0000;stroke:#000000;stroke-width:8;stroke-miterlimit:10;}
-	.st2{font-family:'MonotypeCorsiva';}
+	.st2{font-family:'BodoniSvtyTwoITCTT-Book';}
 	.st3{font-size:593.9796px;}
 </style>
 <g>
 	
-		<radialGradient id="SVGID_1_" cx="746.84" cy="397.56" r="342.56" gradientTransform="matrix(1 0 0 -1 0 768)" gradientUnits="userSpaceOnUse">
+		<radialGradient id="SVGID_1_" cx="746.8" cy="394.4" r="342.6" gradientTransform="matrix(1 0 0 1 0 -24)" gradientUnits="userSpaceOnUse">
 		<stop  offset="0" style="stop-color:#FFFFFF"/>
 		<stop  offset="1" style="stop-color:#FF333A"/>
 	</radialGradient>
 	<path class="st0" d="M746.8,713L746.8,713c-189.2,0-342.6-153.4-342.6-342.6l0,0c0-189.2,153.4-342.6,342.6-342.6l0,0
 		c189.2,0,342.6,153.4,342.6,342.6l0,0C1089.4,559.6,936,713,746.8,713z"/>
-	<text transform="matrix(1.0675 0 0 1 460.0396 490.8613)" class="st1 st2 st3">R</text>
+	<text transform="matrix(1.0675 0 0 1 578.0391 553.8613)" class="st1 st2 st3">R</text>
 </g>
 </svg>
