@@ -26,7 +26,7 @@ var selection = null;
 var dragoffx = 0;
 var dragoffy = 0;
 var valid = false;
-var interval = 30;
+var functionInterval = 30;
 /*
  * 1 flag
  * 6 bomb
@@ -46,7 +46,7 @@ function generatePieces(array){
 	let bombCount = 1;
 	let scoutCount = 1;
 	let minerCount = 1;
-	let sergantCount = 1;
+	let sergeantCount = 1;
 	let lieutenantCount = 1;
 	let captainCount = 1;
 	let majorCount = 1;
@@ -59,7 +59,7 @@ function generatePieces(array){
 			$("#flag1").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-flag.svg"> </object>');		
 		} else if (i > 0 && i < 7) {
 			//6 bombs
-			let bombTag = "#bomb";
+			let bombtag = "#bomb";
 			bombtag.concat(bombCount);
 			$(bombtag).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-bomb.svg"> </object>');
 			bombCount++;
@@ -80,7 +80,7 @@ function generatePieces(array){
 			minerCount++;
 		} else if (i >= 21 && i < 25) {
 			//4 sergants
-			let sergeantTag = "#sergeant";
+			let sergeanttag = "#sergeant";
 			sergeanttag.concat(sergeantCount);
 			$(sergeanttag).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-sergeant.svg"> </object>');
 			sergeantCount++;
@@ -94,7 +94,7 @@ function generatePieces(array){
 			//4 captains
 			let captaintag = "#captain";
 			captaintag.concat(minerCount);
-			$(captain).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-captain.svg"> </object>');
+			$(captaintag).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-captain.svg"> </object>');
 			captainCount++;
 		} else if (i >= 33 && i < 36) {
 			//3 majors
@@ -244,13 +244,13 @@ function handleMouseMove(e) {
 }
 
 function getMouse(e) {
-	var element = canvas, offsetX = 0, offsetY = 0, mx, my;
+	let element = canvas, offsetX = 0, offsetY = 0, mx, my;
 	// Compute the total offset
 	if (element.offsetParent !== undefined) {
 		do {
 			offsetX += element.offsetLeft;
 			offsetY += element.offsetTop;
-		} while ((element = element.offsetParent));
+		} while (element = element.offsetParent);
 	}
 	// Add padding and border style widths to offset
 	// Also add the <html> offsets in case there's a position:fixed bar
@@ -260,7 +260,6 @@ function getMouse(e) {
 	mx = e.pageX - offsetX;
 	my = e.pageY - offsetY;
 
-	// We return a simple javascript object (a hash) with x and y defined
 	return {x: mx, y: my};
 }
 
@@ -289,21 +288,19 @@ function drawNonMovableStuff(){
 
 function drawPieces(){
 	if (!valid) {
-		// CLear canvas
+		// Clear canvas
 		ctx.clearRect(0,0,canvas.width, canvas.height);	
 		// Draw background stuff
 		drawNonMovableStuff();
 		// draw all pieces
-		var l = pieces.length;
-		for (var i = 0; i < l; i++) {
-			// We can skip the drawing of elements that have moved off the screen:
+		for (var i = 0; i < pieces.length; i++) {
+			//if any of the pieces go out of bounds of the canvas then skip
 			if (pieces[i].currentX > canvas.width || pieces[i].currentY > canvas.height ||
-					pieces[i].CurrentX + pieces[i].currentY < 0 || pieces[i].currentY + pieces[i].currentHeight < 0) continue;
+					pieces[i].currentX + pieces[i].currentY < 0 || pieces[i].currentY + pieces[i].currentHeight < 0) continue;
+			//otherwise redraw the image
 			ctx.drawImage(pieces[i], pieces[i].currentX, pieces[i].currentY, pieces[i].currentWidth, pieces[i].currentHeight);
 		}
-
 		// draw selection
-		// right now this is just a stroke along the edge of the selected Shape
 		valid = true;
 	}	
 	return;
@@ -348,6 +345,4 @@ pieces = generatePieces(pieces);
 drawPiecesInitial(ctx, pieces);
 var objects = [...pieces];
 objects.push(redButton, blueButton, logo, board);
-setInterval(function() { drawPieces(); }, interval);
-
-
+setInterval(function() { drawPieces(); }, functionInterval);
