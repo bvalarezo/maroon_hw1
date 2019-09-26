@@ -1,32 +1,32 @@
-let canvas = document.getElementById('canvas');
+var canvas = document.getElementById('canvas');
 
 canvas.width = canvas.scrollWidth;
 canvas.height = canvas.scrollHeight;
 
-let pieces = [];
-let ctx = canvas.getContext('2d');
-let redButton = new Image();
-let blueButton = new Image();
-let board = new Image();
-let logo = new Image();
-let canvasOffset=$("#canvas").offset();
-let offsetX=canvasOffset.left;
-let offsetY=canvasOffset.top;
-let canvasWidth=canvas.width;
-let canvasHeight=canvas.height;
-let isDragging=false;
-let stylePaddingLeft = parseInt(document.defaultView.getComputedStyle(canvas, null)['paddingLeft'], 10)      || 0;
-let stylePaddingTop  = parseInt(document.defaultView.getComputedStyle(canvas, null)['paddingTop'], 10)       || 0;
-let styleBorderLeft  = parseInt(document.defaultView.getComputedStyle(canvas, null)['borderLeftWidth'], 10)  || 0;
-let styleBorderTop   = parseInt(document.defaultView.getComputedStyle(canvas, null)['borderTopWidth'], 10)   || 0;
-let html = document.body.parentNode;
-let htmlTop = html.offsetTop;
-let htmlLeft = html.offsetLeft;
-let selection = null;
-let dragoffx = 0;
-let dragoffy = 0;
-let valid = false;
-let interval = 30;
+var pieces = [];
+var ctx = canvas.getContext('2d');
+var redButton = new Image();
+var blueButton = new Image();
+var board = new Image();
+var logo = new Image();
+var canvasOffset=$("#canvas").offset();
+var offsetX=canvasOffset.left;
+var offsetY=canvasOffset.top;
+var canvasWidth=canvas.width;
+var canvasHeight=canvas.height;
+var isDragging=false;
+var stylePaddingLeft = parseInt(document.defaultView.getComputedStyle(canvas, null)['paddingLeft'], 10)      || 0;
+var stylePaddingTop  = parseInt(document.defaultView.getComputedStyle(canvas, null)['paddingTop'], 10)       || 0;
+var styleBorderLeft  = parseInt(document.defaultView.getComputedStyle(canvas, null)['borderLeftWidth'], 10)  || 0;
+var styleBorderTop   = parseInt(document.defaultView.getComputedStyle(canvas, null)['borderTopWidth'], 10)   || 0;
+var html = document.body.parentNode;
+var htmlTop = html.offsetTop;
+var htmlLeft = html.offsetLeft;
+var selection = null;
+var dragoffx = 0;
+var dragoffy = 0;
+var valid = false;
+var interval = 30;
 /*
  * 1 flag
  * 6 bomb
@@ -296,10 +296,9 @@ function drawPieces(){
 		// draw all pieces
 		var l = pieces.length;
 		for (var i = 0; i < l; i++) {
-			var shape = pieces[i];
 			// We can skip the drawing of elements that have moved off the screen:
-			if (shape.currentX > canvas.width || shape.currentY > canvas.height ||
-					shape.CurrentX + shape.currentY < 0 || shape.currentY + shape.currentHeight < 0) continue;
+			if (pieces[i].currentX > canvas.width || pieces[i].currentY > canvas.height ||
+					pieces[i].CurrentX + pieces[i].currentY < 0 || pieces[i].currentY + pieces[i].currentHeight < 0) continue;
 			ctx.drawImage(pieces[i], pieces[i].currentX, pieces[i].currentY, pieces[i].currentWidth, pieces[i].currentHeight);
 		}
 
@@ -347,7 +346,7 @@ blueButton.src = "../../resources/static/assets/bluebutton.svg";
 logo.src = "../../resources/static/assets/logo.svg";
 pieces = generatePieces(pieces);
 drawPiecesInitial(ctx, pieces);
-let objects = [...pieces];
+var objects = [...pieces];
 objects.push(redButton, blueButton, logo, board);
 setInterval(function() { drawPieces(); }, interval);
 
