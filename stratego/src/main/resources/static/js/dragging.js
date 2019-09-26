@@ -25,7 +25,7 @@ var htmlLeft = html.offsetLeft;
 var selection = null;
 var dragoffx = 0;
 var dragoffy = 0;
-var valid = false;
+var valid = false; //Checking if the current setup is valid (if we need to redraw on the canvas)
 var functionInterval = 30;
 /*
  * 1 flag
@@ -194,19 +194,16 @@ function handleMouseDown(e) {
 	var l = pieces.length;
 	for (var i = l-1; i >= 0; i--) {
 		if (pieces[i].currentX <= mx && pieces[i].currentX + pieces[i].currentWidth/2 >= mx && pieces[i].currentY <= my && pieces[i].currentY + pieces[i].currentHeight/2 >= my) {
-			var mySel = pieces[i];
-			// Keep track of where in the object we clicked
-			// so we can move it smoothly (see mousemove)
-			dragoffx = mx - mySel.currentX;
-			dragoffy = my - mySel.currentY;
+			dragoffx = mx - pieces[i].currentX;
+			dragoffy = my - pieces[i].currentY;
 			isDragging = true;
-			selection = mySel;
+			selection = pieces[i];
 			valid = false;
 			return;
 		}
 	}
-	// havent returned means we have failed to select anything.
-	// If there was an object selected, we deselect it
+	//This checks if we went iterated through all the pieces and it has not returned
+	//Meaning if no piece has been selected, make selection = null and redraw canvas
 	if (selection) {
 		selection = null;
 		valid = false; // Need to clear the old selection border
@@ -221,10 +218,9 @@ function handleMouseUp(e){
 	for (var i = l-1; i >= 0; i--) {
 		if (pieces[i].currentX <= mx && pieces[i].currentX + pieces[i].currentWidth/2 >= mx && pieces[i].currentY <= my && pieces[i].currentY + pieces[i].currentHeight/2 >= my) {
 			var mySel = pieces[i];
-			// Keep track of where in the object we clicked
-			// so we can move it smoothly (see mousemove)
-			console.log(pieces[i], mx, my)
-				snapOntoBoard(mouse, mySel);
+			//After getting the piece currently selected, snap it onto the board
+			snapOntoBoard(mouse, mySel);
+			//You let go of the mouse, therefore you are no longer dragging
 			isDragging = false;
 			return;
 		}
@@ -235,11 +231,9 @@ function handleMouseUp(e){
 function handleMouseMove(e) {
 	if (isDragging){
 		var mouse = getMouse(e);
-		// We don't want to drag the object by its top-left corner, we want to drag it
-		// from where we clicked. Thats why we saved the offset and use it here
 		selection.currentX = mouse.x - dragoffx;
 		selection.currentY = mouse.y - dragoffy;   
-		valid = false; // Something's dragging so we must redraw
+		valid = false; // A piece is dragging so we must redraw
 	}
 }
 
