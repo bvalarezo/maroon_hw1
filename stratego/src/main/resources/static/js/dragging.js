@@ -108,10 +108,12 @@ function generatePieces(array){
 			//1 marshall
 			$("#marshall").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-marshall.svg"> </object>');
 		}
+		//as of right now temp is a blank image object
 		temp.isDragging = false;
 		array.push(temp);
 		$("#canvas").mousemove(function(e){handleMouseMove(e,ctx,temp);});
 	}
+	console.log(array);
 	return array;
 }
 
@@ -144,7 +146,6 @@ function drawBoard(ctx, board) {
 function drawRedButton(ctx, redButton) {
 	if (!redButton.complete){
 		setTimeout(function(){
-				draw(ctx, redButton);
 				}, 50);
 	}
 	redButton.currentX = -30;
@@ -157,7 +158,6 @@ function drawRedButton(ctx, redButton) {
 function drawBlueButton(ctx, blueButton) {
 	if (!blueButton.complete){
 		setTimeout(function(){
-				draw(ctx, blueButton);
 				}, 50);
 	}
 	blueButton.currentX = 1750;
@@ -170,7 +170,6 @@ function drawBlueButton(ctx, blueButton) {
 function drawLogo(ctx, logo) {
 	if (!logo.complete){
 		setTimeout(function(){
-				draw(ctx, logo);
 				}, 500);
 	}
 	logo.currentX = 25;
