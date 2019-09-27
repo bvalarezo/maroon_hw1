@@ -32,14 +32,8 @@ html {
     transform: translate(0, 15%);
     border-radius: 10px;
     box-sizing: border-box;
-}
-
-.row {
-    /*        max-width: 50%;*/
-}
-
-#buttons {
-    /*        margin-top: 5%;*/
+    padding-top: 5%;
+    padding-bottom: 1%;
 }
 
 input[type=submit],
@@ -65,28 +59,34 @@ input[type=button]: hover {
 
 .logo {
     max-width: 40%;
-    min-width: 500px;
+    min-width: 550px;
     margin: 0 auto;
-    padding-top: 3%;
-    margin-bottom: -15%;
+    padding-top: 2%;
+    margin-bottom: -18%;
     padding-left: 1%;
-    z-index: 1;
+    z-index: 999;
 }
 
-.leaderboard {
-    margin: 3%;
+#leaderboard {
+    background-image: url("../assets/leaderboard.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+/*    background-size: cover;*/
+/*    margin: 3%;*/
     position: relative;
     display: inline-block;
 }
 
-.leaderboard .text {
+#leaderboard .text {
+    color: black;
     position: absolute;
     z-index: 5;
     margin: 0 auto;
     left: 0;
     right: 0;
-    width: 60%;
-    top: 40%;
+    width: 65%;
+    padding: 10px;
+/*    top: 40%;*/
 }
 
 /* The Modal (background) */
