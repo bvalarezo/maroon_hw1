@@ -33,9 +33,12 @@
 
         <div class="container">
             <div class="row">
-                <div class="col" id="leaderboard">
+                <div class="col" class="leaderboard">
                     <!--                    <img th:src="@{/assets/leaderboard.svg}">-->
                     <img src="../static/assets/leaderboard.svg">
+                    <div class="text">
+                        <p>game state ex</p>
+                    </div>
                 </div>
 
                 <div class="col" id="buttons">
@@ -52,7 +55,7 @@
                     </form>
                 </div>
             </div>
-            
+
         </div>
     </div>
 
@@ -60,17 +63,17 @@
 
         <!-- Modal content -->
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="x">&times;</span>
             <h1>Rules</h1>
-            <br><br>
-            <p>Stratego is a game in which you need to capture the flag of your opponent while defending your own flag. To capture the flag you use your army of 40 pieces. Pieces have a rank and represent individual officers and soldiers in an army. In addition to those ranked pieces you can use bombs to protect your flag.
-
+            <br>
+            <p>&emsp;Stratego is a game in which you need to capture the flag of your opponent while defending your own flag. To capture the flag you use your army of 40 pieces. Pieces have a rank and represent individual officers and soldiers in an army. In addition to those ranked pieces you can use bombs to protect your flag.
+                <br>&emsp;
                 Pieces move 1 square per turn, horizontally or vertically. Only the scout can move over multiple empty squares per turn. Pieces cannot jump over another piece.
-
+                <br>&emsp;
                 If a piece is moved onto a square occupied by an opposing piece, their identities are revealed. The weaker piece is removed from the board, and the stronger piece is moved into the place formerly occupied by the weaker piece. If the engaging pieces are of equal rank, they are both removed. Pieces may not move onto a square already occupied by another piece without attacking. Exception to the rule of the higher rank winning is the spy. When the spy attacks the marshal, the spy defeats the higher ranked marshal. However, when the marshal attacks the spy, the spy loses. Bombs lose when they are defused by a miner.
-
+                <br>&emsp;
                 The bombs and the flag cannot be moved. A bomb defeats every piece that tries to attack it, except the miner. The flag loses from every other piece. When you capture the flag of your opponent you win the game.
-
+                <br>&emsp;
                 The Stratego board consists of 10 x 10 squares. Within the board there are two obstacles of 2 x 2 squares each. Pieces are not allowed to move there.</p>
         </div>
 
@@ -84,7 +87,7 @@
         var btn = document.getElementById("myBtn");
 
         // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
+        var span = document.getElementsByClassName("x")[0];
 
         // When the user clicks on the button, open the modal
         btn.onclick = function() {
