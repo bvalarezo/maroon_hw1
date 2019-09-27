@@ -56,57 +56,68 @@ function generatePieces(array){
 		let temp = new Image();
 		if (i == 0) {
 			//1 flag
-			$("#flag").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-flag.svg"> </object>');		
+			$("#flag").append('<object th:type="image/svg+xml" th:data="@{assets/stratego-flag.svg}"> <p> Your browser does not support svg</p></object>');
+			temp.src = "/assets/stratego-flag.svg"
 		} else if (i > 0 && i < 7) {
 			//6 bombs
 			let bombtag = "#bomb";
-			bombtag.concat(bombCount);
-			$(bombtag + bombCount).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-bomb.svg"> </object>');
+			$(bombtag + bombCount).append('<object th:type="image/svg+xml" th:data="@{/assets/stratego-bomb.svg}"> </object>');
 			bombCount++;
+			temp.src = "/assets/stratego-bomb.svg";
 		} else if (i == 7) {
 			//1 spy
-			$("#spy").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-spy.svg"> </object>');
+			$("#spy").append('<object type="image/svg+xml" th:data="@{/assets/stratego-spy.svg}"> </object>');
+			temp.src = "/assets/stratego-spy.svg";
 		} else if (i >= 8 && i < 16) {
 			//8 scouts
 			let scouttag = "#scout";
-			$(scouttag + scoutCount).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-scout.svg"> </object>');
+			$(scouttag + scoutCount).append('<object type="image/svg+xml" th:data="@{/assets/stratego-scout.svg}"> </object>');
 			scoutCount++;
+			temp.src = "/assets/stratego-scout.svg";
 		} else if (i >= 16 && i < 21) {
 			//5 miners
 			let minertag = "#miner";
-			$(minertag + minerCount).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-miner.svg"> </object>');
+			$(minertag + minerCount).append('<object type="image/svg+xml" th:data="@{/assets/stratego-miner.svg}"> </object>');
 			minerCount++;
+			temp.src = "/assets/stratego-miner.svg";
 		} else if (i >= 21 && i < 25) {
 			//4 sergants
 			let sergeanttag = "#sergeant";
-			$(sergeanttag + sergeantCount).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-sergeant.svg"> </object>');
+			$(sergeanttag + sergeantCount).append('<object type="image/svg+xml" th:data="@{/assets/stratego-sergeant.svg}"> </object>');
 			sergeantCount++;
+			temp.src = "/assets/stratego-sergeant.svg";
 		} else if (i >= 25 && i < 29) {
 			//4 lieutenants
 			let lieutenanttag = "#lieutenant";
-			$(lieutenanttag + lieutenantCount).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-lieutenant.svg"> </object>');
+			$(lieutenanttag + lieutenantCount).append('<object type="image/svg+xml" th:data="@{/assets/stratego-lieutenant.svg}"> </object>');
 			lieutenantCount++;
+			temp.src = "/assets/stratego-lieutenant.svg";
 		} else if (i >= 29 && i < 33) {
 			//4 captains
 			let captaintag = "#captain";
-			$(captaintag + captainCount).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-captain.svg"> </object>');
+			$(captaintag + captainCount).append('<object type="image/svg+xml" th:data="@{/assets/stratego-captain.svg}"> </object>');
 			captainCount++;
+			temp.src = "/assets/stratego-captain.svg";
 		} else if (i >= 33 && i < 36) {
 			//3 majors
 			let majortag = "#major";
-			$(majortag + majorCount).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-major.svg"> </object>');
+			$(majortag + majorCount).append('<object type="image/svg+xml" th:data="../../resources/static/assets/stratego-major.svg"> </object>');
 			majorCount++; 
+			temp.src = "/assets/stratego-major.svg";
 		} else if (i >= 36 && i < 38) {
 			//2 colonels
 			let coloneltag = "#colonel";
-			$(coloneltag + colonelCount).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-colonel.svg"> </object>');
+			$(coloneltag + colonelCount).append('<object type="image/svg+xml" th:data="@{/assets/stratego-colonel.svg}"> </object>');
 			colonelCount++;
+			temp.src = "/assets/stratego-colonel.svg";
 		} else if (i == 38) {
 			//1 general
-			$("#general").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-general.svg"> </object>');
+			$("#general").append('<object type="image/svg+xml" th:data="@{/assets/stratego-general.svg}"> </object>');
+			temp.src = "/assets/stratego-general.svg";
 		} else if (i == 39) {
 			//1 marshall
-			$("#marshall").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-marshall.svg"> </object>');
+			$("#marshal").append('<object type="image/svg+xml" th:data="@{/assets/stratego-marshal.svg}"> </object>');
+			temp.src = "/assets/stratego-marshal.svg";
 		}
 		//as of right now temp is a blank image object
 		temp.isDragging = false;
