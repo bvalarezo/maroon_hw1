@@ -11,14 +11,14 @@
     <link href='https://fonts.googleapis.com/css?family=Charm' rel='stylesheet'>
 
 
-
+    
     <link rel="stylesheet" th:href="@{/css/menu.css}">
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
 
 
     <script>
         var bleep = new Audio();
-        bleep.src = "../static/audio/button.wav";
+        bleep.src = "@{/audio/button.wav}";
     </script>
 
 </head>
@@ -36,9 +36,6 @@
                 <div class="col" id="leaderboard">
                     <img th:src="@{/assets/leaderboard.svg}">
                     <!-- <img src="../static/assets/leaderboard.svg"> -->
-                    <div class="text">
-                        <p>game state example</p>
-                    </div>
                 </div>
 
                 <div class="col" id="buttons">
