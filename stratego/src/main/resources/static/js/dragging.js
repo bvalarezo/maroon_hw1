@@ -4,6 +4,7 @@ canvas.width = canvas.scrollWidth;
 canvas.height = canvas.scrollHeight;
 
 var pieces = [];
+var enemyPieces = [];
 var ctx = canvas.getContext('2d');
 var redButton = new Image();
 var blueButton = new Image();
@@ -27,6 +28,9 @@ var dragoffx = 0;
 var dragoffy = 0;
 var valid = false; //Checking if the current setup is valid (if we need to redraw on the canvas)
 var functionInterval = 30;
+var interval = 90;
+var initialX = 540;
+var initialY = 200;
 /*
  * 1 flag
  * 6 bomb
@@ -41,8 +45,8 @@ var functionInterval = 30;
  * 1 general
  * 1 marshall
  */
-
-function generatePieces(array){
+//ALL PIECES ARE 100X100
+function generatePlayerPieces(array){
 	let bombCount = 1;
 	let scoutCount = 1;
 	let minerCount = 1;
@@ -122,13 +126,12 @@ function generatePieces(array){
 		//as of right now temp is a blank image object
 		temp.isDragging = false;
 		array.push(temp);
-		$("#canvas").mousemove(function(e){handleMouseMove(e,ctx,temp);});
 	}
 	console.log(array);
 	return array;
 }
 
-function drawPiecesInitial(ctx, images){
+function drawPlayerPiecesInitial(ctx, images){
 	for (var i = 0; i < images.length; i++){
 		if (!images[i].complete){
 			setTimeout(function(){
@@ -141,6 +144,7 @@ function drawPiecesInitial(ctx, images){
 		ctx.drawImage(images[i], (i%5)*70, (Math.floor(i/5)*70)+150, 100, 100);
 	}
 }
+
 
 function drawBoard(ctx, board) {
 	if (!board.complete){
@@ -304,13 +308,20 @@ function drawPieces(){
 	return;
 }
 
+function generateEnemyPieces(enemyPieces) {
+	// First let's generate the array of enemy pieces
+	for (var i = 0; i < 40; i++) {
+		let temp = new Image();
+		temp.src = "/assets/blue_block.svg";
+		enemyPieces.push(temp);
+	}
+	return enemyPieces;
+}
+
 function snapOntoBoard(mousePosition, piece) {
 	// Width of each tile is about 90
 	// x coordinate of first is about 580
 	// 10x10 board
-	let initialX = 540;
-	let interval = 90;
-	let initialY = 200;
 	let currentX = initialX;
 	let currentY = initialY;
 	for (var y = 0; y < 10; y++){
@@ -328,23 +339,17 @@ function snapOntoBoard(mousePosition, piece) {
 	}
 }
 
-function handleMouseClick(e) {
-	var mouse = getMouse(e);
-	console.log(mouse.x, mouse.y);
-	ctx.rect(mouse.x, mouse.y, 100, 100);
-}
-
 $("#canvas").mousedown(function(e){handleMouseDown(e);});
 $("#canvas").mouseup(function(e){handleMouseUp(e);});
 $("#canvas").mousemove(function(e){handleMouseMove(e);});
-$("#canvas").click(function(e){handleMouseClick(e);});
 
 board.src = "/assets/map.svg";
 redButton.src = "/assets/redbutton.svg";
 blueButton.src = "/assets/bluebutton.svg";
 logo.src = "/assets/logo.svg";
-pieces = generatePieces(pieces);
-drawPiecesInitial(ctx, pieces);
-var objects = [...pieces];
+pieces = generatePlayerPieces(pieces);
+enemyPieces = generateEnemyPieces(enemyPieces);
+drawPlayerPiecesInitial(ctx, pieces);
+var objects = [...pieces].concat(enemyPieces);
 objects.push(redButton, blueButton, logo, board);
 setInterval(function() { drawPieces(); }, functionInterval);
