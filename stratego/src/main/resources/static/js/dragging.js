@@ -308,8 +308,8 @@ function snapOntoBoard(mousePosition, piece) {
 	// x coordinate of first is about 580
 	// 10x10 board
 	let initialX = 535;
-	let interval = 180;
-	let initialY = 60;
+	let interval = 90;
+	let initialY = 25;
 	let currentX = initialX;
 	let currentY = initialY;
 	for (var y = 0; y < 10; y++){
