@@ -25,21 +25,23 @@ html {
     border: 8px solid #800000;
     border-style: double;
     background-color: #000000;
-    max-width: 80%;
+    max-width: 50% !important;
     min-width: 480px;
     margin: auto;
-    max-height: 80%;
+    max-height: 80% !important;
     transform: translate(0, 15%);
     border-radius: 10px;
     box-sizing: border-box;
+    padding-top: 5%;
+    padding-bottom: 1%;
 }
 
-#buttons {
-    margin-top: 10%;
-}
-
-input[type=submit] {
-    padding-right: 10px;
+input[type=submit],
+input[type=button] {
+    min-width: 100px;
+    width: 80%;
+    height: auto;
+    padding: 10px;
     margin: 10%;
     color: white;
     background-color: #800000;
@@ -47,7 +49,8 @@ input[type=submit] {
     border-radius: 10px;
 }
 
-input[type=submit]: hover {
+input[type=submit],
+input[type=button]: hover {
     color: #800000;
     background-color: gold;
     border: 3px solid #800000;
@@ -55,12 +58,104 @@ input[type=submit]: hover {
 }
 
 .logo {
-    width: 40%;
+    max-width: 40%;
+    min-width: 550px;
     margin: 0 auto;
-    margin-bottom: -20%;
+    padding-top: 2%;
+    margin-bottom: -18%;
     padding-left: 1%;
+    z-index: 999;
 }
 
 #leaderboard {
-    margin: 3%;
+    background-image: url("../assets/leaderboard.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+/*    background-size: cover;*/
+/*    margin: 3%;*/
+    position: relative;
+    display: inline-block;
+}
+
+#leaderboard .text {
+    color: black;
+    position: absolute;
+    z-index: 5;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    width: 65%;
+    padding: 10px;
+/*    top: 40%;*/
+}
+
+/* The Modal (background) */
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    font-family: 'Charm' !important;
+    color: black;
+    position: relative;
+    background-color: burlywood !important;
+    margin: auto;
+    margin-top: 10%;
+    padding: 10px;
+    border: 1px solid #888;
+    max-width: 60%;
+    min-width: 600px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+h1 {
+    margin: 0 auto;
+}
+
+/* The Close Button */
+.x {
+    color: black;
+    font-size: 38px;
+    font-weight: bold;
+    padding-left: 95%;
+}
+
+.x:hover,
+.x:focus {
+    color: red;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Add Animation */
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
 }
