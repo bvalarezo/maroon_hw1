@@ -323,10 +323,10 @@ $("#canvas").mousedown(function(e){handleMouseDown(e);});
 $("#canvas").mouseup(function(e){handleMouseUp(e);});
 $("#canvas").mousemove(function(e){handleMouseMove(e);});
 
-board.src = "../../resources/static/assets/map.svg";
-redButton.src = "../../resources/static/assets/redbutton.svg";
-blueButton.src = "../../resources/static/assets/bluebutton.svg";
-logo.src = "../../resources/static/assets/logo.svg";
+board.src = "/assets/map.svg";
+redButton.src = "/assets/redbutton.svg";
+blueButton.src = "/assets/bluebutton.svg";
+logo.src = "/assets/logo.svg";
 pieces = generatePieces(pieces);
 drawPiecesInitial(ctx, pieces);
 var objects = [...pieces];
