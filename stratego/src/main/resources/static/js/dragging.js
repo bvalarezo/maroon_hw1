@@ -225,6 +225,7 @@ function handleMouseUp(e){
 			snapOntoBoard(mouse, mySel);
 			//You let go of the mouse, therefore you are no longer dragging
 			isDragging = false;
+			valid = false;
 			return;
 		}
 	}	
@@ -307,22 +308,19 @@ function snapOntoBoard(mousePosition, piece) {
 	// Width of each tile is about 90
 	// x coordinate of first is about 580
 	// 10x10 board
-	let initialX = 535;
+	let initialX = 540;
 	let interval = 90;
-	let initialY = 25;
+	let initialY = 200;
 	let currentX = initialX;
 	let currentY = initialY;
 	for (var y = 0; y < 10; y++){
 		for (var x = 0; x < 10; x++) {
-			if (mousePosition.x <= currentX + interval/2 && mousePosition.x >= currentX - interval/2 && mousePosition.y <= currentY + interval/2 && mousePosition.y <= currentY - interval/2) {
-				console.log("snapOntoBoard works");
-				console.log("mousePosition: ", mousePosition.x, mousePosition.y);
-				console.log("piece: ", piece);
-				console.log("currentX and Y: ", currentX, currentY);
+			if (mousePosition.x <= currentX + interval && mousePosition.x >= currentX - interval && mousePosition.y <= currentY + interval && mousePosition.y <= currentY - interval){
 				piece.currentX = currentX;
-				piece.currentY = currentY;
+				piece.currentY = currentY - (2*interval);
 				return;
 			}
+			console.log("currentX = ", currentX, "currentY = ", currentY);
 			currentX += interval;
 		}
 		currentY += interval;
@@ -330,9 +328,16 @@ function snapOntoBoard(mousePosition, piece) {
 	}
 }
 
+function handleMouseClick(e) {
+	var mouse = getMouse(e);
+	console.log(mouse.x, mouse.y);
+	ctx.rect(mouse.x, mouse.y, 100, 100);
+}
+
 $("#canvas").mousedown(function(e){handleMouseDown(e);});
 $("#canvas").mouseup(function(e){handleMouseUp(e);});
 $("#canvas").mousemove(function(e){handleMouseMove(e);});
+$("#canvas").click(function(e){handleMouseClick(e);});
 
 board.src = "/assets/map.svg";
 redButton.src = "/assets/redbutton.svg";
