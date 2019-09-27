@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class UserController {
@@ -45,7 +44,7 @@ public class UserController {
             userService.saveUser(userForm);
             securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
             //we still have to hash passwordconfirm
-            //just replace the passwordconfirm with passwird
+            //just replace the passwordconfirm with password
             userForm.setPasswordConfirm(userForm.getPassword());
         }
         return "redirect:/menu";

@@ -18,7 +18,6 @@ public class User {
     private String passwordConfirm;
     @DBRef
     private Set<Role> roles;
-    private ArrayList<Game> games;
 
     public String getId() {
         return id;

@@ -46,7 +46,9 @@ public class PageConfig implements WebMvcConfigurer {
 
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setCharacterEncoding("UTF-8");
-
+        //set cache to false for live preview
+        viewResolver.setCache(false);
+        //DELETE LATER
         return viewResolver;
     }
 
