@@ -5,12 +5,13 @@
     <title>Maroon_HW1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!--
-    <link rel="stylesheet" href="../static/css/menu.css">
-    <link rel="stylesheet" href="../static/css/bootstrap.css">
--->
+    <!-- <link rel="stylesheet" href="../static/css/menu.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.css"> -->
 
     <link href='https://fonts.googleapis.com/css?family=Charm' rel='stylesheet'>
+
+
+    
 
     <link rel="stylesheet" th:href="@{/css/menu.css}">
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
@@ -18,7 +19,7 @@
 
     <script>
         var bleep = new Audio();
-        bleep.src = "../static/audio/button.wav";
+        bleep.src = "@{/audio/button.wav}";
     </script>
 
 </head>
@@ -26,6 +27,7 @@
 <body>
 
     <div class="bg">
+
         <div class="container">
             <div class="logo">
                 <img th:src="@{/assets/logo.svg}" alt="Avatar" class="avatar">
@@ -33,9 +35,8 @@
             </div>
             <div class="row">
                 <div class="col" id="leaderboard">
-                    <div class="text">
-                        <p>game state example</p>
-                    </div>
+                    <img th:src="@{/assets/leaderboard.svg}">
+                    <!-- <img src="../static/assets/leaderboard.svg"> -->
                 </div>
 
                 <div class="col" id="buttons">

@@ -1,5 +1,6 @@
 package maroon.auth.base;
 
+import java.util.ArrayList;
 import java.util.Set;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.IndexDirection;
@@ -17,6 +18,7 @@ public class User {
     private String passwordConfirm;
     @DBRef
     private Set<Role> roles;
+    private ArrayList<Game> games;
 
     public String getId() {
         return id;
@@ -55,5 +57,23 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public ArrayList<Game> getGames(){
+        return games;
+    }
+
+    public void setGames(ArrayList<Game> games){
+        this.games = games;
+    }
+
+    public ArrayList<Game> getCompleteGames(){
+        ArrayList<Game> completeGames = new ArrayList<Game>();
+        for (Game g : this.games) {
+            if(g.getComplete()){
+                completeGames.add(g);
+            }
+        }
+        return completeGames;
     }
 }
