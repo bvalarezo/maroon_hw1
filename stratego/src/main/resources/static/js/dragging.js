@@ -25,7 +25,7 @@ var htmlLeft = html.offsetLeft;
 var selection = null;
 var dragoffx = 0;
 var dragoffy = 0;
-var valid = false;
+var valid = false; //Checking if the current setup is valid (if we need to redraw on the canvas)
 var functionInterval = 30;
 /*
  * 1 flag
@@ -56,69 +56,64 @@ function generatePieces(array){
 		let temp = new Image();
 		if (i == 0) {
 			//1 flag
-			$("#flag1").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-flag.svg"> </object>');		
+			$("#flag").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-flag.svg"> </object>');		
 		} else if (i > 0 && i < 7) {
 			//6 bombs
 			let bombtag = "#bomb";
 			bombtag.concat(bombCount);
-			$(bombtag).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-bomb.svg"> </object>');
+			$(bombtag + bombCount).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-bomb.svg"> </object>');
 			bombCount++;
 		} else if (i == 7) {
 			//1 spy
-			$("#spy1").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-spy.svg"> </object>');
+			$("#spy").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-spy.svg"> </object>');
 		} else if (i >= 8 && i < 16) {
 			//8 scouts
 			let scouttag = "#scout";
-			scouttag.concat(scoutCount);
-			$(scouttag).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-scout.svg"> </object>');
+			$(scouttag + scoutCount).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-scout.svg"> </object>');
 			scoutCount++;
 		} else if (i >= 16 && i < 21) {
 			//5 miners
 			let minertag = "#miner";
-			minertag.concat(minerCount);
-			$(minertag).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-miner.svg"> </object>');
+			$(minertag + minerCount).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-miner.svg"> </object>');
 			minerCount++;
 		} else if (i >= 21 && i < 25) {
 			//4 sergants
 			let sergeanttag = "#sergeant";
-			sergeanttag.concat(sergeantCount);
-			$(sergeanttag).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-sergeant.svg"> </object>');
+			$(sergeanttag + sergeantCount).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-sergeant.svg"> </object>');
 			sergeantCount++;
 		} else if (i >= 25 && i < 29) {
 			//4 lieutenants
-			let lieutenanttag = "#miner";
-			lieutenanttag.concat(lieutenantCount);
-			$(lieutenanttag).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-lieutenant.svg"> </object>');
+			let lieutenanttag = "#lieutenant";
+			$(lieutenanttag + lieutenantCount).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-lieutenant.svg"> </object>');
 			lieutenantCount++;
 		} else if (i >= 29 && i < 33) {
 			//4 captains
 			let captaintag = "#captain";
-			captaintag.concat(minerCount);
-			$(captaintag).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-captain.svg"> </object>');
+			$(captaintag + captainCount).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-captain.svg"> </object>');
 			captainCount++;
 		} else if (i >= 33 && i < 36) {
 			//3 majors
 			let majortag = "#major";
-			majortag.concat(majorCount);
-			$(majortag).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-major.svg"> </object>');
+			$(majortag + majorCount).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-major.svg"> </object>');
 			majorCount++; 
 		} else if (i >= 36 && i < 38) {
 			//2 colonels
 			let coloneltag = "#colonel";
-			coloneltag.concat(colonelCount);
-			$(coloneltag).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-colonel.svg"> </object>');
+			$(coloneltag + colonelCount).append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-colonel.svg"> </object>');
 			colonelCount++;
 		} else if (i == 38) {
 			//1 general
-			$("#general1").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-general.svg"> </object>');
+			$("#general").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-general.svg"> </object>');
 		} else if (i == 39) {
 			//1 marshall
-			$("#marshall1").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-marshall.svg"> </object>');
+			$("#marshall").append('<object type="image/svg+xml" data="../../resources/static/assets/stratego-marshall.svg"> </object>');
 		}
+		//as of right now temp is a blank image object
 		temp.isDragging = false;
 		array.push(temp);
 		$("#canvas").mousemove(function(e){handleMouseMove(e,ctx,temp);});
 	}
+	console.log(array);
 	return array;
 }
 
@@ -151,7 +146,6 @@ function drawBoard(ctx, board) {
 function drawRedButton(ctx, redButton) {
 	if (!redButton.complete){
 		setTimeout(function(){
-				draw(ctx, redButton);
 				}, 50);
 	}
 	redButton.currentX = -30;
@@ -164,7 +158,6 @@ function drawRedButton(ctx, redButton) {
 function drawBlueButton(ctx, blueButton) {
 	if (!blueButton.complete){
 		setTimeout(function(){
-				draw(ctx, blueButton);
 				}, 50);
 	}
 	blueButton.currentX = 1750;
@@ -177,7 +170,6 @@ function drawBlueButton(ctx, blueButton) {
 function drawLogo(ctx, logo) {
 	if (!logo.complete){
 		setTimeout(function(){
-				draw(ctx, logo);
 				}, 500);
 	}
 	logo.currentX = 25;
@@ -194,19 +186,16 @@ function handleMouseDown(e) {
 	var l = pieces.length;
 	for (var i = l-1; i >= 0; i--) {
 		if (pieces[i].currentX <= mx && pieces[i].currentX + pieces[i].currentWidth/2 >= mx && pieces[i].currentY <= my && pieces[i].currentY + pieces[i].currentHeight/2 >= my) {
-			var mySel = pieces[i];
-			// Keep track of where in the object we clicked
-			// so we can move it smoothly (see mousemove)
-			dragoffx = mx - mySel.currentX;
-			dragoffy = my - mySel.currentY;
+			dragoffx = mx - pieces[i].currentX;
+			dragoffy = my - pieces[i].currentY;
 			isDragging = true;
-			selection = mySel;
+			selection = pieces[i];
 			valid = false;
 			return;
 		}
 	}
-	// havent returned means we have failed to select anything.
-	// If there was an object selected, we deselect it
+	//This checks if we went iterated through all the pieces and it has not returned
+	//Meaning if no piece has been selected, make selection = null and redraw canvas
 	if (selection) {
 		selection = null;
 		valid = false; // Need to clear the old selection border
@@ -221,10 +210,9 @@ function handleMouseUp(e){
 	for (var i = l-1; i >= 0; i--) {
 		if (pieces[i].currentX <= mx && pieces[i].currentX + pieces[i].currentWidth/2 >= mx && pieces[i].currentY <= my && pieces[i].currentY + pieces[i].currentHeight/2 >= my) {
 			var mySel = pieces[i];
-			// Keep track of where in the object we clicked
-			// so we can move it smoothly (see mousemove)
-			console.log(pieces[i], mx, my)
-				snapOntoBoard(mouse, mySel);
+			//After getting the piece currently selected, snap it onto the board
+			snapOntoBoard(mouse, mySel);
+			//You let go of the mouse, therefore you are no longer dragging
 			isDragging = false;
 			return;
 		}
@@ -235,11 +223,9 @@ function handleMouseUp(e){
 function handleMouseMove(e) {
 	if (isDragging){
 		var mouse = getMouse(e);
-		// We don't want to drag the object by its top-left corner, we want to drag it
-		// from where we clicked. Thats why we saved the offset and use it here
 		selection.currentX = mouse.x - dragoffx;
 		selection.currentY = mouse.y - dragoffy;   
-		valid = false; // Something's dragging so we must redraw
+		valid = false; // A piece is dragging so we must redraw
 	}
 }
 
@@ -337,10 +323,10 @@ $("#canvas").mousedown(function(e){handleMouseDown(e);});
 $("#canvas").mouseup(function(e){handleMouseUp(e);});
 $("#canvas").mousemove(function(e){handleMouseMove(e);});
 
-board.src = "../../resources/static/assets/map.svg";
-redButton.src = "../../resources/static/assets/redbutton.svg";
-blueButton.src = "../../resources/static/assets/bluebutton.svg";
-logo.src = "../../resources/static/assets/logo.svg";
+board.src = "/assets/map.svg";
+redButton.src = "/assets/redbutton.svg";
+blueButton.src = "/assets/bluebutton.svg";
+logo.src = "/assets/logo.svg";
 pieces = generatePieces(pieces);
 drawPiecesInitial(ctx, pieces);
 var objects = [...pieces];

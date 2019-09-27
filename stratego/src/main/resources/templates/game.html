@@ -1,11 +1,10 @@
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Maroon_HW1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
 <link href='https://fonts.googleapis.com/css?family=Charm' rel='stylesheet'>
-<script src="../static/js/jquery-3.4.1.min.js"></script>
+<script th:src="@{js/jquery-3.4.1.min.js}"></script>
 
 </head>
 
@@ -53,10 +52,10 @@
 <div class="major" id="major3"> </div>
 <div class="colonel" id="colonel1"> </div>
 <div class="colonel" id="colonel2"> </div>
-<div class="general" id="general1"> </div>
+<div class="general" id="general"> </div>
 <div class="marshall" id="marshall"> </div>
 </canvas>
-<script src="../static/js/dragging.js"></script>
+<script th:src="@{/js/dragging.js}"></script>
 </body>
 
 </html>
