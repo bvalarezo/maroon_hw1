@@ -32,7 +32,7 @@ html {
     transform: translate(0, 15%);
     border-radius: 10px;
     box-sizing: border-box;
-    padding-top: 5%;
+/*    padding-top: 5%;*/
     padding-bottom: 1%;
 }
 
@@ -58,11 +58,12 @@ input[type=button]: hover {
 }
 
 .logo {
-    max-width: 40%;
+    max-width: 100%;
     min-width: 550px;
     margin: 0 auto;
-    padding-top: 2%;
-    margin-bottom: -18%;
+/*    padding-top: 2%;*/
+    margin-top: -15%;
+    margin-bottom: -15%;
     padding-left: 1%;
     z-index: 999;
 }
