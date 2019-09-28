@@ -41,12 +41,9 @@ public class UserController {
             return "register";
         }
         else{
+            String password = userForm.getPasswordConfirm();
             userService.saveUser(userForm);
-            securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-            //we still have to hash passwordconfirm
-            //just replace the passwordconfirm with password
-            User newUser = userService.findByUsername(userForm.getUsername());
-            newUser.setPasswordConfirm(userForm.getPassword());
+            securityService.autoLogin(userForm.getUsername(), password);
         }
         return "redirect:/menu";
     }
