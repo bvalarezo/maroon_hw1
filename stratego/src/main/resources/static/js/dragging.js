@@ -337,8 +337,8 @@ function drawEnemyPieces(ctx, enemyPieces) {
 
 			piece.currentX = currentX;
 			piece.currentY = currentY - (2*interval);
-			piece.currentWidth = 100;
-			piece.currentHeight = 100;
+			piece.currentWidth = 85;
+			piece.currentHeight = 85;
 			currentX += interval;
 			ctx.drawImage(piece, piece.currentX, piece.currentY, piece.currentHeight, piece.currentWidth);
 		}
