@@ -36,15 +36,15 @@
                 <br><br>
                 <h2>Login your account.</h2>
                 <div th:if="${param.error}">
-                    <br><br>
+                    <br>
                     <div>Invalid username or
                         password.</div>
                 </div>
                 <div th:if="${param.logout}">
-                    <br><br>
+                    <br>
                     <div>You have been logged out.</div>
                 </div>
-                <br><br>
+                <br>
                 <label for="username">Username</label>: <input type="username" id="username" name="username" autofocus="autofocus" placeholder="Username" />
                 <br><br>
                 <label for="password">Password</label>: <input type="password" id="password" name="password" placeholder="Password" />
