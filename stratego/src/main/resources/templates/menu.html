@@ -34,12 +34,13 @@
 <!--                <img src="../static/assets/logo.svg" alt="Avatar" class="avatar">-->
             </div>
             <div class="row">
-                <div class="col" id="leaderboard">
-                    <img th:src="@{/assets/leaderboard.svg}">
-                    <!-- <img src="../static/assets/leaderboard.svg"> -->
+                <div class="col-8" id="leaderboard">
+                    <div id="test">
+                        <p></p>
+                    </div>
                 </div>
 
-                <div class="col" id="buttons">
+                <div class="col-4" id="buttons">
                     <form th:action="@{/game}" method="get">
                         <input type="submit" value="Play Game" style="font-family: 'Charm' !important;" />
                     </form>

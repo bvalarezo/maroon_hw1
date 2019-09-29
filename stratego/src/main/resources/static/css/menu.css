@@ -17,6 +17,7 @@ html {
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
+    padding-top: 5%;
 }
 
 .container {
@@ -26,13 +27,11 @@ html {
     border-style: double;
     background-color: #000000;
     max-width: 50% !important;
-    min-width: 480px;
+    min-width: 50%;
     margin: auto;
     max-height: 80% !important;
-    transform: translate(0, 15%);
     border-radius: 10px;
     box-sizing: border-box;
-/*    padding-top: 5%;*/
     padding-bottom: 1%;
 }
 
@@ -65,15 +64,13 @@ input[type=button]: hover {
     margin-top: -15%;
     margin-bottom: -15%;
     padding-left: 1%;
-    z-index: 999;
+
 }
 
 #leaderboard {
     background-image: url("../assets/leaderboard.svg");
     background-position: center;
     background-repeat: no-repeat;
-/*    background-size: cover;*/
-/*    margin: 3%;*/
     position: relative;
     display: inline-block;
 }
