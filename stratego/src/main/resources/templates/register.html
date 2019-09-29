@@ -15,7 +15,7 @@
     <link href='https://fonts.googleapis.com/css?family=Charm' rel='stylesheet'>
     <script>
         var bleep = new Audio();
-        bleep.src = "../static/audio/button.wav";
+        bleep.src = "@{/audio/button.wav}";
     </script>
 </head>
 
@@ -23,7 +23,7 @@
     <div class="bg">
         <div class="logo">
             <img th:src="@{/assets/logo.svg}" alt="Avatar" class="avatar">
-<!--            <img src="../static/assets/logo.svg" alt="Avatar" class="avatar">-->
+            <!--            <img src="../static/assets/logo.svg" alt="Avatar" class="avatar">-->
         </div>
 
         <div class="container">
@@ -32,6 +32,12 @@
 
                 <br><br>
                 <h2>Register your account.</h2>
+                <br>
+                <p th:text="${blankError}"></p>
+                <p th:text="${usernameDupError}"></p>
+                <p th:text="${usernameLengthError}"></p>
+                <p th:text="${passwordLengthError}"></p>
+                <p th:text="${passwordMatchError}"></p>
 
                 <label for="username">Username</label>
                 <input id="username" name="username" type="username" placeholder="Username" />
