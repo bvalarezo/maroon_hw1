@@ -4,6 +4,7 @@ canvas.width = canvas.scrollWidth;
 canvas.height = canvas.scrollHeight;
 
 var pieces = [];
+var playerPieces = [];
 var enemyPieces = [];
 var ctx = canvas.getContext('2d');
 var redButton = new Image();
@@ -221,7 +222,7 @@ function handleMouseUp(e){
 	var mouse = getMouse(e);
 	var mx = mouse.x;
 	var my = mouse.y;
-	var l = pieces.length; 
+	var l = playerPieces.length; 
 	for (var i = l-1; i >= 0; i--) {
 		if (pieces[i].currentX <= mx && pieces[i].currentX + pieces[i].currentWidth/2 >= mx && pieces[i].currentY <= my && pieces[i].currentY + pieces[i].currentHeight/2 >= my) {
 			var mySel = pieces[i];
@@ -308,14 +309,42 @@ function drawPieces(){
 	return;
 }
 
-function generateEnemyPieces(enemyPieces) {
+function generateEnemyPieces(enemyarray) {
 	// First let's generate the array of enemy pieces
 	for (var i = 0; i < 40; i++) {
 		let temp = new Image();
 		temp.src = "/assets/blue_block.svg";
-		enemyPieces.push(temp);
+		console.log("temp = ", temp);
+		enemyarray.push(temp);
+		//Add the enemy pieces onto the enemyPieces array
+		console.log(enemyarray);
 	}
-	return enemyPieces;
+	console.log("enemyPieces = ", enemyarray);
+	return enemyarray;
+}
+
+function drawEnemyPieces(ctx, enemyPieces) {
+	//Let's draw each enemy piece.
+	let currentX = initialX;
+	let currentY = initialY;
+	for (var y = 0; y < 4; y++){
+		for (var x = 0; x < 10; x++) {
+			let piece = enemyPieces[(10*y)+x];
+			if (!piece.complete){
+				setTimeout(function(){
+						}, 50);
+			}
+
+			piece.currentX = currentX;
+			piece.currentY = currentY - (2*interval);
+			piece.currentWidth = 100;
+			piece.currentHeight = 100;
+			currentX += interval;
+			ctx.drawImage(piece, piece.currentX, piece.currentY, piece.currentHeight, piece.currentWidth);
+		}
+		currentY += interval;
+		currentX = initialX;
+	}
 }
 
 function snapOntoBoard(mousePosition, piece) {
@@ -331,7 +360,6 @@ function snapOntoBoard(mousePosition, piece) {
 				piece.currentY = currentY - (2*interval);
 				return;
 			}
-			console.log("currentX = ", currentX, "currentY = ", currentY);
 			currentX += interval;
 		}
 		currentY += interval;
@@ -342,14 +370,16 @@ function snapOntoBoard(mousePosition, piece) {
 $("#canvas").mousedown(function(e){handleMouseDown(e);});
 $("#canvas").mouseup(function(e){handleMouseUp(e);});
 $("#canvas").mousemove(function(e){handleMouseMove(e);});
-
-board.src = "/assets/map.svg";
-redButton.src = "/assets/redbutton.svg";
-blueButton.src = "/assets/bluebutton.svg";
-logo.src = "/assets/logo.svg";
-pieces = generatePlayerPieces(pieces);
-enemyPieces = generateEnemyPieces(enemyPieces);
-drawPlayerPiecesInitial(ctx, pieces);
-var objects = [...pieces].concat(enemyPieces);
-objects.push(redButton, blueButton, logo, board);
-setInterval(function() { drawPieces(); }, functionInterval);
+$(window).on("load", function() {
+		board.src = "/assets/map.svg";
+		redButton.src = "/assets/redbutton.svg";
+		blueButton.src = "/assets/bluebutton.svg";
+		logo.src = "/assets/logo.svg";
+		playerPieces = generatePlayerPieces(playerPieces);
+		enemyPieces = generateEnemyPieces(enemyPieces);
+		console.log("enemyPieces after function = ", enemyPieces);
+		drawEnemyPieces(ctx, enemyPieces);
+		drawPlayerPiecesInitial(ctx, playerPieces);
+		pieces= [...playerPieces].concat(enemyPieces);
+		setInterval(function() { drawPieces(); }, functionInterval);
+		});
