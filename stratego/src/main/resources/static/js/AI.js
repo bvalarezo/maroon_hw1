@@ -82,13 +82,15 @@ function generateArrays() {
 				piece.captureArray.push(temp);
 			}
 		}
-		if (piece.priority == 1) {
-			// If priority is 1 only add to pieces array once
-			pieces.push(piece);
-		} else {
-			// If priority is 2 add to pieces array twice
-			pieces.push(piece);
-			pieces.push(piece);
+		if (piece.value != "F" && piece.value != "B") {
+			if (piece.priority == 1) {
+				// If priority is 1 only add to pieces array once
+				pieces.push(piece);
+			} else {
+				// If priority is 2 add to pieces array twice
+				pieces.push(piece);
+				pieces.push(piece);
+			}
 		}
 	}
 }
