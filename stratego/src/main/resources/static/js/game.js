@@ -390,13 +390,14 @@ function playerTurn(game) {
                             nextTurn(game);
                         }
                     }
-                    for (var i = 0; i < boardValues.length; i++) {
-                        index = correlateValues(j, game);
-                        placePiece(2, index, game, j % 10, Math.floor(j / 10));
-                    }
-                }
+                                    }
             });
         });
+
+	for (var i = 0; i < boardValues.length; i++) {
+            index = correlateValues(j, game);
+            placePiece(2, index, game, j % 10, Math.floor(j / 10));
+        }
 
     } else {
         // Select Piece
