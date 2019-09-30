@@ -25,11 +25,11 @@ body {
 }
 
 #bluebutton {
-    top: 10%;
+    bottom: 8% !important;
 }
 
 #redbutton {
-    bottom: 8% !important;
+    top: 8%;
 }
 
 .Board {
@@ -72,8 +72,25 @@ body {
     border: 0.1em;
     border-style: solid;
     border-color: black;
+    width: 10%;
+}
+
+.gameBoard tr td img {
+    display: block;
+    width: auto;
+    margin: auto;
+    height: 5%;
 }
 
 .noMove {
     background-color: rgba(255, 0, 0, 0.7);
+}
+
+.sideBoard img {
+    height: 10% !important;
+}
+
+.piece,
+.enemypiece {
+    margin: auto;
 }

@@ -1,86 +1,77 @@
 // Turn 0 = Setup
 // Turn 1 = Player 1 and Turn 2 = Player 2 and so on....
 $(function() {
-    playGame(initGame(setMap()));
-});
-
-// Game Loop
-function playGame(game) {
-
     // Render Map
-    renderMap(game);
-
-    // Setup Pieces
-    playerTurn(0, game);
-}
+    renderMap(initGame(setMap()));
+});
 
 function initGame(Map) {
     var p1pieces = [];
     var p2pieces = [];
 
     // Add 1 Marshall
-    p1pieces.push(makePiece("9"));
-    p2pieces.push(makePiece("9"));
+    p1pieces.push(makePiece("9", "0"));
+    p2pieces.push(makePiece("9", "0"));
 
     // Add 1 General
-    p1pieces.push(makePiece("8"));
-    p2pieces.push(makePiece("8"));
+    p1pieces.push(makePiece("8", "0"));
+    p2pieces.push(makePiece("8", "0"));
 
     // Add 2 Marshall
     for (var i = 0; i < 2; i++) {
-        p1pieces.push(makePiece("7"));
-        p2pieces.push(makePiece("7"));
+        p1pieces.push(makePiece("7", i));
+        p2pieces.push(makePiece("7", i));
     }
 
     // Add 3 Major
     for (var i = 0; i < 3; i++) {
-        p1pieces.push(makePiece("6"));
-        p2pieces.push(makePiece("6"));
+        p1pieces.push(makePiece("6", i));
+        p2pieces.push(makePiece("6", i));
     }
 
     // Add 4 Captains
     for (var i = 0; i < 4; i++) {
-        p1pieces.push(makePiece("5"));
-        p2pieces.push(makePiece("5"));
+        p1pieces.push(makePiece("5", i));
+        p2pieces.push(makePiece("5", i));
     }
 
     // Add 4 Lieutenants
     for (var i = 0; i < 4; i++) {
-        p1pieces.push(makePiece("4"));
-        p2pieces.push(makePiece("4"));
+        p1pieces.push(makePiece("4", i));
+        p2pieces.push(makePiece("4", i));
     }
 
     // Add 4 Sergeants
     for (var i = 0; i < 4; i++) {
-        p1pieces.push(makePiece("3"));
-        p2pieces.push(makePiece("3"));
+        p1pieces.push(makePiece("3", i));
+        p2pieces.push(makePiece("3", i));
     }
 
     // Add 5 Miners
     for (var i = 0; i < 5; i++) {
-        p1pieces.push(makePiece("2"));
-        p2pieces.push(makePiece("2"));
+        p1pieces.push(makePiece("2", i));
+        p2pieces.push(makePiece("2", i));
     }
 
     // Add 8 Scouts
     for (var i = 0; i < 8; i++) {
-        p1pieces.push(makePiece("1"));
-        p2pieces.push(makePiece("1"));
+        p1pieces.push(makePiece("1", i));
+        p2pieces.push(makePiece("1", i));
     }
 
     // Add 1 Spy
-    p1pieces.push(makePiece("S"));
-    p2pieces.push(makePiece("S"));
+    p1pieces.push(makePiece("S", "0"));
+    p2pieces.push(makePiece("S", "0"));
 
     // Add 6 Bombs
     for (var i = 0; i < 6; i++) {
-        p1pieces.push(makePiece("B"));
-        p2pieces.push(makePiece("B"));
+        p1pieces.push(makePiece("B", i));
+        p2pieces.push(makePiece("B", i));
     }
 
     // Add 1 Flag
-    p1pieces.push(makePiece("F"));
-    p2pieces.push(makePiece("F"));
+    p1pieces.push(makePiece("F", "0"));
+    p2pieces.push(makePiece("F", "0"));
 
 
     var game = {
@@ -89,16 +80,69 @@ function initGame(Map) {
         p2: p2pieces
     }
 
-    console.log(game);
     return game;
 };
 
-function makePiece(charVal) {
+function getSVG(piece, player) {
+    var svg = $("<img>");
+
+    if (player == 1) {
+        svg.attr("class", ' piece');
+        svg.attr("id", 'player1' + piece.id);
+    } else {
+        svg.attr("class", 'enemypiece');
+        svg.attr("id", 'player2' + piece.id);
+    }
+
+    var charVal = piece.value;
+    switch (charVal) {
+        case "1":
+            svg.attr("src", "../assets/stratego-scout.svg")
+            break;
+        case "2":
+            svg.attr("src", "../assets/stratego-miner.svg")
+            break;
+        case "3":
+            svg.attr("src", "../assets/stratego-sergeant.svg")
+            break;
+        case "4":
+            svg.attr("src", "../assets/stratego-lieutenant.svg")
+            break;
+        case "5":
+            svg.attr("src", "../assets/stratego-captain.svg")
+            break;
+        case "6":
+            svg.attr("src", "../assets/stratego-major.svg")
+            break;
+        case "7":
+            svg.attr("src", "../assets/stratego-colonel.svg")
+            break;
+        case "8":
+            svg.attr("src", "../assets/stratego-general.svg")
+            break;
+        case "9":
+            svg.attr("src", "../assets/stratego-marshal.svg")
+            break;
+        case "B":
+            svg.attr("src", "../assets/stratego-bomb.svg")
+            break;
+        case "F":
+            svg.attr("src", "../assets/stratego-flag.svg")
+            break;
+        case "S":
+            svg.attr("src", "../assets/stratego-spy.svg")
+            break;
+    }
+
+    return svg;
+}
+
+function makePiece(charVal, multiVal) {
     var piece = {
         placed: false,
         lost: false,
-        x: -1,
-        y: -1,
+        X: -1,
+        Y: -1,
         value: "",
         id: ""
     }
@@ -106,55 +150,123 @@ function makePiece(charVal) {
     switch (charVal) {
         case "1":
             piece.value = "1";
-            piece.id = "Scout";
+            piece.id = "Scout" + multiVal;
             break;
         case "2":
             piece.value = "2";
-            piece.id = "Miner";
+            piece.id = "Miner" + multiVal;
             break;
         case "3":
             piece.value = "3";
-            piece.id = "Sergeant";
+            piece.id = "Sergeant" + multiVal;
             break;
         case "4":
             piece.value = "4";
-            piece.id = "Lieutenant";
+            piece.id = "Lieutenant" + multiVal;
             break;
         case "5":
             piece.value = "5";
-            piece.id = "Captain";
+            piece.id = "Captain" + multiVal;
             break;
         case "6":
             piece.value = "6";
-            piece.id = "Major";
+            piece.id = "Major" + multiVal;
             break;
         case "7":
             piece.value = "7";
-            piece.id = "Colonel";
+            piece.id = "Colonel" + multiVal;
             break;
         case "8":
             piece.value = "8";
-            piece.id = "General";
+            piece.id = "General" + multiVal;
             break;
         case "9":
             piece.value = "9";
-            piece.id = "Marshall";
+            piece.id = "Marshall" + multiVal;
             break;
         case "B":
             piece.value = "B";
-            piece.id = "Bomb";
+            piece.id = "Bomb" + multiVal;
             break;
         case "F":
             piece.value = "F";
-            piece.id = "Flag";
+            piece.id = "Flag" + multiVal;
             break;
         case "S":
             piece.value = "S";
-            piece.id = "Spy";
+            piece.id = "Spy" + multiVal;
             break;
     }
 
     return piece;
+}
+
+function placePiece(player, pieceIndex, game, newX, newY) {
+    var piece;
+
+    if (player == 1) {
+        piece = game.p1[pieceIndex];
+    } else {
+        piece = game.p2[pieceIndex];
+    }
+
+    if (piece.placed == false) {
+        if (newY < 10 && newY > 5 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
+            game.map[newY][newX] = player + piece.value;
+            piece.X = newX;
+            piece.Y = newY;
+            // $("#X" + newX + "Y" + newY).append(getSVG(piece, player));
+            piece.placed = true;
+            return 0;
+        } else {
+            return -1;
+        }
+    } else if (piece.taken == true) {
+        if (player == 1) {
+            $("#P2SideBoard").append(getSVG(piece, 1));
+            game.map[piece.Y][piece.X] = 0;
+        } else {
+            $("#P1SideBoard").append(getSVG(piece, 2));
+            game.map[piece.Y][piece.X] = 0;
+        }
+        return 0;
+    } else {
+        if (piece.value == "1") {
+            if (
+                ((newX != piece.X && newY == piece.Y) ||
+                    (newX == piece.X && newY != piece.Y)) &&
+                newY < 10 && newY > -1 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
+                game.map[newY][newX] = game.map[piece.Y, piece.X]
+                game.map[piece.Y][piece.X] = 0
+                piece.X = newX;
+                piece.Y = newY;
+                $("#X" + newX + "Y" + newY).append(getSVG(piece, player));
+                return 0;
+            } else {
+                return -1;
+            }
+        } else if (
+            ((newX == piece.X + 1 && newY == piece.Y + 0) ||
+                (newX == piece.X - 1 && newY == piece.Y + 0) ||
+                (newX == piece.X + 0 && newY == piece.Y + 1) ||
+                (newX == piece.X + 0 && newY == piece.Y + 1)) &&
+            newY < 10 && newY > -1 && newX < 10 && newX > -1 && piece.value != "B" && piece.value != "F" && isEmpty(newX, newY)) {
+            game.map[newY][newX] = game.map[piece.Y][piece.X]
+            game.map[piece.Y][piece.X] = 0
+            piece.X = newX;
+            piece.Y = newY;
+            $("#X" + newX + "Y" + newY).append(getSVG(piece, player));
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+}
+
+// Check if spot is empty
+
+function isEmpty(X, Y) {
+    return $("#X" + X + "Y" + Y).hasClass("empty") || $("#X" + X + "Y" + Y).hasClass("noMove");
 }
 
 // Set the Map
@@ -188,10 +300,11 @@ function renderMap(game) {
         for (j = 0; j < m; j++) {
             var block = $("<td></td>");
             var mapVal = game.map[i][j];
+            block.attr("id", "X" + j + "Y" + i);
             if (mapVal == -1) {
-                block.attr("class", "noMove 'X" + j + " Y" + i + "'");
+                block.attr("class", "noMove boardPlace");
             } else {
-                block.attr("class", "empty 'X" + j + " Y" + i + "'");
+                block.attr("class", "empty boardPlace");
             }
             row.append(block);
         }
@@ -201,16 +314,69 @@ function renderMap(game) {
     $("#gameBoard").append(table);
 
     // Takes Pieces from array and sets on board
-    // 0 - Empty
-    // 1 -     
+    for (var i = 0; i < game.p1.length; i++) {
+        $("#P1SideBoard").append(getSVG(game.p1[i], 1));
+    }
+
+    for (var i = 0; i < game.p2.length; i++) {
+        $("#P2SideBoard").append(getSVG(game.p2[i], 2));
+    }
+
     // Loads Grids and player sides
+
+    playerTurn(0, game);
+}
+
+function getPieceIndex(game, dragId) {
+    var id = dragId.substr(7);
+    var player = dragId.substr(6, 1);
+
+    if (player == 1) {
+        for (var i = 0; i < game.p1.length; i++) {
+            if (game.p1[i].id == id) {
+                return i;
+            }
+        }
+    } else {
+        for (var i = 0; i < game.p2.length; i++) {
+            if (game.p2[i].id == id) {
+                return i;
+            }
+        }
+    }
+    return -1;
 }
 
 // Logic for Each Turn
-function playerTurn(turnNumber, map) {
+function playerTurn(turnNumber, game) {
 
     // 0 is setup
     if (turnNumber == 0) {
+
+        $(".piece").each(function() {
+            $(this).draggable({
+                snap: ".boardPlace",
+                revert: true,
+                helper: "clone",
+                containment: "document"
+            });
+        });
+
+        $(".boardPlace").each(function() {
+            $(this).droppable({
+                drop: function(event, ui) {
+                    var dragId = ui.draggable.attr("id");
+                    console.log(dragId);
+                    var id = $(this).attr("id");
+                    var Y = id.substr(id.length - 1);
+                    var X = id.substr(id.length - 3, 1);
+                    if (placePiece(1, getPieceIndex(game, dragId), game, X, Y) == 0) {
+                        console.log(getPieceIndex(game, dragId), X, Y);
+                        ui.draggable.detach().appendTo($(this));
+                    }
+                }
+            });
+        });
 
     } else {
         // Select Piece
