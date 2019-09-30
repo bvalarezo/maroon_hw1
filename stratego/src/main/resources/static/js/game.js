@@ -1,12 +1,9 @@
 // Turn 0 = Setup
 // Turn 1 = Player 1 and Turn 2 = Player 2 and so on....
 
-var gameObj;
-
 $(function() {
     // Render Map
-    gameObj = initGame(setMap());
-    renderMap(gameObj);
+    renderMap(initGame(setMap()));
 });
 
 function initGame(Map) {
