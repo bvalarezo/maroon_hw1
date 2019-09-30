@@ -23,58 +23,58 @@ function initGame(Map) {
     var p2pieces = [];
 
     // Add 1 Marshall
+    p1pieces.push(makePiece("10", "0"));
+    p2pieces.push(makePiece("10", "0"));
+
+    // Add 1 General
     p1pieces.push(makePiece("9", "0"));
     p2pieces.push(makePiece("9", "0"));
 
-    // Add 1 General
-    p1pieces.push(makePiece("8", "0"));
-    p2pieces.push(makePiece("8", "0"));
-
     // Add 2 Marshall
     for (var i = 0; i < 2; i++) {
-        p1pieces.push(makePiece("7", i));
-        p2pieces.push(makePiece("7", i));
+        p1pieces.push(makePiece("8", i));
+        p2pieces.push(makePiece("8", i));
     }
 
     // Add 3 Major
     for (var i = 0; i < 3; i++) {
+        p1pieces.push(makePiece("7", i));
+        p2pieces.push(makePiece("7", i));
+    }
+
+    // Add 4 Captains
+    for (var i = 0; i < 4; i++) {
         p1pieces.push(makePiece("6", i));
         p2pieces.push(makePiece("6", i));
     }
 
-    // Add 4 Captains
+    // Add 4 Lieutenants
     for (var i = 0; i < 4; i++) {
         p1pieces.push(makePiece("5", i));
         p2pieces.push(makePiece("5", i));
     }
 
-    // Add 4 Lieutenants
+    // Add 4 Sergeants
     for (var i = 0; i < 4; i++) {
         p1pieces.push(makePiece("4", i));
         p2pieces.push(makePiece("4", i));
     }
 
-    // Add 4 Sergeants
-    for (var i = 0; i < 4; i++) {
+    // Add 5 Miners
+    for (var i = 0; i < 5; i++) {
         p1pieces.push(makePiece("3", i));
         p2pieces.push(makePiece("3", i));
     }
 
-    // Add 5 Miners
-    for (var i = 0; i < 5; i++) {
+    // Add 8 Scouts
+    for (var i = 0; i < 8; i++) {
         p1pieces.push(makePiece("2", i));
         p2pieces.push(makePiece("2", i));
     }
 
-    // Add 8 Scouts
-    for (var i = 0; i < 8; i++) {
-        p1pieces.push(makePiece("1", i));
-        p2pieces.push(makePiece("1", i));
-    }
-
     // Add 1 Spy
-    p1pieces.push(makePiece("S", "0"));
-    p2pieces.push(makePiece("S", "0"));
+    p1pieces.push(makePiece("1", "0"));
+    p2pieces.push(makePiece("1", "0"));
 
     // Add 6 Bombs
     for (var i = 0; i < 6; i++) {
@@ -110,31 +110,31 @@ function getSVG(piece, player) {
 
     var charVal = piece.value;
     switch (charVal) {
-        case "1":
+        case "2":
             svg.attr("src", "../assets/stratego-scout.svg")
             break;
-        case "2":
+        case "3":
             svg.attr("src", "../assets/stratego-miner.svg")
             break;
-        case "3":
+        case "4":
             svg.attr("src", "../assets/stratego-sergeant.svg")
             break;
-        case "4":
+        case "5":
             svg.attr("src", "../assets/stratego-lieutenant.svg")
             break;
-        case "5":
+        case "6":
             svg.attr("src", "../assets/stratego-captain.svg")
             break;
-        case "6":
+        case "7":
             svg.attr("src", "../assets/stratego-major.svg")
             break;
-        case "7":
+        case "8":
             svg.attr("src", "../assets/stratego-colonel.svg")
             break;
-        case "8":
+        case "9":
             svg.attr("src", "../assets/stratego-general.svg")
             break;
-        case "9":
+        case "10":
             svg.attr("src", "../assets/stratego-marshal.svg")
             break;
         case "B":
@@ -143,7 +143,7 @@ function getSVG(piece, player) {
         case "F":
             svg.attr("src", "../assets/stratego-flag.svg")
             break;
-        case "S":
+        case "1":
             svg.attr("src", "../assets/stratego-spy.svg")
             break;
     }
@@ -162,40 +162,40 @@ function makePiece(charVal, multiVal) {
     }
 
     switch (charVal) {
-        case "1":
-            piece.value = "1";
-            piece.id = "Scout" + multiVal;
-            break;
         case "2":
             piece.value = "2";
-            piece.id = "Miner" + multiVal;
+            piece.id = "Scout" + multiVal;
             break;
         case "3":
             piece.value = "3";
-            piece.id = "Sergeant" + multiVal;
+            piece.id = "Miner" + multiVal;
             break;
         case "4":
             piece.value = "4";
-            piece.id = "Lieutenant" + multiVal;
+            piece.id = "Sergeant" + multiVal;
             break;
         case "5":
             piece.value = "5";
-            piece.id = "Captain" + multiVal;
+            piece.id = "Lieutenant" + multiVal;
             break;
         case "6":
             piece.value = "6";
-            piece.id = "Major" + multiVal;
+            piece.id = "Captain" + multiVal;
             break;
         case "7":
             piece.value = "7";
-            piece.id = "Colonel" + multiVal;
+            piece.id = "Major" + multiVal;
             break;
         case "8":
             piece.value = "8";
-            piece.id = "General" + multiVal;
+            piece.id = "Colonel" + multiVal;
             break;
         case "9":
             piece.value = "9";
+            piece.id = "General" + multiVal;
+            break;
+        case "10":
+            piece.value = "10";
             piece.id = "Marshall" + multiVal;
             break;
         case "B":
@@ -206,8 +206,8 @@ function makePiece(charVal, multiVal) {
             piece.value = "F";
             piece.id = "Flag" + multiVal;
             break;
-        case "S":
-            piece.value = "S";
+        case "1":
+            piece.value = "1";
             piece.id = "Spy" + multiVal;
             break;
     }
@@ -255,7 +255,7 @@ function placePiece(player, pieceIndex, game, newX, newY) {
         }
         return 0;
     } else {
-        if (piece.value == "1") {
+        if (piece.value == "2") {
             if (
                 ((newX != piece.X && newY == piece.Y) ||
                     (newX == piece.X && newY != piece.Y)) &&
@@ -404,7 +404,7 @@ function playerTurn(game) {
                             nextTurn(game);
                         }
                     }
-                                    }
+                }
             });
         });
 
@@ -430,39 +430,39 @@ function playerTurn(game) {
             });
 
             // Ai Places Piece Here using placePiece(1, getPieceIndex(game, dragId), game, X, Y
-		for (var i = 0; i < boardValues.length; i++) {
-			index = correlateValues(i, game);
-			placePiece(2, index, game, i%10, Math.floor(i/10));
-		}
+            for (var i = 0; i < boardValues.length; i++) {
+                index = correlateValues(i, game);
+                placePiece(2, index, game, i % 10, Math.floor(i / 10));
+            }
         }
-        $(".boardPlace").each(function() {
-            $(this).droppable({
-                drop: function(event, ui) {
-                    var dragId = ui.draggable.attr("id");
-                    var id = $(this).attr("id");
-                    var Y = id.substr(id.length - 1);
-                    var X = id.substr(id.length - 3, 1);
-                    if (placePiece(1, getPieceIndex(game, dragId), game, X, Y) == 0) {
-                        ui.draggable.detach().appendTo($(this));
-
-                        $(ui.helper).remove();
-                        $(ui.draggable).draggable("destroy");
-                        $(this).droppable("destroy");
-
-                        if ($("#P1SideBoard").children().length == 0 || testing == true) {
-                            nextTurn(game);
-                        }
-                    }
-                }
-            });
-        });
-
         $(".boardPlace").each(function() {
             $(this).droppable({
                 drop: function(event, ui) {
                     console.log("Attempt");
                     var dragId = ui.draggable.attr("id");
                     var id = $(this).attr("id");
+                    $(".boardPlace").each(function() {
+                        $(this).droppable({
+                            drop: function(event, ui) {
+                                console.log("Attempt");
+                                var dragId = ui.draggable.attr("id");
+                                var id = $(this).attr("id");
+                                var Y = id.substr(id.length - 1);
+                                var X = id.substr(id.length - 3, 1);
+                                if (placePiece(1, getPieceIndex(game, dragId), game, X, Y) == 0) {
+                                    ui.draggable.detach().appendTo($(this));
+
+                                    $(ui.helper).remove();
+                                    $(ui.draggable).draggable("destroy");
+                                    $(this).droppable("destroy");
+
+                                    clearDrags();
+
+                                    nextTurn(game);
+                                }
+                            }
+                        });
+                    });
                     var Y = id.substr(id.length - 1);
                     var X = id.substr(id.length - 3, 1);
                     if (placePiece(1, getPieceIndex(game, dragId), game, X, Y) == 0) {
@@ -483,9 +483,10 @@ function playerTurn(game) {
 
         // If takes a pieces uses takePiece()
         // Else moves
+        // Check if last moveable pieces
+        // Removes Pieces
+        // Sends win receipt if necessary and opens win modal
         // Updates piece and map
-        // Check for win/lose
-        // Send list of pieces to server of both player, piece moved, game won, whoWon
         // cant move back and forth 3 consecutive turns
     }
 
@@ -524,14 +525,18 @@ function nextTurn(game) {
 }
 
 // Logic for taking a piece
-// 
+// -1 = failed
+// 0 = Attacking Piece Removed
+// 1 = Attacked Piece Removed
+// 2 = Both Pieces Removed
 function attack(game, piece, X, Y) {
     var pieceBeingAttacked = game.map[y][x];
     var teamAttacked = pieceBeingAttacked.substr(0, 1);
     var valAttacked = pieceBeingAttacked.substr(1, 1);
     var teamAttacking = ((game.turn + 1) % 2) + 1;
+    var valAttacking = piece.val;
 
-    if (piece.val == "F" || piece.val == "B") {
+    if (valAttacking == "F" || valAttacking == "B") {
         console.log("Flags and Bombs can't move!");
         return -1;
     }
@@ -541,18 +546,89 @@ function attack(game, piece, X, Y) {
         return -1;
     }
 
-    if (valAttacked == "F") {
-        console.log("Gottem!");
-        endScreen(true, game);
-        return 0;
+    if (valAttacking == valAttacked) {
+        return 2;
     }
 
-
-    // 2- Bomb > S
-    // Check if last moveable pieces
-    // Compares values
-    // Removes Pieces
-    // Sends win receipt if necessary and opens win modal
+    switch (valAttacked) {
+        case "1":
+            // Spy
+            return 1;
+        case "2":
+            // Scout
+            if (valAttacking < 2) {
+                return 0;
+            } else {
+                return 1;
+            }
+        case "3":
+            // Miner
+            if (valAttacking < 3) {
+                return 0;
+            } else {
+                return 1;
+            }
+        case "4":
+            // Sergeant
+            if (valAttacking < 4) {
+                return 0;
+            } else {
+                return 1;
+            }
+        case "5":
+            // Lieutenant
+            if (valAttacking < 5) {
+                return 0;
+            } else {
+                return 1;
+            }
+        case "6":
+            // Captain
+            if (valAttacking < 6) {
+                return 0;
+            } else {
+                return 1;
+            }
+        case "7":
+            // Major
+            if (valAttacking < 7) {
+                return 0;
+            } else {
+                return 1;
+            }
+        case "8":
+            // Colonel
+            if (valAttacking < 8) {
+                return 0;
+            } else {
+                return 1;
+            }
+        case "9":
+            // General
+            if (valAttacking < 9) {
+                return 0;
+            } else {
+                return 1;
+            }
+        case "10":
+            // Marshall
+            if (valAttacking < 10 && valAttacking > 1) {
+                return 0;
+            } else {
+                return 1;
+            }
+        case "B":
+            // Bomb
+            if (valAttacking == 3) {
+                return 1;
+            } else {
+                return 0;
+            }
+        case "F":
+            console.log("Gottem!");
+            endScreen(true, game);
+            return 1;
+    }
 
 }
 
