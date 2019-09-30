@@ -33,11 +33,12 @@ class Piece {
 	// This will contain a value
 	constructor(value, x, y) {
 		this.captureArray = []; // Array of capture objects, capture object contains direction, enemyValue 
-		this.value = value; //This should change
+		this.value = value; 
 		this.x = x;
 		this.y = y;
 		this.lost = false;
 		this.placed = false;
+		this.id = null;
 	}
 
 	function canCapture() {
