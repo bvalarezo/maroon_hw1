@@ -37,6 +37,7 @@ class Piece {
 		this.x = x;
 		this.y = y;
 		this.lost = false;
+		this.placed = false;
 	}
 
 	function canCapture() {
@@ -107,18 +108,18 @@ function capture(piece, value) {
 	} else if (direction == 3) {
 		piece.x += 1;
 	}
+	//Update captureArray
 	piece.captureArray[i].enemyPiece.lost = true;
 	$.ajax({
 		type: "POST",
 		contentType: "application/json",
-		url: "",
+		url: "/sendGameData",
 		data: JSON.stringify(piece),
 		dataType: 'json',
 		cache: false,
 		timeout: 600000,
 		success: function(data) {
 			var json = JSON.stringify(data, null, 4);
-
 		}
 	},
 	error: function(e) {
