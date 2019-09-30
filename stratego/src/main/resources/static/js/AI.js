@@ -16,78 +16,91 @@ var bestValue = null;
 var worstValue = null;
 var pieces = []; //Array of piece objects
 var boardValues = [6,2,2,5,2,6,3,10,2,6,5,4,B,S,9,2,7,7,8,2,4,B,4,7,8,5,B,5,6,4,2,3,B,2,3,B,F,B,3,3];
+var directions = [0,1,2,3]; //0 = up, 1 = left, 2 = down, 3 = right
 
-class Capture {
-	constructor(direction) {
-		//0 = Up
-		//1 = Left
-		//2 = Down
-		//3 = Right
-		this.direction = direction;
-		this.enemyValue = null;
-		this.enemyPiece = null;
+$(function() {
+	//initialize enemy map
+	map = initEnemyMap();
+});
+
+function canCapture(piece) {
+	//This loops through the captureArray and checks for a non arbitrary value	
+	let captureArray = getCaptureArray(piece);
+	for (let i = 0; i < captureArray.length; i++) {
+		if (captureArray[i] != -11) {
+			return true;
+		}
 	}
+	return false;
 }
 
-class Piece {
-	// This will contain a value
-	constructor(value, x, y) {
-		this.captureArray = []; // Array of capture objects, capture object contains direction, enemyValue 
-		this.value = value; 
-		this.x = x;
-		this.y = y;
-		this.lost = false;
-		this.placed = false;
-		this.id = null;
+function initEnemyMap() {
+	var map = setMap();
+	var initVal = 60;
+	for (let i = initVal; i < 100; i++) {
+		map[Math.floor(i/10)][i%10] = "1?";
 	}
+	return map;
+}
 
-	function canCapture() {
-		//This loops through the captureArray and checks for a non arbitrary value		
-		for (let i = 0; i < captureArray.length; i++) {
-			if (captureArray[i].enemyValue != null) {
-				return true;
+function getCaptureArray(piece) {
+	//Checks all 4 directions if a piece is within capture range and its values	
+	var captureArray = [-11,-11,-11,-11];
+	for (let i = 0; i < directions.length; i++) {
+		if (directions[i] == 0) {
+			//up
+			if ((game.map[piece.y-1][piece.x])[0] == "1") {
+				captureArray[i] = (game.map[piece.y-1][piece.x])[1];
+			}
+		} else if (direction[i] == 1) {
+			//left
+			if ((game.map[piece.y][piece.x-1])[0] == "1") {
+				captureArray[i] = (game.map[piece.y][piece.x-1])[1];
+			}
+		} else if (direction[i] == 2) {
+			//down
+			if ((game.map[piece.y+1][piece.x])[0] == "1") {
+				captureArray[i] = (game.map[piece.y+1][piece.x])[1];
+			}
+		} else if (direction[i] == 3) {
+			//right
+			if ((game.map[piece.y-1][piece.x])[0] == "1") {
+				captureArray[i] = (game.map[piece.y][piece.x+1])[1];
 			}
 		}
-		return false;
+	}
+	return captureArray;
+}
+
+function findCaptureValue(piece) {
+	//This function gets the best capture value if its greater than 0
+	//Otherwise returns worst capture value
+	//For individual piece
+	let capArray = getCaptureArray(piece);	
+	let bestCapValue = 11; //Highest possible number
+	let worstCapValue = 11; //Highest possible number
+	for (let i = 0; i < capArray.length; i++) {
+		if (capArray[i] < bestCapValue && capArray[i] > 0) {
+			//Choose the lowest difference in capture value but greater than 0
+			bestCapValue = piece.value - capArray[i];
+		}
+		if (capArray[i] < worstCapValue) {
+			worstCapValue = piece.value - capArray[i];
+		}
 	}
 
-	function findCaptureValue() {
-		//This function gets the best capture value if its greater than 0
-		//Otherwise returns worst capture value
-		//For individual piece
-		let capArray = this.captureArray;
-		if (capArray != null) {
-			let enemyPiece = null;
-			let capObj = this.captureArray;
-			bestPieceValue = -11; //Arbitrary default low number
-			for (let i = 0; i < capObj.length; i++) {
-				if (this.value - capObj[i].enemyValue > bestValue) {
-					enemyPiece = capObj[i];
-					bestPieceValue = this.value - capObj[i].enemyValue;
-				}
-			}
-			return bestPieceValue; 
-		} else {
-			//if enemy values are unknown, return bestPieceValue (-11)
-			return -11;
-		}
+	if (bestCapValue < 11) {
+		return bestCapValue;
+	} else {
+		return worstCapValue;
 	}
 }
 
 function generateArrays() {
-	//This initializes the capture arrays of each piece
+	//This initializes the capture arrays of each piece	
 	for (var j = 0; j < boardValues.length; j++) {
-		piece = new Piece(boardValues[j], j%10, Math.floor(j/10)); //Initialize piece with value
-		for (var i = 0; i < pieces.length; i++) {
-			//Push 4 capture objects onto piece.captureArray
-			for (var j = 0; i < 4; j++) {
-				temp = new Capture(j);
-				piece.captureArray.push(temp);
-			}
-		}
-		if (piece.value != "F" && piece.value != "B") {
-			pieces.push(piece);
-		}
+		//Board values are all the pieces in order - 1 array
+		placePiece(2, j, game, j%10, Math.floor(j/10));
 	}
 }
 
@@ -112,20 +125,20 @@ function capture(piece, value) {
 	//Update captureArray
 	piece.captureArray[i].enemyPiece.lost = true;
 	$.ajax({
-		type: "POST",
-		contentType: "application/json",
-		url: "/sendGameData",
-		data: JSON.stringify(piece),
-		dataType: 'json',
-		cache: false,
-		timeout: 600000,
-		success: function(data) {
-			var json = JSON.stringify(data, null, 4);
-		}
-	},
-	error: function(e) {
-	
-	}); 
+type: "POST",
+contentType: "application/json",
+url: "/sendGameData",
+data: JSON.stringify(piece),
+dataType: 'json',
+cache: false,
+timeout: 600000,
+success: function(data) {
+var json = JSON.stringify(data, null, 4);
+}
+},
+error: function(e) {
+
+}); 
 
 }
 
@@ -148,46 +161,62 @@ function run(piece, value) {
 		piece.x += 1;
 	}
 	$.ajax({
-		type: "POST",
-		contentType: "application/json",
-		url: "",
-		data: JSON.stringify(piece),
-		dataType: 'json',
-		cache: false,
-		timeout: 600000,
-		success: function(data) {
-			var json = JSON.stringify(data, null, 4);
+type: "POST",
+contentType: "application/json",
+url: "",
+data: JSON.stringify(piece),
+dataType: 'json',
+cache: false,
+timeout: 600000,
+success: function(data) {
+var json = JSON.stringify(data, null, 4);
 
-		}
-	},
-	error: function(e) {
-	
-	}); 
+}
+},
+error: function(e) {
+
+}); 
 
 }
 
 function getValue() {
-	//Generates the best valued move for all pieces
-	for (var i = 0; i < movablePieces.length; i++) {
-		if (movablePieces[i].canCapture()) {
-			if (findCapturePiece(movablePieces[i] > bestValue) {
-				bestValue = findCapturePiece(movablePieces[i]);
+	//Generates the best valued moved for all pieces
+	let bestValue = 0;
+	let worstValue = 0;
+	for (let i = 0; i < game.p2.length; i++) {
+		if (canCapture(game.p2[i])) {
+			let tempVal = findCapturePiece(game.p2[i]);
+			if (tempVal > bestValue) {
+				bestValue = tempVal; 
 			}
-			if (findCapturePiece(movablePieces[i] < worstValue) {
-			worstValue = findCapturePiece(movablePieces[i]);
+			if (tempVal < worstValue) {
+				worstValue = tempVal;
 			}
 		}
 	}
-	if (bestValue <= 0) {
-	//get the worst value then have that piece run away
-	return worstValue;
-	}	
+	if (bestValue == 11) {
+		//If no piece has a solified capture value then return worst value and run away
+		return worstValue;
+	} else {
+		//Otherwise return bestValue
+		return bestValue;
+	}
 }
 
-function attack() {
+function move(piece) {
+	let captureArray = getCaptureArray(piece);
+	for (let i = 0; i < directions.length; i++) {
+		if (captureArray[i] == 0) {
+			//Moves the game in the first direction that is available
+			getPieceIndex(game, piece.id);
+		}
+	}
+}
+
+function attack(piece) {
 	let value = findCaptureValue(piece);
 	//If you can find a valid capture, capture with the most value
-	if (value > 0) {
+	if (value > 0 && value < 11) {
 		capture(piece, value);
 	} else if (value < 0) {
 		run(piece, value);
@@ -196,7 +225,7 @@ function attack() {
 	//If both bestValue and worstValue are null, pick a random piece and move it in a random direction
 	else {
 		//Move random piece
-		pieceToMove = pieces[Math.random()*pieces.length];
+		pieceToMove = game.p2[Math.random() * game.p2.length]; 
 		move(pieceToMove)
 	}
 }
