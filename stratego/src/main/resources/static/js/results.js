@@ -1,7 +1,7 @@
 /* BUTTON
  * Timestamp (String)
  *
- * MODAL 
+ * MODAL
  * Timestamp (String)
  * Player 1 (Human/AI) (boolean)
  * Player 2 (AI) (String)
