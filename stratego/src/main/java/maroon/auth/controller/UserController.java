@@ -22,7 +22,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@ResponseBody
 public class UserController {
     @Autowired
     private UserServiceImpl userService;
