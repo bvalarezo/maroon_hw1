@@ -1,7 +1,19 @@
 // Turn 0 = Setup
 // Turn 1 = Player 1 and Turn 2 = Player 2 and so on....
 
+var testing = false;
+
 $(function() {
+
+    if (window.location.hash) {
+        var hash = window.location.hash.substring(1);
+        if (hash == "test") {
+            testing = true;
+        }
+    } else {
+        // No hash found
+    }
+
     // Render Map
     renderMap(initGame(setMap()));
 });
@@ -248,12 +260,14 @@ function placePiece(player, pieceIndex, game, newX, newY) {
                 ((newX != piece.X && newY == piece.Y) ||
                     (newX == piece.X && newY != piece.Y)) &&
                 newY < 10 && newY > -1 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
+
                 game.map[newY][newX] = game.map[piece.Y, piece.X]
                 game.map[piece.Y][piece.X] = 0
                 piece.X = newX;
                 piece.Y = newY;
                 $("#X" + newX + "Y" + newY).append(getSVG(piece, player));
                 return 0;
+
             } else {
                 return -1;
             }
@@ -334,7 +348,7 @@ function renderMap(game) {
         $("#P2SideBoard").append(getSVG(game.p2[i], 2));
     }
 
-    playerTurn(0, game);
+    playerTurn(game);
 }
 
 function getPieceIndex(game, dragId) {
@@ -359,12 +373,13 @@ function getPieceIndex(game, dragId) {
 
 // Logic for Each Turn
 function playerTurn(game) {
-    var turnNumber = game.turnNumber;
-
+    var turnNumber = game.turn;
+    console.log(game);
     // 0 is setup
     if (turnNumber == 0) {
+        $("#playing").html("Place Pieces");
 
-        $(".piece").each(function () {
+        $(".piece").each(function() {
             $(this).draggable({
                 snap: ".boardPlace",
                 revert: true,
@@ -372,9 +387,9 @@ function playerTurn(game) {
             });
         });
 
-        $(".boardPlace").each(function () {
+        $(".boardPlace").each(function() {
             $(this).droppable({
-                drop: function (event, ui) {
+                drop: function(event, ui) {
                     var dragId = ui.draggable.attr("id");
                     var id = $(this).attr("id");
                     var Y = id.substr(id.length - 1);
@@ -386,7 +401,7 @@ function playerTurn(game) {
                         $(ui.draggable).draggable("destroy");
                         $(this).droppable("destroy");
 
-                        if ($("#P1SideBoard").children().length == 0) {
+                        if ($("#P1SideBoard").children().length == 0 || testing == true) {
                             nextTurn(game);
                         }
                     }
@@ -394,16 +409,75 @@ function playerTurn(game) {
             });
         });
 
-	for (var i = 0; i < boardValues.length; i++) {
-            index = correlateValues(j, game);
-            placePiece(2, index, game, j % 10, Math.floor(j / 10));
-        }
-
     } else {
-        // Select Piece
-        // Lets player pick next move
-        // Lets them know if not valid
-        // If it is continues logic
+        var teamPlaying = ((game.turn + 1) % 2) + 1;
+        if (teamPlaying == 1) {
+            $("#playing").html("Blue Teams Move");
+            $(".piece").each(function() {
+                $(this).draggable({
+                    snap: ".boardPlace",
+                    revert: true,
+                    helper: "clone"
+                });
+            });
+        } else {
+            $("#playing").html("Red Teams Move");
+            $(".enemypiece").each(function() {
+                $(this).draggable({
+                    snap: ".boardPlace",
+                    revert: true,
+                    helper: "clone"
+                });
+            });
+
+            // Ai Places Piece Here using placePiece(1, getPieceIndex(game, dragId), game, X, Y)
+        }
+        $(".boardPlace").each(function() {
+            $(this).droppable({
+                drop: function(event, ui) {
+                    var dragId = ui.draggable.attr("id");
+                    var id = $(this).attr("id");
+                    var Y = id.substr(id.length - 1);
+                    var X = id.substr(id.length - 3, 1);
+                    if (placePiece(1, getPieceIndex(game, dragId), game, X, Y) == 0) {
+                        ui.draggable.detach().appendTo($(this));
+
+                        $(ui.helper).remove();
+                        $(ui.draggable).draggable("destroy");
+                        $(this).droppable("destroy");
+
+                        if ($("#P1SideBoard").children().length == 0 || testing == true) {
+                            nextTurn(game);
+                        }
+                    }
+                }
+            });
+        });
+
+        $(".boardPlace").each(function() {
+            $(this).droppable({
+                drop: function(event, ui) {
+                    console.log("Attempt");
+                    var dragId = ui.draggable.attr("id");
+                    var id = $(this).attr("id");
+                    var Y = id.substr(id.length - 1);
+                    var X = id.substr(id.length - 3, 1);
+                    if (placePiece(1, getPieceIndex(game, dragId), game, X, Y) == 0) {
+                        ui.draggable.detach().appendTo($(this));
+
+                        $(ui.helper).remove();
+                        $(ui.draggable).draggable("destroy");
+                        $(this).droppable("destroy");
+
+                        clearDrags();
+
+                        nextTurn(game);
+                    }
+                }
+            });
+        });
+
+
         // If takes a pieces uses takePiece()
         // Else moves
         // Updates piece and map
@@ -412,6 +486,20 @@ function playerTurn(game) {
         // cant move back and forth 3 consecutive turns
     }
 
+}
+
+function clearDrags() {
+    $(".enemypiece").each(function() {
+        $(this).draggable("destroy");
+    });
+
+    $(".piece").each(function() {
+        $(this).draggable("destroy");
+    });
+
+    $(".boardPlace").each(function() {
+        $(this).droppable("destroy");
+    });
 }
 
 // Iterator for turns
@@ -424,33 +512,49 @@ function nextTurn(game) {
         url: "/sendGameData",
         data: JSON.stringify(game),
         dataType: 'json'
-    }).done(function (data) {
-        console.log("Data Loaded!");
-        game.turnNumber++;
+    }).done(function(data) {
+        console.log("Next Turn!");
+        game.turn++;
         playerTurn(game);
     });
 
 }
 
 // Logic for taking a piece
+// 
 function attack(game, piece, X, Y) {
+    var pieceBeingAttacked = game.map[y][x];
+    var teamAttacked = pieceBeingAttacked.substr(0, 1);
+    var valAttacked = pieceBeingAttacked.substr(1, 1);
+    var teamAttacking = ((game.turn + 1) % 2) + 1;
+
+    if (piece.val == "F" || piece.val == "B") {
+        console.log("Flags and Bombs can't move!");
+        return -1;
+    }
+
+    if (teamAttacked == teamAttacking) {
+        console.log("No Friendly Fire!");
+        return -1;
+    }
+
+    if (valAttacked == "F") {
+        console.log("Gottem!");
+        endScreen(true, game);
+        return 0;
+    }
+
+
     // 2- Bomb > S
+    // Check if last moveable pieces
     // Compares values
     // Removes Pieces
     // Sends win receipt if necessary and opens win modal
-}
 
-// Check if Someone Lost
-function loseCondition() {
-    var lose = false;
-
-    // No pieces can move anymore
-
-    return lose;
 }
 
 // Disables UI and displays modal
-function endScreen(win) {
+function endScreen(win, game) {
     // disables canvas below
     // if win then show win screen
     // if lose then show lose screen
