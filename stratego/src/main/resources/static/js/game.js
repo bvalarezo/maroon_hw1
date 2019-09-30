@@ -390,7 +390,7 @@ function playerTurn(game) {
                             nextTurn(game);
                         }
                     }
-                    for (int i = 0; i < boardValues.length; i++) {
+                    for (var i = 0; i < boardValues.length; i++) {
                         index = correlateValues(j, game);
                         placePiece(2, index, game, j % 10, Math.floor(j / 10));
                     }
