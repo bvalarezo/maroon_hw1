@@ -77,14 +77,15 @@ input[type=button]: hover {
 
 #leaderboard button {
     color: black;
+    background-color: Transparent;
     position: absolute;
     z-index: 5;
     margin: 0 auto;
     left: 0;
     right: 0;
-    width: 65%;
-    padding: 10px;
-/*    top: 40%;*/
+    width: 40%;
+    padding: 3px;
+    top: 5%;
 }
 
 /* The Modal (background) */
