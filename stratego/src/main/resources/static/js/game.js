@@ -1,12 +1,9 @@
 // Turn 0 = Setup
 // Turn 1 = Player 1 and Turn 2 = Player 2 and so on....
 
-var gameObj;
-
 $(function() {
     // Render Map
-    gameObj = initGame(setMap());
-    renderMap(gameObj);
+    renderMap(initGame(setMap()));
 });
 
 function initGame(Map) {
@@ -217,20 +214,19 @@ function placePiece(player, pieceIndex, game, newX, newY) {
     if (piece.placed == false) {
         if (player == 1 && newY < 10 && newY > 5 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
             //Player 1 
-	    game.map[newY][newX] = player + piece.value;
+            game.map[newY][newX] = player + piece.value;
             piece.X = newX;
             piece.Y = newY;
             piece.placed = true;
             return 0;
         } else if (player == 2 && newY > -1 && newY < 4 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
-	    //Player 2
-	    game.map[newY][newX] = player + piece.value;
+            //Player 2
+            game.map[newY][newX] = player + piece.value;
             piece.X = newX;
             piece.Y = newY;
             piece.placed = true;
             return 0;
-	}
-	  else {
+        } else {
             return -1;
         }
     } else if (piece.taken == true) {
@@ -418,8 +414,8 @@ function nextTurn(game) {
     console.log(game);
 
     $.ajax({
-        type:"POST",
-        contentType : "application/json",
+        type: "POST",
+        contentType: "application/json",
         url: "/sendGameData",
         data: JSON.stringify(game),
         dataType: 'json'
