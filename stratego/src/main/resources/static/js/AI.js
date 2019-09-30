@@ -21,7 +21,7 @@ var directions = [0,1,2,3]; //0 = up, 1 = left, 2 = down, 3 = right
 $(function() {
 		//initialize enemy map
 		map = initEnemyMap();
-		generateArrays();
+
 		});
 
 function canCapture(piece) {
