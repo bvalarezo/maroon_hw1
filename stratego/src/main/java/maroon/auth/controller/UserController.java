@@ -83,16 +83,5 @@ public class UserController {
         return "login";
     }
 
-    //  Model and view for the menu page(menu.html) GET
-    @GetMapping("/menu")
-    public String menu(Model model) {
 
-        return "menu";
-    }
-
-    // Model and view for the game page(game.html) GET
-    @GetMapping("/game")
-    public String game(Model model) {
-        return "game";
-    }
 }
