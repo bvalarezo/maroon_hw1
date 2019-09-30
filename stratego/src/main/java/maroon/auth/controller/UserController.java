@@ -124,7 +124,8 @@ public class UserController {
     @PostMapping(value="/sendGameData", consumes = "application/json", produces = "application/json")
     public String sendBoard(HttpEntity<String> httpEntity){
         String json = httpEntity.getBody();
-        //load cachedgame 
+        //load cachedgame
+        System.out.println("sendGameData method invoked");
         System.out.println(json);
         return "game";
     }
