@@ -379,7 +379,7 @@ function playerTurn(game) {
     if (turnNumber == 0) {
         $("#playing").html("Place Pieces");
 
-        $(".piece").each(function () {
+        $(".piece").each(function() {
             $(this).draggable({
                 snap: ".boardPlace",
                 revert: true,
@@ -387,9 +387,9 @@ function playerTurn(game) {
             });
         });
 
-        $(".boardPlace").each(function () {
+        $(".boardPlace").each(function() {
             $(this).droppable({
-                drop: function (event, ui) {
+                drop: function(event, ui) {
                     var dragId = ui.draggable.attr("id");
                     var id = $(this).attr("id");
                     var Y = id.substr(id.length - 1);
@@ -518,15 +518,9 @@ function nextTurn(game) {
         url: "/sendGameData",
         data: JSON.stringify(game),
         dataType: 'json'
-<<<<<<< HEAD
     }).done(function(data) {
         console.log("Next Turn!");
         game.turn++;
-=======
-    }).done(function (data) {
-        console.log("Data Loaded!");
-        game.turnNumber++;
->>>>>>> 512982d8c03648fea075750b5845fdafed717301
         playerTurn(game);
     });
 
