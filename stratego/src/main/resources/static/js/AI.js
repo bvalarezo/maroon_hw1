@@ -26,10 +26,12 @@ class Capture {
 
 class Piece {
 	// This will contain a value
-	constructor(value) {
+	constructor(value, priority, x, y) {
 		this.captureArray = []; // Array of capture objects, capture object contains direction, enemyValue 
 		this.value = value; //This should change
-
+		this.priority = priority;
+		this.x = x;
+		this.y = y;
 	}
 
 	function canCapture() {
@@ -67,8 +69,12 @@ class Piece {
 
 function generateArrays() {
 	//This initializes the capture arrays of each piece
-	for (var j = 0; j < boardValues.length; j++) {	
-		piece = new Piece(boardValues[j]); //Initialize piece with value
+	for (var j = 0; j < boardValues.length; j++) {
+		let priority = 2;
+		if (boardValues[j] == 8 || boardValues[j] == 9 || boardValues[j] == 10) {
+			priority = 1;
+		}
+		piece = new Piece(boardValues[j], priority, j%10, Math.floor(j/10)); //Initialize piece with value
 		for (var i = 0; i < pieces.length; i++) {
 			//Push 4 capture objects onto piece.captureArray
 			for (var j = 0; i < 4; j++) {
@@ -76,12 +82,27 @@ function generateArrays() {
 				piece.captureArray.push(temp);
 			}
 		}
-		pieces.push(piece);
+		if (piece.priority == 1) {
+			// If priority is 1 only add to pieces array once
+			pieces.push(piece);
+		} else {
+			// If priority is 2 add to pieces array twice
+			pieces.push(piece);
+			pieces.push(piece);
+		}
 	}
 }
 
+function capture(piece, value) {
+	//Execute capture	
+}
+
+function run(piece, value) {
+	//Run in random direction
+}
+
 function getValue() {
-	//For all pieces
+	//Generates the best valued move for all pieces
 	for (var i = 0; i < movablePieces.length; i++) {
 		if (movablePieces[i].canCapture()) {
 			if (findCapturePiece(movablePieces[i] > bestValue) {
@@ -92,18 +113,25 @@ function getValue() {
 			}
 		}
 	}
-		if (bestValue <= 0) {
-		//get the worst value then have that piece run away
-		return worstValue;
-		}	
+	if (bestValue <= 0) {
+	//get the worst value then have that piece run away
+	return worstValue;
+	}	
 }
 
 function attack() {
 	let value = findCaptureValue(piece);
 	//If you can find a valid capture, capture with the most value
 	if (value > 0) {
-		capture(piece, value);
+	capture(piece, value);
+	} else if (value < 0) {
+	run(piece, value);
 	}
 	//Otherwise find the worst value and try to run away
 	//If both bestValue and worstValue are null, pick a random piece and move it in a random direction
+	else {
+		//Move random piece
+		pieceToMove = pieces[Math.random()*pieces.length];
+		move(pieceToMove)
+	}
 }
