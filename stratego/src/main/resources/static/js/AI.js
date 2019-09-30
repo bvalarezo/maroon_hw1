@@ -21,6 +21,7 @@ var directions = [0,1,2,3]; //0 = up, 1 = left, 2 = down, 3 = right
 $(function() {
 		//initialize enemy map
 		map = initEnemyMap();
+		generateArrays();
 		});
 
 function canCapture(piece) {
@@ -98,11 +99,22 @@ function findCaptureValue(piece) {
 	}
 }
 
+function correlateValues(index, game) {
+	//This correlates the values from boardValues to game.p2
+	for (let i = 0; i < game.p2.length; i++) {
+		if (boardValues[index] == game.p2[i].value && game.p2[i].placed == false) {
+			return i;
+		}
+	}
+}
+
 function generateArrays() {
-	//This initializes the capture arrays of each piece	
+	console.log("Generate arrays is called");
 	for (var j = 0; j < boardValues.length; j++) {
 		//Board values are all the pieces in order - 1 array
-		placePiece(2, j, game, j%10, Math.floor(j/10));
+		//Correlate boardValues array with p2 array
+		index = correlateValues(j, gameObj);
+		placePiece(2, index, gameObj, j%10, Math.floor(j/10));
 	}
 }
 
@@ -212,6 +224,7 @@ function move(piece) {
 			getPieceIndex(game, piece.id);
 		}
 	}
+	//if all spots are taken then just do another piece
 }
 
 function attack(piece) {
