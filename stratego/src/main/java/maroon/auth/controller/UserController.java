@@ -1,5 +1,6 @@
 package maroon.auth.controller;
 
+import maroon.auth.base.Board;
 import maroon.auth.base.Game;
 import maroon.auth.base.User;
 import maroon.auth.repository.GameRepository;
@@ -11,6 +12,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@ResponseBody
 public class UserController {
     @Autowired
     private UserServiceImpl userService;
@@ -30,6 +33,8 @@ public class UserController {
     @Autowired
     GameRepository gameRepository;
 
+    Game cachedGame;
+    User cachedUser;
     // Return registration form template
     @GetMapping("/register")
     public String showRegistrationPage(Model model) {
@@ -99,7 +104,9 @@ public class UserController {
     // Model and view for the game page(game.html) GET
     @GetMapping("/game")
     public String game(Model model) {
-
+        // System.out.println(cachedGame.getTimestamp());
+        // cachedGame.setTurns(99);
+        // gameRepository.save(cachedGame);
         return "game";
     }
 
@@ -109,6 +116,17 @@ public class UserController {
         User user = userService.findByUsername(auth.getName());
         Game game = new Game(user.getUsername());
         gameRepository.save(game);
+        cachedGame = game;
+        cachedUser = user;
         return "redirect:/game";
+    }
+
+    @ResponseBody
+    @PostMapping(value="/sendGameData", consumes = "application/json", produces = "application/json")
+    public String sendBoard(HttpEntity<String> httpEntity){
+        String json = httpEntity.getBody();
+        //load cachedgame 
+        System.out.println(json);
+        return "game";
     }
 }
