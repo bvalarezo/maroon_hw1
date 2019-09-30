@@ -1,9 +1,7 @@
 // Turn 0 = Setup
 // Turn 1 = Player 1 and Turn 2 = Player 2 and so on....
 
-var gameObj;
-
-$(function () {
+$(function() {
     // Render Map
     renderMap(initGame(setMap()));
 });
@@ -215,7 +213,7 @@ function placePiece(player, pieceIndex, game, newX, newY) {
 
     if (piece.placed == false) {
         if (player == 1 && newY < 10 && newY > 5 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
-            //Player 1 
+            //Player 1
             game.map[newY][newX] = player + piece.value;
             piece.X = newX;
             piece.Y = newY;
@@ -406,7 +404,7 @@ function playerTurn(game) {
         // Lets them know if not valid
         // If it is continues logic
         // If takes a pieces uses takePiece()
-        // Else moves 
+        // Else moves
         // Updates piece and map
         // Check for win/lose
         // Send list of pieces to server of both player, piece moved, game won, whoWon

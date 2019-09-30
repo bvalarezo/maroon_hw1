@@ -15,11 +15,17 @@ var json;
 
 $.ajax({
 	url: "/getGames",
+	type: "GET",
+	data: "application/json",
 	success: function(result) {
+		console.log(result);
 		json = result;
+	},
+	error: function(e) {
+		console.log("this errored out");	
 	}
 });
-
+console.log(json);
 var jsonObjectList = JSON.parse(json);
 var keys = Object.keys(jsonObjectList); //Create a list of keys
 var gameTime;
