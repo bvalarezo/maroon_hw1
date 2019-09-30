@@ -53,7 +53,8 @@ result.forEach(function(key, index) {
 		}
 		totalTurnsText.innerHTML = totalTurns;
 		playerText.innerHTML = "Player 1 : " + player1;
-		document.body.appendChild(button);
+		var leaderBoard = document.getElementById("leaderboard");
+		leaderBoard.appendChild(button);
 		document.body.appendChild(modal);
 		modal.appendChild(closeButton);
 		modal.appendChild(gameTimeText);

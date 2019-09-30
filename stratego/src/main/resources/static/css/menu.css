@@ -75,7 +75,7 @@ input[type=button]: hover {
     display: inline-block;
 }
 
-#leaderboard .text {
+#leaderboard button {
     color: black;
     position: absolute;
     z-index: 5;
