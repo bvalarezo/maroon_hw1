@@ -1,15 +1,15 @@
 package maroon.auth.base;
 
+
 public class Piece {
-    List<Capture> captureArray;
     boolean placed = false;
     boolean lost = false;
-    String id;
-    int value;
     int x;
     int y;
+    String value;
+    String id;
 
-    public Piece(String id, int value){
+    public Piece(String id, String value){
         this.id = id;
         this.value = value;
     }
@@ -33,8 +33,12 @@ public class Piece {
         return id;
     }
 
-    public int getValue(){
+    public String getValue(){
         return value;
+    }
+
+    public void setValue(String value){
+        this.value = value;
     }
 
     public int getX(){

@@ -1,6 +1,5 @@
 package maroon.auth.base;
 
-import java.util.ArrayList;
 import java.util.Set;
 import org.springframework.data.annotation.Id;
 

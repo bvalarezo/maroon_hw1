@@ -2,7 +2,7 @@ package maroon.auth.base;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -14,7 +14,7 @@ public class Game {
     private String owner;
     private int winner; // -1, 0, 1 [-1 is nobody][0 is player 1][1 is player 2]
     private int turns;
-    private ArrayList<Board> boards;
+    private List<Board> boards;
     private boolean complete = false;
     private boolean player = false; //false = AI, true = Human
     private String timestamp;
@@ -50,8 +50,16 @@ public class Game {
     public void setOwner(String owner){
         this.owner = owner;
     }
-    public ArrayList<Board> getBoards(){
+    public List<Board> getBoards(){
         return boards;
+    }
+
+    public void setBoards(List<Board> boards){
+        this.boards = boards;
+    }
+
+    public void addBoard(Board board){
+        this.boards.add(this.boards.size(),board);
     }
 
     public int getTurns(){
@@ -62,12 +70,10 @@ public class Game {
         this.turns = turns;
     }
 
-    public void incrementTurn(){
+    public void incrementTurns(){
         this.turns++;
     }
-    public void setBoards(ArrayList<Board> boards){
-        this.boards = boards;
-    }
+
 
     public Board getBoard(int turn){
         return this.boards.get(turn);

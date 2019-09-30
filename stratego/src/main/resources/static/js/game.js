@@ -410,9 +410,11 @@ function nextTurn(game) {
     console.log(game);
 
     $.ajax({
+        type:"POST",
+        contentType : "application/json",
         url: "/sendGameData",
-        data: game,
-        method: 'POST'
+        data: JSON.stringify(game),
+        dataType: 'json'
     }).done(function(data) {
         console.log("Data Loaded!");
         game.turnNumber++;

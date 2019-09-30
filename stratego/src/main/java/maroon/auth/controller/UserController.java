@@ -1,18 +1,13 @@
 package maroon.auth.controller;
 
-import maroon.auth.base.Board;
-import maroon.auth.base.Game;
 import maroon.auth.base.User;
 import maroon.auth.repository.GameRepository;
 import maroon.auth.service.SecurityService;
 import maroon.auth.service.UserServiceImpl;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -31,9 +26,7 @@ public class UserController {
 
     @Autowired
     GameRepository gameRepository;
-
-    Game cachedGame;
-    User cachedUser;
+    
     // Return registration form template
     @GetMapping("/register")
     public String showRegistrationPage(Model model) {
@@ -90,44 +83,16 @@ public class UserController {
         return "login";
     }
 
-    // Model and view for the menu page(menu.html) GET
+    //  Model and view for the menu page(menu.html) GET
     @GetMapping("/menu")
     public String menu(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByUsername(auth.getName());
-        model.addAttribute("gameList", gameRepository.findByOwner(user.getUsername()));
+
         return "menu";
     }
-
 
     // Model and view for the game page(game.html) GET
     @GetMapping("/game")
     public String game(Model model) {
-        // System.out.println(cachedGame.getTimestamp());
-        // cachedGame.setTurns(99);
-        // gameRepository.save(cachedGame);
-        return "game";
-    }
-
-    @PostMapping("/startNewGame")
-    public String startNewGame(Model model){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByUsername(auth.getName());
-        Game game = new Game(user.getUsername());
-        gameRepository.save(game);
-        cachedGame = game;
-        cachedUser = user;
-        return "redirect:/game";
-    }
-
-    @PostMapping(value="/sendGameData", consumes = "application/json", produces = "application/json")
-    @ResponseBody
-    @PostMapping(value="/sendGameData", consumes = "application/json", produces = "application/json")
-    public String sendBoard(HttpEntity<String> httpEntity){
-        String json = httpEntity.getBody();
-        //load cachedgame
-        System.out.println("sendGameData method invoked");
-        System.out.println(json);
         return "game";
     }
 }
