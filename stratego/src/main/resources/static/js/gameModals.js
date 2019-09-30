@@ -11,6 +11,15 @@
 
 // pull json text from bryan
 
+var json;
+
+$.ajax({
+	url: "/getGames",
+	success: function(result) {
+		json = result;
+	}
+});
+
 var jsonObjectList = JSON.parse(json);
 var keys = Object.keys(jsonObjectList); //Create a list of keys
 var gameTime;
