@@ -4,11 +4,14 @@
     <title>Maroon_HW1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- <link rel="stylesheet" href="../static/css/menu.css">
-    <link rel="stylesheet" href="../static/css/bootstrap.css"> -->
+<!--
+     <link rel="stylesheet" href="../static/css/menu.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.css"> 
+-->
 
     <link href='https://fonts.googleapis.com/css?family=Charm' rel='stylesheet'>
-
+    <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script th:src="@{/js/jquery-ui.js}"></script>
 
     
 
@@ -51,6 +54,7 @@
                             </div>
                             <p>Number of Turns: <span th:text="${game.turns}"></span></p>
                     </div> -->
+                    <button>xyz</button>
                 </div>
 
                 <div class="col-4" id="buttons">
@@ -118,6 +122,7 @@
             }
         }
     </script>
+    <script th:src="@{/js/results.js}"> </script>
 </body>
 
 </html>

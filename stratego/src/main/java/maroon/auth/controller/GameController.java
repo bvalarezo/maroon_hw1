@@ -60,10 +60,9 @@ public class GameController {
     }
   
     @GetMapping("/getGames") 
-    public @ResponseBody ResponseEntity<List<Game>> getGames(Model model) {
-
+    public @ResponseBody List<Game> getGames(Model model) {
         List<Game> gameList = gameRepository.findByOwner(cachedUser.getUsername());
-        return new ResponseEntity<List<Game>>(gameList, HttpStatus.OK);
+        return gameList;
     }  
  
     @PostMapping(value="/sendGameData", consumes = "application/json", produces = "application/json")
@@ -76,7 +75,6 @@ public class GameController {
         // check turn
         if(newBoard.getTurn() == 0){
             //turn 0, initliaze the first b oard and Game object
-            cachedGame.setPlayer(); 
             cachedGame.setWinner(-1); //nobody is a winner
             cachedGame.setTurns(0); //set the turns to start at 0
             List<Board> boardList = new ArrayList<Board>(); //create new list

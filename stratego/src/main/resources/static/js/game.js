@@ -225,7 +225,7 @@ function placePiece(player, pieceIndex, game, newX, newY) {
 
     if (piece.placed == false) {
         if (player == 1 && newY < 10 && newY > 5 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
-            //Player 1 
+            //Player 1
             game.map[newY][newX] = player + piece.value;
             piece.X = newX;
             piece.Y = newY;
@@ -379,7 +379,7 @@ function playerTurn(game) {
     if (turnNumber == 0) {
         $("#playing").html("Place Pieces");
 
-        $(".piece").each(function() {
+        $(".piece").each(function () {
             $(this).draggable({
                 snap: ".boardPlace",
                 revert: true,
@@ -387,9 +387,9 @@ function playerTurn(game) {
             });
         });
 
-        $(".boardPlace").each(function() {
+        $(".boardPlace").each(function () {
             $(this).droppable({
-                drop: function(event, ui) {
+                drop: function (event, ui) {
                     var dragId = ui.draggable.attr("id");
                     var id = $(this).attr("id");
                     var Y = id.substr(id.length - 1);
@@ -404,6 +404,10 @@ function playerTurn(game) {
                         if ($("#P1SideBoard").children().length == 0 || testing == true) {
                             nextTurn(game);
                         }
+                    }
+                    for (var i = 0; i < boardValues.length; i++) {
+                        index = correlateValues(j, game);
+                        placePiece(2, index, game, j % 10, Math.floor(j / 10));
                     }
                 }
             });
@@ -481,7 +485,7 @@ function playerTurn(game) {
 
 
         // If takes a pieces uses takePiece()
-        // Else moves 
+        // Else moves
         // Updates piece and map
         // Check for win/lose
         // Send list of pieces to server of both player, piece moved, game won, whoWon
@@ -514,9 +518,15 @@ function nextTurn(game) {
         url: "/sendGameData",
         data: JSON.stringify(game),
         dataType: 'json'
+<<<<<<< HEAD
     }).done(function(data) {
         console.log("Next Turn!");
         game.turn++;
+=======
+    }).done(function (data) {
+        console.log("Data Loaded!");
+        game.turnNumber++;
+>>>>>>> 512982d8c03648fea075750b5845fdafed717301
         playerTurn(game);
     });
 

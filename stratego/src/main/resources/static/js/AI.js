@@ -21,7 +21,7 @@ var directions = [0,1,2,3]; //0 = up, 1 = left, 2 = down, 3 = right
 $(function() {
 		//initialize enemy map
 		map = initEnemyMap();
-		generateArrays();
+
 		});
 
 function canCapture(piece) {
@@ -105,17 +105,6 @@ function correlateValues(index, game) {
 		if (boardValues[index] == game.p2[i].value && game.p2[i].placed == false) {
 			return i;
 		}
-	}
-}
-
-function generateArrays() {
-	for (var j = 0; j < boardValues.length; j++) {
-		//Board values are all the pieces in order - 1 array
-		//Correlate boardValues array with p2 array
-		index = correlateValues(j, gameObj);
-		console.log(index, gameObj);
-		placePiece(2, index, gameObj, j%10, Math.floor(j/10));
-		console.log(gameObj);
 	}
 }
 
