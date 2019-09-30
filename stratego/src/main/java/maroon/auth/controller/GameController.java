@@ -53,6 +53,10 @@ public class GameController {
     @PostMapping("/startNewGame")
     public String startNewGame(){
         //make a new game
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(auth.getName());
+        cachedUser = user; //store this user in a variable
+        //test
         Game game = new Game(cachedUser.getUsername());
         gameRepository.save(game); //make a new game
         cachedGame = game;//store this game in a variable 
