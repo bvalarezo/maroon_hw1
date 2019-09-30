@@ -34,13 +34,26 @@
             </div>
             <div class="row">
                 <div class="col-8" id="leaderboard">
-                    <div id="test">
-                        <p></p>
+                    <div th:each="game : ${gameList}">
+                            <span> Game History on </span>
+                            <span th:text="${game.timestamp}"></span>
+                            <span th:text="${game.timestamp}"></span>
+                            <div th:switch="${game.player}"> 
+                                    <p th:case="true">Player 1: <span th:text="${game.owner}">
+                                    <p th:case="*">Player 1: A.I</p>
+                            </div>
+                            <p>Player 2: A.I</p>
+                            <div th:switch="${game.winner}"> 
+                                    <p th:case="'-1'">Winner: Nobody!</p>
+                                    <p th:case="0">Winner: Player 1!</p>
+                                    <p th:case="1">Winner: Player 2!</p>
+                            </div>
+                            <p>Number of Turns: <span th:text="${game.turns}"></span></p>
                     </div>
                 </div>
 
                 <div class="col-4" id="buttons">
-                    <form th:action="@{/game}" method="get">
+                    <form th:action="@{/startNewGame}" method="post">
                         <input type="submit" value="Play Game" style="font-family: 'Charm' !important;" />
                     </form>
 

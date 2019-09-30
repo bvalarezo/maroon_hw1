@@ -1,13 +1,18 @@
 package maroon.auth.controller;
 
+import maroon.auth.base.Game;
 import maroon.auth.base.User;
+import maroon.auth.repository.GameRepository;
 import maroon.auth.service.SecurityService;
 import maroon.auth.service.UserServiceImpl;
+
+import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -21,6 +26,9 @@ public class UserController {
 
     @Autowired
     private SecurityService securityService;
+
+    @Autowired
+    GameRepository gameRepository;
 
     // Return registration form template
     @GetMapping("/register")
@@ -81,14 +89,26 @@ public class UserController {
     // Model and view for the menu page(menu.html) GET
     @GetMapping("/menu")
     public String menu(Model model) {
-
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(auth.getName());
+        model.addAttribute("gameList", gameRepository.findByOwner(user.getUsername()));
         return "menu";
     }
 
-    // Model and view for the menu page(menu.html) GET
+
+    // Model and view for the game page(game.html) GET
     @GetMapping("/game")
     public String game(Model model) {
 
         return "game";
+    }
+
+    @PostMapping("/startNewGame")
+    public String startNewGame(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(auth.getName());
+        Game game = new Game(user.getUsername());
+        gameRepository.save(game);
+        return "redirect:/game";
     }
 }

@@ -1,22 +1,30 @@
 package maroon.auth.base;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
+@Document(collection = "game")
 public class Game {
-    private int winner; // -1, 0, 1 [-1 is nobody][0 is player 1][1 is player 2]
+    @Id
     private String id;
-    private int turn;
+    private String owner;
+    private int winner; // -1, 0, 1 [-1 is nobody][0 is player 1][1 is player 2]
+    private int turns;
     private ArrayList<Board> boards;
     private boolean complete = false;
     private boolean player = false; //false = AI, true = Human
-    private Timestamp timestamp;
+    private String timestamp;
 
-    public Game(){
-        Date date= new Date();
-        long time = date.getTime();
-        this.timestamp = new Timestamp(time);
+    public Game(String owner){
+        this.owner = owner;
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
+        Date date = new Date();
+        date.setTime(ts.getTime());
+        this.timestamp = new SimpleDateFormat("EEE, d MMM yyyy hh:mm aaa z").format(date);
     }
 
     public int getWinner(){
@@ -34,20 +42,28 @@ public class Game {
     public void setId(String id){
         this.id = id;
     }
+
+    public String getOwner(){
+        return owner;
+    }
+
+    public void setOwner(String owner){
+        this.owner = owner;
+    }
     public ArrayList<Board> getBoards(){
         return boards;
     }
 
-    public int getTurn(){
-        return turn;
+    public int getTurns(){
+        return turns;
     }
 
-    public void setTurn(int turn){
-        this.turn = turn;
+    public void setTurns(int turns){
+        this.turns = turns;
     }
 
     public void incrementTurn(){
-        this.turn++;
+        this.turns++;
     }
     public void setBoards(ArrayList<Board> boards){
         this.boards = boards;
@@ -73,7 +89,7 @@ public class Game {
         this.player = true;
     }
 
-    public Timestamp getTimestamp(){
+    public String getTimestamp(){
         return timestamp;
     }
 
