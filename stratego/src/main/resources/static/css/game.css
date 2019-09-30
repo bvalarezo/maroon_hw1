@@ -94,3 +94,12 @@ body {
 .enemypiece {
     margin: auto;
 }
+
+#playing {
+    margin: auto;
+    width: 70%;
+    height: 10%;
+    margin-top: 1.5%;
+    font-size: 5em;
+    text-align: center;
+}

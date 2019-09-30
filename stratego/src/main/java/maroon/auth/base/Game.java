@@ -16,7 +16,6 @@ public class Game {
     private int turns;
     private List<Board> boards;
     private boolean complete = false;
-    private boolean player = false; //false = AI, true = Human
     private String timestamp;
 
     public Game(String owner){
@@ -85,14 +84,6 @@ public class Game {
 
     public void setComplete(){
         this.complete = true;
-    }
-
-    public boolean getPlayer(){
-        return player;
-    }
-
-    public void setPlayer(){
-        this.player = true;
     }
 
     public String getTimestamp(){
