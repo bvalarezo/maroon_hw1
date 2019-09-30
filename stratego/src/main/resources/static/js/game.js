@@ -208,7 +208,6 @@ function makePiece(charVal, multiVal) {
 
 function placePiece(player, pieceIndex, game, newX, newY) {
     var piece;
-
     if (player == 1) {
         piece = game.p1[pieceIndex];
     } else {
@@ -217,12 +216,21 @@ function placePiece(player, pieceIndex, game, newX, newY) {
 
     if (piece.placed == false) {
         if (newY < 10 && newY > 5 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
-            game.map[newY][newX] = player + piece.value;
+            //Player 1 
+	    game.map[newY][newX] = player + piece.value;
             piece.X = newX;
             piece.Y = newY;
             piece.placed = true;
             return 0;
-        } else {
+        } else if (newY > -1 && newY < 4 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
+	    //Player 2
+	    game.map[newY][newX] = player + piece.value;
+            piece.X = newX;
+            piece.Y = newY;
+            piece.placed = true;
+            return 0;
+	}
+	  else {
             return -1;
         }
     } else if (piece.taken == true) {
