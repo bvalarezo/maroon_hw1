@@ -22,7 +22,6 @@ var player1;
 var player2 = "AI";
 var winner;
 var totalTurns;
-
 result.forEach(function (key, index) {
 
 		var button = document.createElement("BUTTON");
@@ -33,7 +32,7 @@ result.forEach(function (key, index) {
 		totalTurns = key.turns;
 		//            board = key.boards;
 
-		button.innerHTML = "Game " + index;
+		button.innerHTML = "Game " + (index + 1);
 
 		var modal = document.createElement("div");
 		var modalContent = document.createElement("div");

@@ -91,13 +91,9 @@ input[type=button]: hover {
     background-color: Transparent;
     border: none;
     display: block;
-    z-index: 5;
     margin: 0 auto;
-    overflow:auto;
-/*
-    left: 0;
-    right: 0;
-*/
+    overflow: auto;
+    padding: 7.5%;
 /*    width: 40%;*/
 /*    padding: 3px;*/
 /*    margin-top: 2%;*/

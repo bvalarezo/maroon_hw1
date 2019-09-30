@@ -30,8 +30,8 @@ public class GameController {
     @Autowired
     private UserServiceImpl userService;
 
-    private Game cachedGame;
-    private User cachedUser;
+    Game cachedGame;
+    User cachedUser;
 
 
     //  Model and view for the menu page(menu.html) GET
@@ -74,8 +74,8 @@ public class GameController {
         newBoard.setTurn(gameWrapper.getTurn());
         // check turn
         if(newBoard.getTurn() == 0){
-            //turn 0, initliaze the first b oard and Game object
-            cachedGame.setWinner(-1); //nobody is a winner
+            //turn 0, initliaze the first board and Game object
+            // cachedGame.setWinner(-1); //nobody is a winner
             cachedGame.setTurns(0); //set the turns to start at 0
             List<Board> boardList = new ArrayList<Board>(); //create new list
              boardList.add(newBoard); //add the board to the list
