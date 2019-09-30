@@ -3,10 +3,9 @@
 
 var gameObj;
 
-$(function() {
+$(function () {
     // Render Map
-    gameObj = initGame(setMap());
-    renderMap(gameObj);
+    renderMap(initGame(setMap()));
 });
 
 function initGame(Map) {
@@ -217,20 +216,19 @@ function placePiece(player, pieceIndex, game, newX, newY) {
     if (piece.placed == false) {
         if (player == 1 && newY < 10 && newY > 5 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
             //Player 1 
-	    game.map[newY][newX] = player + piece.value;
+            game.map[newY][newX] = player + piece.value;
             piece.X = newX;
             piece.Y = newY;
             piece.placed = true;
             return 0;
         } else if (player == 2 && newY > -1 && newY < 4 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
-	    //Player 2
-	    game.map[newY][newX] = player + piece.value;
+            //Player 2
+            game.map[newY][newX] = player + piece.value;
             piece.X = newX;
             piece.Y = newY;
             piece.placed = true;
             return 0;
-	}
-	  else {
+        } else {
             return -1;
         }
     } else if (piece.taken == true) {
@@ -368,7 +366,7 @@ function playerTurn(game) {
     // 0 is setup
     if (turnNumber == 0) {
 
-        $(".piece").each(function() {
+        $(".piece").each(function () {
             $(this).draggable({
                 snap: ".boardPlace",
                 revert: true,
@@ -376,9 +374,9 @@ function playerTurn(game) {
             });
         });
 
-        $(".boardPlace").each(function() {
+        $(".boardPlace").each(function () {
             $(this).droppable({
-                drop: function(event, ui) {
+                drop: function (event, ui) {
                     var dragId = ui.draggable.attr("id");
                     var id = $(this).attr("id");
                     var Y = id.substr(id.length - 1);
@@ -393,6 +391,10 @@ function playerTurn(game) {
                         if ($("#P1SideBoard").children().length == 0) {
                             nextTurn(game);
                         }
+                    }
+                    for (int i = 0; i < boardValues.length; i++) {
+                        index = correlateValues(j, game);
+                        placePiece(2, index, game, j % 10, Math.floor(j / 10));
                     }
                 }
             });
@@ -418,12 +420,12 @@ function nextTurn(game) {
     console.log(game);
 
     $.ajax({
-        type:"POST",
-        contentType : "application/json",
+        type: "POST",
+        contentType: "application/json",
         url: "/sendGameData",
         data: JSON.stringify(game),
         dataType: 'json'
-    }).done(function(data) {
+    }).done(function (data) {
         console.log("Data Loaded!");
         game.turnNumber++;
         playerTurn(game);

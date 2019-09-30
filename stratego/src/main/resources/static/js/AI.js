@@ -108,17 +108,6 @@ function correlateValues(index, game) {
 	}
 }
 
-function generateArrays() {
-	for (var j = 0; j < boardValues.length; j++) {
-		//Board values are all the pieces in order - 1 array
-		//Correlate boardValues array with p2 array
-		index = correlateValues(j, gameObj);
-		console.log(index, gameObj);
-		placePiece(2, index, gameObj, j%10, Math.floor(j/10));
-		console.log(gameObj);
-	}
-}
-
 function capture(piece, value) {
 	//Execute capture	
 	let direction = -1; //null by default
