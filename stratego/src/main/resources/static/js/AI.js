@@ -19,19 +19,24 @@ var boardValues = [6,2,2,5,2,6,3,10,2,6,5,4,B,S,9,2,7,7,8,2,4,B,4,7,8,5,B,5,6,4,
 
 class Capture {
 	constructor(direction) {
+		//0 = Up
+		//1 = Left
+		//2 = Down
+		//3 = Right
 		this.direction = direction;
 		this.enemyValue = null;
+		this.enemyPiece = null;
 	}
 }
 
 class Piece {
 	// This will contain a value
-	constructor(value, priority, x, y) {
+	constructor(value, x, y) {
 		this.captureArray = []; // Array of capture objects, capture object contains direction, enemyValue 
 		this.value = value; //This should change
-		this.priority = priority;
 		this.x = x;
 		this.y = y;
+		this.lost = false;
 	}
 
 	function canCapture() {
@@ -70,11 +75,7 @@ class Piece {
 function generateArrays() {
 	//This initializes the capture arrays of each piece
 	for (var j = 0; j < boardValues.length; j++) {
-		let priority = 2;
-		if (boardValues[j] == 8 || boardValues[j] == 9 || boardValues[j] == 10) {
-			priority = 1;
-		}
-		piece = new Piece(boardValues[j], priority, j%10, Math.floor(j/10)); //Initialize piece with value
+		piece = new Piece(boardValues[j], j%10, Math.floor(j/10)); //Initialize piece with value
 		for (var i = 0; i < pieces.length; i++) {
 			//Push 4 capture objects onto piece.captureArray
 			for (var j = 0; i < 4; j++) {
@@ -82,12 +83,7 @@ function generateArrays() {
 				piece.captureArray.push(temp);
 			}
 		}
-		if (piece.priority == 1) {
-			// If priority is 1 only add to pieces array once
-			pieces.push(piece);
-		} else {
-			// If priority is 2 add to pieces array twice
-			pieces.push(piece);
+		if (piece.value != "F" && piece.value != "B") {
 			pieces.push(piece);
 		}
 	}
@@ -95,10 +91,77 @@ function generateArrays() {
 
 function capture(piece, value) {
 	//Execute capture	
+	let direction = -1; //null by default
+	//Search piece.captureArray for the value then move in that direction
+	for (let i = 0; i < piece.captureArray.length; i++) {
+		if (piece.value - piece.captureArray[i].enemyValue == value) {
+			direction = piece.captureArray[i].direction;
+		}
+	}
+	if (direction == 0) {
+		piece.y -= 1;
+	} else if (direction == 1) {
+		piece.x -= 1;
+	} else if (direction == 2) {
+		piece.y += 1;
+	} else if (direction == 3) {
+		piece.x += 1;
+	}
+	piece.captureArray[i].enemyPiece.lost = true;
+	$.ajax({
+		type: "POST",
+		contentType: "application/json",
+		url: "",
+		data: JSON.stringify(piece),
+		dataType: 'json',
+		cache: false,
+		timeout: 600000,
+		success: function(data) {
+			var json = JSON.stringify(data, null, 4);
+
+		}
+	},
+	error: function(e) {
+	
+	}); 
+
 }
 
 function run(piece, value) {
 	//Run in random direction
+	let direction = -1; //null by default
+	//Search piece.captureArray for the value then move in that direction
+	for (let i = 0; i < piece.captureArray.length; i++) {
+		if (piece.value - piece.captureArray[i].enemyValue == value) {
+			direction = piece.captureArray[i].direction;
+		}
+	}
+	if (direction == 0) {
+		piece.y -= 1;
+	} else if (direction == 1) {
+		piece.x -= 1;
+	} else if (direction == 2) {
+		piece.y += 1;
+	} else if (direction == 3) {
+		piece.x += 1;
+	}
+	$.ajax({
+		type: "POST",
+		contentType: "application/json",
+		url: "",
+		data: JSON.stringify(piece),
+		dataType: 'json',
+		cache: false,
+		timeout: 600000,
+		success: function(data) {
+			var json = JSON.stringify(data, null, 4);
+
+		}
+	},
+	error: function(e) {
+	
+	}); 
+
 }
 
 function getValue() {
@@ -123,9 +186,9 @@ function attack() {
 	let value = findCaptureValue(piece);
 	//If you can find a valid capture, capture with the most value
 	if (value > 0) {
-	capture(piece, value);
+		capture(piece, value);
 	} else if (value < 0) {
-	run(piece, value);
+		run(piece, value);
 	}
 	//Otherwise find the worst value and try to run away
 	//If both bestValue and worstValue are null, pick a random piece and move it in a random direction
