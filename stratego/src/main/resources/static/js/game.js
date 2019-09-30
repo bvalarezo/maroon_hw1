@@ -374,7 +374,6 @@ function getPieceIndex(game, dragId) {
 // Logic for Each Turn
 function playerTurn(game) {
     var turnNumber = game.turn;
-    console.log(game);
     // 0 is setup
     if (turnNumber == 0) {
         $("#playing").html("Place Pieces");
@@ -409,8 +408,6 @@ function playerTurn(game) {
             });
         });
 
-        // AI Places Pieces HERE
-
     } else {
         var teamPlaying = ((game.turn + 1) % 2) + 1;
         if (teamPlaying == 1) {
@@ -432,7 +429,11 @@ function playerTurn(game) {
                 });
             });
 
-            // Ai Places Piece Here using placePiece(1, getPieceIndex(game, dragId), game, X, Y)
+            // Ai Places Piece Here using placePiece(1, getPieceIndex(game, dragId), game, X, Y
+            for (var i = 0; i < boardValues.length; i++) {
+                index = correlateValues(i, game);
+                placePiece(2, index, game, i % 10, Math.floor(i / 10));
+            }
         }
         $(".boardPlace").each(function() {
             $(this).droppable({
