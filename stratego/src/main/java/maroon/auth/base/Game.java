@@ -1,6 +1,8 @@
 package maroon.auth.base;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.sql.Timestamp;
 
 public class Game {
     private int winner; // -1, 0, 1 [-1 is nobody][0 is player 1][1 is player 2]
@@ -9,6 +11,13 @@ public class Game {
     private ArrayList<Board> boards;
     private boolean complete = false;
     private boolean player = false; //false = AI, true = Human
+    private Timestamp timestamp;
+
+    public Game(){
+        Date date= new Date();
+        long time = date.getTime();
+        this.timestamp = new Timestamp(time);
+    }
 
     public int getWinner(){
         return winner;
@@ -62,6 +71,10 @@ public class Game {
 
     public void setPlayer(){
         this.player = true;
+    }
+
+    public Timestamp getTimestamp(){
+        return timestamp;
     }
 
 
