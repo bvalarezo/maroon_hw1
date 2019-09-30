@@ -120,6 +120,7 @@ public class UserController {
         return "redirect:/game";
     }
 
+    @PostMapping(value="/sendGameData", consumes = "application/json", produces = "application/json")
     @ResponseBody
     @PostMapping(value="/sendGameData", consumes = "application/json", produces = "application/json")
     public String sendBoard(HttpEntity<String> httpEntity){

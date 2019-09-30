@@ -1,6 +1,7 @@
 package maroon.auth.base;
 
 public class Piece {
+    List<Capture> captureArray;
     boolean placed = false;
     boolean lost = false;
     String id;
