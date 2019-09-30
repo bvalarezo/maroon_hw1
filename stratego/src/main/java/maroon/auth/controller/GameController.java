@@ -60,10 +60,9 @@ public class GameController {
     }
   
     @GetMapping("/getGames") 
-    public @ResponseBody ResponseEntity<List<Game>> getGames(Model model) {
-
+    public @ResponseBody List<Game> getGames(Model model) {
         List<Game> gameList = gameRepository.findByOwner(cachedUser.getUsername());
-        return new ResponseEntity<List<Game>>(gameList, HttpStatus.OK);
+        return gameList;
     }  
  
     @PostMapping(value="/sendGameData", consumes = "application/json", produces = "application/json")
