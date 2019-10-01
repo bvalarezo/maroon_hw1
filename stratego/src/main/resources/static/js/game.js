@@ -15,8 +15,27 @@ $(function() {
     }
 
     // Render Map
-    renderMap(initGame(setMap()));
+    renderMap(initGame(setMap()), true);
 });
+
+// Set the Map
+function setMap() {
+    var map = Array.from(Array(10), () => Array(10));
+
+    for (var y = 0; y < 10; y++) {
+        for (var x = 0; x < 10; x++) {
+            if (((1 < x && x < 4) || (5 < x && x < 8)) && (3 < y && y < 6)) {
+                map[y][x] = "-1";
+            } else {
+                map[y][x] = "0";
+            }
+
+        }
+    }
+
+    return map;
+}
+
 
 function initGame(Map) {
     var p1pieces = [];
@@ -151,6 +170,85 @@ function getSVG(piece, player) {
     return svg;
 }
 
+// Prints Map
+function renderMap(game, init) {
+    var n = 10;
+    var m = 10;
+    var player = ((game.turn + 1) % 2) + 1;
+
+    if (init == true) {
+        var table = $("<table></table>");
+        table.attr("class", "gameBoard");
+
+        for (i = 0; i < n; i++) {
+            var row = $("<tr></tr>");
+            for (j = 0; j < m; j++) {
+                var block = $("<td></td>");
+                var mapVal = game.map[i][j];
+                block.attr("id", "X" + j + "Y" + i);
+                if (mapVal == -1) {
+                    block.attr("class", "noMove boardPlace");
+                } else {
+                    block.attr("class", "empty boardPlace");
+                }
+                row.append(block);
+            }
+            table.append(row);
+        }
+
+        $("#gameBoard").append(table);
+
+        // Takes Pieces from array and sets on board
+        for (var i = 0; i < game.p1.length; i++) {
+            $("#P1SideBoard").append(getSVG(game.p1[i], 1));
+        }
+
+        for (var i = 0; i < game.p2.length; i++) {
+            $("#P2SideBoard").append(getSVG(game.p2[i], 2));
+        }
+
+        playerTurn(game);
+    } else {
+
+        console.log(game);
+
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < m; j++) {
+                var mapVal = game.map[i][j];
+
+                if (mapVal == -1) {
+                    $("#X" + j + "Y" + i).attr("class", "noMove boardPlace");
+                    $("#X" + j + "Y" + i).html("");
+                } else if (mapVal == 0) {
+                    $("#X" + j + "Y" + i).attr("class", "empty boardPlace");
+                    $("#X" + j + "Y" + i).html("");
+                }
+            }
+        }
+
+        for (var z = 0; z < game.p1.length; z++) {
+            var piece = game.p1[z];
+            var x = piece.X;
+            var y = piece.Y;
+            if ($("#X" + x + "Y" + y).html() == "") {
+                $("#X" + x + "Y" + y).attr("class", "boardPlace");
+                $("#X" + x + "Y" + y).append(getSVG(piece, 1));
+            }
+        }
+
+        for (var z = 0; z < game.p2.length; z++) {
+            var piece = game.p2[z];
+            var x = piece.X;
+            var y = piece.Y;
+
+            if ($("#X" + x + "Y" + y).html() == "") {
+                $("#X" + x + "Y" + y).attr("class", "boardPlace");
+                $("#X" + x + "Y" + y).append(getSVG(piece, 2));
+            }
+        }
+    }
+}
+
 function makePiece(charVal, multiVal) {
     var piece = {
         placed: false,
@@ -219,6 +317,7 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
     var piece;
     var newX = parseInt(newXStr);
     var newY = parseInt(newYStr);
+
     if (player == 1) {
         piece = game.p1[pieceIndex];
     } else {
@@ -232,18 +331,16 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
             piece.X = newX;
             piece.Y = newY;
             piece.placed = true;
-            $("#X" + newX + "Y" + newY).removeClass("empty");
             return 0;
         } else if (player == 2 && newY > -1 && newY < 4 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
             //Player 2
-	    //If the piece have not been placed yet
+            //If the piece have not been placed yet
             game.map[newY][newX] = player + piece.value;
             piece.X = newX;
             piece.Y = newY;
             piece.placed = true;
-            $("#X" + newX + "Y" + newY).removeClass("empty");
-	    var idToPull = checkIfOnSideboard(piece.id);
-	    $(idToPull).detach().appendTo("#X" + newX + "Y" + newY);
+            var idToPull = checkIfOnSideboard(piece.id);
+            $(idToPull).detach().appendTo("#X" + newX + "Y" + newY);
             return 0;
         } else {
             return -1;
@@ -252,13 +349,11 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
         if (player == 1) {
             $("#P1SideBoard").append(getSVG(piece, 1));
             game.map[piece.Y][piece.X] = "0";
-            $("#X" + piece.X + "Y" + piece.Y).removeClass("empty");
             piece.X = -1;
             piece.Y = -1;
         } else {
             $("#P2SideBoard").append(getSVG(piece, 2));
             game.map[piece.Y][piece.X] = "0";
-            $("#X" + piece.X + "Y" + piece.Y).removeClass("empty");
             piece.X = -1;
             piece.Y = -1;
         }
@@ -276,7 +371,6 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
                 $("X" + piece.X + "Y" + piece.Y).addClass("empty");
                 piece.X = newX;
                 piece.Y = newY;
-                // $("#X" + newX + "Y" + newY).append(getSVG(piece, player));
                 return 0;
 
             } else {
@@ -292,11 +386,13 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
             game.map[piece.Y][piece.X] = "0";
             $("X" + newX + "Y" + newY).removeClass("empty");
             $("X" + piece.X + "Y" + piece.Y).addClass("empty");
-	    var oldX = piece.X;
-	    var oldY = piece.Y;
+
+            var oldX = piece.X;
+            var oldY = piece.Y;
+
             piece.X = newX;
             piece.Y = newY;
-	    $(getSVG(piece, player)[0]).detach().appendTo("#X" + newX + "Y" + newY);
+            // $(getSVG(piece, player)[0]).detach().appendTo("#X" + newX + "Y" + newY);
             $("#X" + oldX + "Y" + oldY).empty();
             return 0;
         } else {
@@ -308,63 +404,10 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
 // Check if spot is empty
 
 function isEmpty(X, Y) {
-    return $("#X" + X + "Y" + Y).hasClass("empty") || $("X" + X + "Y" + Y).hasClass("noMove");
-}
-
-// Set the Map
-function setMap() {
-    var map = Array.from(Array(10), () => Array(10));
-
-    for (var y = 0; y < 10; y++) {
-        for (var x = 0; x < 10; x++) {
-            if (((1 < x && x < 4) || (5 < x && x < 8)) && (3 < y && y < 6)) {
-                map[y][x] = "-1";
-            } else {
-                map[y][x] = "0";
-            }
-
-        }
+    if ($("X" + X + "Y" + Y).hasClass("noMove")) {
+        return 0;
     }
-
-    return map;
-}
-
-// Prints Map
-function renderMap(game) {
-
-    var table = $("<table></table>");
-    table.attr("class", "gameBoard");
-    var n = 10;
-    var m = 10;
-
-    for (i = 0; i < n; i++) {
-        var row = $("<tr></tr>");
-        for (j = 0; j < m; j++) {
-            var block = $("<td></td>");
-            var mapVal = game.map[i][j];
-            block.attr("id", "X" + j + "Y" + i);
-            if (mapVal == -1) {
-                block.attr("class", "noMove boardPlace");
-            } else {
-                block.attr("class", "empty boardPlace");
-            }
-            row.append(block);
-        }
-        table.append(row);
-    }
-
-    $("#gameBoard").append(table);
-
-    // Takes Pieces from array and sets on board
-    for (var i = 0; i < game.p1.length; i++) {
-        $("#P1SideBoard").append(getSVG(game.p1[i], 1));
-    }
-
-    for (var i = 0; i < game.p2.length; i++) {
-        $("#P2SideBoard").append(getSVG(game.p2[i], 2));
-    }
-
-    playerTurn(game);
+    return $("#X" + X + "Y" + Y).hasClass("empty");
 }
 
 function getPieceIndex(game, dragId) {
@@ -390,7 +433,7 @@ function getPieceIndex(game, dragId) {
 // Logic for Each Turn
 function playerTurn(game) {
     var turnNumber = game.turn;
-    var teamPlaying = ((game.turn + 1) % 2) + 1;
+    var teamPlaying = ((turnNumber + 1) % 2) + 1;
     // 0 is setup
     if (turnNumber == 0) {
         $("#playing").html("Place Pieces");
@@ -410,7 +453,6 @@ function playerTurn(game) {
                 helper: "clone"
             });
 
-            $(this).draggable("enable");
         });
 
         $(".boardPlace").each(function() {
@@ -421,14 +463,22 @@ function playerTurn(game) {
                     var Y = id.substr(id.length - 1);
                     var X = id.substr(id.length - 3, 1);
                     if (placePiece(1, getPieceIndex(game, dragId), game, X, Y) == 0) {
-                        ui.draggable.detach().appendTo($(this));
-
+                        // ui.draggable.detach().appendTo($(this));
+                        ui.draggable.detach();
                         $(ui.helper).remove();
                         $(ui.draggable).draggable("disable");
                         $(this).droppable("disable");
-                        console.log($(this))
+                        console.log(game);
+                        renderMap(game, false);
 
                         if (($("#P1SideBoard").children().length == 0 || testing == true) && game.turn == 0) {
+
+                            for (var i = 0; i < boardValues.length; i++) {
+                                var index = correlateValues(i, game);
+                                placePiece(2, index, game, i % 10, Math.floor(i / 10));
+                                //Append the svg to the board
+                            }
+
                             clearDrags(teamPlaying)
                             nextTurn(game);
                         } else if (game.turn != 0) {
@@ -439,11 +489,6 @@ function playerTurn(game) {
                 }
             });
         });
-	for (var i = 0; i < boardValues.length; i++) {
-                 index = correlateValues(i, game);
-                 placePiece(2, index, game, i % 10, Math.floor(i / 10));
-		 //Append the svg to the board
-             }
 
     } else {
 
@@ -451,7 +496,15 @@ function playerTurn(game) {
             $("#playing").html("Blue Teams Move");
 
             $(".piece").each(function() {
-                $(this).draggable("enable");
+                if (!$(this).data('ui-draggable')) {
+                    $(this).draggable({
+                        snap: ".boardPlace",
+                        revert: true,
+                        helper: "clone"
+                    });
+                } else {
+                    $(this).draggable("enable");
+                }
             });
 
         } else {
@@ -461,10 +514,10 @@ function playerTurn(game) {
             $(".enemypiece").each(function() {
                 //$(this).draggable("enable");
             });
-	//make move here
-	AIMove(game);	
-	nextTurn(game);
-            // Ai Places Piece Here using placePiece(1, getPieceIndex(game, dragId), game, X, Y
+
+            //make move here
+            AIMove(game);
+            nextTurn(game);
 
         }
 
@@ -483,6 +536,7 @@ function playerTurn(game) {
     }
 }
 
+
 function clearDrags(teamPlaying) {
     if (teamPlaying == 1) {
         $(".piece").each(function() {
@@ -490,8 +544,8 @@ function clearDrags(teamPlaying) {
         });
     } else {
         $(".enemypiece").each(function() {
-       	    //$(".enemypiece").draggable("disable");
-	});
+            //$(".enemypiece").draggable("disable");
+        });
     }
 
     $(".boardPlace").each(function() {
@@ -528,6 +582,10 @@ function attack(game, piece, X, Y) {
     var valAttacked = pieceBeingAttacked.substr(1, 1);
     var teamAttacking = ((game.turn + 1) % 2) + 1;
     var valAttacking = piece.val;
+
+    if ($("X" + X + "Y" + Y).hasClass("noMove")) {
+        return -1;
+    }
 
     if (valAttacking == "F" || valAttacking == "B") {
         console.log("Flags and Bombs can't move!");
@@ -627,31 +685,22 @@ function attack(game, piece, X, Y) {
 
 // Disables UI and displays modal
 function endScreen(win, game) {
-	// disables canvas below
-	// if win then show win screen
-	// if lose then show lose screen
-	var modal = document.createElement("div");
-	var modalContent = document.createElement("div");
-	var text = document.createElement("p");
-	modal.setAttribute("id", "endScreen");
-	modal.setAttribute("class", "modal");
-	modal.style.display = "block";
-	modalContent.setAttribute("class", "modal-content");
-	if (win == true) {
-		text.innerHTML = "You Win!";
-	} else {
-		text.innerHTML = "You Lose!";
-	}
-	modalContent.appendChild(text);
-	modal.appendChild(modalContent);
-	document.body.appendChild(modal);
-}	
-
-
-
-
-
-
-
-
-
+    // disables canvas below
+    // if win then show win screen
+    // if lose then show lose screen
+    var modal = document.createElement("div");
+    var modalContent = document.createElement("div");
+    var text = document.createElement("p");
+    modal.setAttribute("id", "endScreen");
+    modal.setAttribute("class", "modal");
+    modal.style.display = "block";
+    modalContent.setAttribute("class", "modal-content");
+    if (win == true) {
+        text.innerHTML = "You Win!";
+    } else {
+        text.innerHTML = "You Lose!";
+    }
+    modalContent.appendChild(text);
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+}
