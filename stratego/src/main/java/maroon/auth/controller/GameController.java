@@ -79,7 +79,7 @@ public class GameController {
         else {
             //turn n, add another board
             cachedGame.incrementTurns(); //increment the turn
-            cachedGame.addBoard(newBoard); //add board to list
+            cachedGame.addBoard(newBoard); // add board to list
         }
         //check if there was a winner
         //update gamerepository.save()

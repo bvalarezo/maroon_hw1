@@ -3,6 +3,7 @@ package maroon.auth.base;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -14,7 +15,7 @@ public class Game {
     private String owner;
     private int winner; // -1, 0, 1 [-1 is nobody][0 is player 1][1 is player 2]
     private int turns;
-    private List<Board> boards;
+    private List<Board> boards ;
     private boolean complete = false;
     private String timestamp;
 
@@ -24,6 +25,7 @@ public class Game {
         Date date = new Date();
         date.setTime(ts.getTime());
         this.timestamp = new SimpleDateFormat("EEE, d MMM yyyy hh:mm aaa z").format(date);
+        this.boards = new ArrayList<Board>();
     }
 
     public int getWinner(){
@@ -58,7 +60,7 @@ public class Game {
     }
 
     public void addBoard(Board board){
-        this.boards.add(this.boards.size(),board);
+        this.boards.add(this.boards.size(), board);
     }
 
     public int getTurns(){
