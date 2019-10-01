@@ -232,15 +232,18 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
             piece.X = newX;
             piece.Y = newY;
             piece.placed = true;
-            $("X" + newX + "Y" + newY).removeClass("empty");
+            $("#X" + newX + "Y" + newY).removeClass("empty");
             return 0;
         } else if (player == 2 && newY > -1 && newY < 4 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
             //Player 2
+	    //If the piece have not been placed yet
             game.map[newY][newX] = player + piece.value;
             piece.X = newX;
             piece.Y = newY;
             piece.placed = true;
-            $("X" + newX + "Y" + newY).removeClass("empty");
+            $("#X" + newX + "Y" + newY).removeClass("empty");
+	    var idToPull = checkIfOnSideboard(piece.id);
+	    $(idToPull).detach().appendTo("#X" + newX + "Y" + newY);
             return 0;
         } else {
             return -1;
@@ -249,13 +252,13 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
         if (player == 1) {
             $("#P2SideBoard").append(getSVG(piece, 1));
             game.map[piece.Y][piece.X] = 0;
-            $("X" + piece.X + "Y" + piece.Y).removeClass("empty");
+            $("#X" + piece.X + "Y" + piece.Y).removeClass("empty");
             piece.X = -1;
             piece.Y = -1;
         } else {
             $("#P1SideBoard").append(getSVG(piece, 2));
             game.map[piece.Y][piece.X] = 0;
-            $("X" + piece.X + "Y" + piece.Y).removeClass("empty");
+            $("#X" + piece.X + "Y" + piece.Y).removeClass("empty");
             piece.X = -1;
             piece.Y = -1;
         }
@@ -452,15 +455,18 @@ function playerTurn(game) {
             });
 
             // Ai Places Piece Here using placePiece(1, getPieceIndex(game, dragId), game, X, Y
-             for (var i = 0; i < boardValues.length; i++) {
+             //Should initialize on turn 0 not here
+	     for (var i = 0; i < boardValues.length; i++) {
                  index = correlateValues(i, game);
                  placePiece(2, index, game, i % 10, Math.floor(i / 10));
+		 //Append the svg to the board
+
              }
+		
         }
 
         $(".boardPlace").each(function() {
             $(this).droppable("enable");
-
 
             // If takes a pieces uses takePiece()
             // Else moves

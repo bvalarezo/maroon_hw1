@@ -15,7 +15,7 @@ var worstPieceValue = null;
 var bestValue = null;
 var worstValue = null;
 var pieces = []; //Array of piece objects
-var boardValues = ['6','2','2','5','2','6','3','10','2','6','5','4','B','S','9','2','7','7','8','2','4','B','4','7','8','5','B','5','6','4','2','3','B','2','3','B','F','B','3','3'];
+var boardValues = ['6','2','2','5','2','6','3','10','2','6','5','4','B','1','9','2','7','7','8','2','4','B','4','7','8','5','B','5','6','4','2','3','B','2','3','B','F','B','3','3'];
 var directions = [0,1,2,3]; //0 = up, 1 = left, 2 = down, 3 = right
 
 $(function() {
@@ -104,6 +104,14 @@ function correlateValues(index, game) {
 	for (let i = 0; i < game.p2.length; i++) {
 		if (boardValues[index] == game.p2[i].value && game.p2[i].placed == false) {
 			return i;
+		}
+	}
+}
+
+function checkIfOnSideboard(id) {
+	for (var i = 0; i < 8; i++) {
+		if ($("#P2SideBoard").has("#player2" + id + i.toString())) {
+			return ("#player2" + id);
 		}
 	}
 }
