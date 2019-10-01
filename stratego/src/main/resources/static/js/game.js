@@ -474,6 +474,7 @@ function playerTurn(game) {
     }
 }
 
+
 function clearDrags(teamPlaying) {
     if (teamPlaying == 1) {
         $(".piece").each(function() {
