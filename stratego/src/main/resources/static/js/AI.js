@@ -309,17 +309,19 @@ function move(pieceTemp, game) {
 			if (i == 0) {
 				//Move up
 				placePiece(2, getAIPieceIndex(piece, game), game, piece.X.toString(), (piece.Y-1).toString());
+				return 0;
 			} else if (i == 1) {
 				//Move left
 				placePiece(2, getAIPieceIndex(piece, game), game, (piece.X-1).toString(), piece.Y.toString());
-
+				return 0;
 			} else if (i == 2) {
 				//Move down
 				placePiece(2, getAIPieceIndex(piece, game), game, piece.X.toString(), (piece.Y+1).toString());
-
+				return 0;
 			} else if (i == 3) {
 				//Move right
 				placePiece(2, getAIPieceIndex(piece, game), game, (piece.X+1).toString(), piece.Y.toString());
+				return 0;
 			}
 
 		}
@@ -328,7 +330,7 @@ function move(pieceTemp, game) {
 	return -1;
 }
 
-function attack(game) {
+function AIMove(game) {
 	var piece = getBestValuePiece(game);
 
 	if (piece == null) {

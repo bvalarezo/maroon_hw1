@@ -250,13 +250,13 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
         }
     } else if (piece.taken == true) {
         if (player == 1) {
-            $("#P2SideBoard").append(getSVG(piece, 1));
+            $("#P1SideBoard").append(getSVG(piece, 1));
             game.map[piece.Y][piece.X] = "0";
             $("#X" + piece.X + "Y" + piece.Y).removeClass("empty");
             piece.X = -1;
             piece.Y = -1;
         } else {
-            $("#P1SideBoard").append(getSVG(piece, 2));
+            $("#P2SideBoard").append(getSVG(piece, 2));
             game.map[piece.Y][piece.X] = "0";
             $("#X" + piece.X + "Y" + piece.Y).removeClass("empty");
             piece.X = -1;
@@ -292,9 +292,12 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
             game.map[piece.Y][piece.X] = "0";
             $("X" + newX + "Y" + newY).removeClass("empty");
             $("X" + piece.X + "Y" + piece.Y).addClass("empty");
+	    var oldX = piece.X;
+	    var oldY = piece.Y;
             piece.X = newX;
             piece.Y = newY;
-            // $("#X" + newX + "Y" + newY).append(getSVG(piece, player));
+	    $(getSVG(piece, player)[0]).detach().appendTo("#X" + newX + "Y" + newY);
+            $("#X" + oldX + "Y" + oldY).empty();
             return 0;
         } else {
             return -1;
@@ -305,7 +308,7 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
 // Check if spot is empty
 
 function isEmpty(X, Y) {
-    return $("#X" + X + "Y" + Y).hasClass("empty") || $("X" + newX + "Y" + newY).removeClass("empty");
+    return $("#X" + X + "Y" + Y).hasClass("empty") || $("X" + X + "Y" + Y).hasClass("noMove");
 }
 
 // Set the Map
@@ -459,7 +462,8 @@ function playerTurn(game) {
                 $(this).draggable("enable");
             });
 	//make move here
-	attack(game);	
+	AIMove(game);	
+	nextTurn(game);
             // Ai Places Piece Here using placePiece(1, getPieceIndex(game, dragId), game, X, Y
 
         }
