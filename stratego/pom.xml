@@ -56,6 +56,7 @@
 
 	<build>
 		<plugins>
+
 			<plugin>
 			<!-- Build an executable JAR -->
 			<groupId>org.springframework.boot</groupId>
@@ -64,6 +65,22 @@
 				<mainClass>maroon.auth.WebApplication</mainClass>
 			</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>com.microsoft.azure</groupId>
+				<artifactId>azure-webapp-maven-plugin</artifactId>
+				<version>1.7.0</version>
+				<configuration>
+					<linuxRuntime>tomcat 8.5-jre8</linuxRuntime>
+					<authentication>
+						<serverId>azure-auth</serverId>
+					</authentication>
+					<appName>Stratego-Maroon</appName>
+					<resourceGroup>CSE308-Stratego</resourceGroup>
+					<!-- ... -->
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
