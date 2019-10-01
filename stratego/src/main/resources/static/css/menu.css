@@ -49,7 +49,7 @@ input[type=button] {
 }
 
 input[type=submit],
-input[type=button] hover {
+input[type=button]: hover {
     color: #800000;
     background-color: gold;
     border: 3px solid #800000;
