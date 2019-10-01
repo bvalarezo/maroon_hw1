@@ -215,8 +215,10 @@ function makePiece(charVal, multiVal) {
     return piece;
 }
 
-function placePiece(player, pieceIndex, game, newX, newY) {
+function placePiece(player, pieceIndex, game, newXStr, newYStr) {
     var piece;
+    var newX = parseInt(newXStr);
+    var newY = parseInt(newYStr);
     if (player == 1) {
         piece = game.p1[pieceIndex];
     } else {
@@ -230,6 +232,7 @@ function placePiece(player, pieceIndex, game, newX, newY) {
             piece.X = newX;
             piece.Y = newY;
             piece.placed = true;
+            $("X" + newX + "Y" + newY).removeClass("empty");
             return 0;
         } else if (player == 2 && newY > -1 && newY < 4 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
             //Player 2
@@ -237,6 +240,7 @@ function placePiece(player, pieceIndex, game, newX, newY) {
             piece.X = newX;
             piece.Y = newY;
             piece.placed = true;
+            $("X" + newX + "Y" + newY).removeClass("empty");
             return 0;
         } else {
             return -1;
@@ -245,11 +249,13 @@ function placePiece(player, pieceIndex, game, newX, newY) {
         if (player == 1) {
             $("#P2SideBoard").append(getSVG(piece, 1));
             game.map[piece.Y][piece.X] = 0;
+            $("X" + piece.X + "Y" + piece.Y).removeClass("empty");
             piece.X = -1;
             piece.Y = -1;
         } else {
             $("#P1SideBoard").append(getSVG(piece, 2));
             game.map[piece.Y][piece.X] = 0;
+            $("X" + piece.X + "Y" + piece.Y).removeClass("empty");
             piece.X = -1;
             piece.Y = -1;
         }
@@ -261,11 +267,13 @@ function placePiece(player, pieceIndex, game, newX, newY) {
                     (newX == piece.X && newY != piece.Y)) &&
                 newY < 10 && newY > -1 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
 
-                game.map[newY][newX] = game.map[piece.Y, piece.X]
-                game.map[piece.Y][piece.X] = 0
+                game.map[newY][newX] = game.map[piece.Y][piece.X];
+                game.map[piece.Y][piece.X] = 0;
+                $("X" + newX + "Y" + newY).removeClass("empty");
+                $("X" + piece.X + "Y" + piece.Y).addClass("empty");
                 piece.X = newX;
                 piece.Y = newY;
-                $("#X" + newX + "Y" + newY).append(getSVG(piece, player));
+                // $("#X" + newX + "Y" + newY).append(getSVG(piece, player));
                 return 0;
 
             } else {
@@ -275,13 +283,15 @@ function placePiece(player, pieceIndex, game, newX, newY) {
             ((newX == piece.X + 1 && newY == piece.Y + 0) ||
                 (newX == piece.X - 1 && newY == piece.Y + 0) ||
                 (newX == piece.X + 0 && newY == piece.Y + 1) ||
-                (newX == piece.X + 0 && newY == piece.Y + 1)) &&
+                (newX == piece.X + 0 && newY == piece.Y - 1)) &&
             newY < 10 && newY > -1 && newX < 10 && newX > -1 && piece.value != "B" && piece.value != "F" && isEmpty(newX, newY)) {
-            game.map[newY][newX] = game.map[piece.Y][piece.X]
-            game.map[piece.Y][piece.X] = 0
+            game.map[newY][newX] = game.map[piece.Y][piece.X];
+            game.map[piece.Y][piece.X] = 0;
+            $("X" + newX + "Y" + newY).removeClass("empty");
+            $("X" + piece.X + "Y" + piece.Y).addClass("empty");
             piece.X = newX;
             piece.Y = newY;
-            $("#X" + newX + "Y" + newY).append(getSVG(piece, player));
+            // $("#X" + newX + "Y" + newY).append(getSVG(piece, player));
             return 0;
         } else {
             return -1;
@@ -292,7 +302,7 @@ function placePiece(player, pieceIndex, game, newX, newY) {
 // Check if spot is empty
 
 function isEmpty(X, Y) {
-    return $("#X" + X + "Y" + Y).hasClass("empty") || $("#X" + X + "Y" + Y).hasClass("noMove");
+    return $("#X" + X + "Y" + Y).hasClass("empty") || $("X" + newX + "Y" + newY).removeClass("empty");
 }
 
 // Set the Map
@@ -374,6 +384,7 @@ function getPieceIndex(game, dragId) {
 // Logic for Each Turn
 function playerTurn(game) {
     var turnNumber = game.turn;
+    var teamPlaying = ((game.turn + 1) % 2) + 1;
     // 0 is setup
     if (turnNumber == 0) {
         $("#playing").html("Place Pieces");
@@ -386,6 +397,16 @@ function playerTurn(game) {
             });
         });
 
+        $(".enemypiece").each(function() {
+            $(this).draggable({
+                snap: ".boardPlace",
+                revert: true,
+                helper: "clone"
+            });
+
+            $(this).draggable("enable");
+        });
+
         $(".boardPlace").each(function() {
             $(this).droppable({
                 drop: function(event, ui) {
@@ -397,10 +418,15 @@ function playerTurn(game) {
                         ui.draggable.detach().appendTo($(this));
 
                         $(ui.helper).remove();
-                        $(ui.draggable).draggable("destroy");
-                        $(this).droppable("destroy");
+                        $(ui.draggable).draggable("disable");
+                        $(this).droppable("disable");
+                        console.log($(this))
 
-                        if ($("#P1SideBoard").children().length == 0 || testing == true) {
+                        if (($("#P1SideBoard").children().length == 0 || testing == true) && game.turn == 0) {
+                            clearDrags(teamPlaying)
+                            nextTurn(game);
+                        } else if (game.turn != 0) {
+                            clearDrags(teamPlaying)
                             nextTurn(game);
                         }
                     }
@@ -409,100 +435,58 @@ function playerTurn(game) {
         });
 
     } else {
-        var teamPlaying = ((game.turn + 1) % 2) + 1;
+
         if (teamPlaying == 1) {
             $("#playing").html("Blue Teams Move");
+
             $(".piece").each(function() {
-                $(this).draggable({
-                    snap: ".boardPlace",
-                    revert: true,
-                    helper: "clone"
-                });
+                $(this).draggable("enable");
             });
+
         } else {
+
             $("#playing").html("Red Teams Move");
+
             $(".enemypiece").each(function() {
-                $(this).draggable({
-                    snap: ".boardPlace",
-                    revert: true,
-                    helper: "clone"
-                });
+                $(this).draggable("enable");
             });
 
             // Ai Places Piece Here using placePiece(1, getPieceIndex(game, dragId), game, X, Y
-            for (var i = 0; i < boardValues.length; i++) {
-                index = correlateValues(i, game);
-                placePiece(2, index, game, i % 10, Math.floor(i / 10));
-            }
+            // for (var i = 0; i < boardValues.length; i++) {
+            //     index = correlateValues(i, game);
+            //     placePiece(2, index, game, i % 10, Math.floor(i / 10));
+            // }
         }
+
         $(".boardPlace").each(function() {
-            $(this).droppable({
-                drop: function(event, ui) {
-                    console.log("Attempt");
-                    var dragId = ui.draggable.attr("id");
-                    var id = $(this).attr("id");
-                    $(".boardPlace").each(function() {
-                        $(this).droppable({
-                            drop: function(event, ui) {
-                                console.log("Attempt");
-                                var dragId = ui.draggable.attr("id");
-                                var id = $(this).attr("id");
-                                var Y = id.substr(id.length - 1);
-                                var X = id.substr(id.length - 3, 1);
-                                if (placePiece(1, getPieceIndex(game, dragId), game, X, Y) == 0) {
-                                    ui.draggable.detach().appendTo($(this));
+            $(this).droppable("enable");
 
-                                    $(ui.helper).remove();
-                                    $(ui.draggable).draggable("destroy");
-                                    $(this).droppable("destroy");
 
-                                    clearDrags();
-
-                                    nextTurn(game);
-                                }
-                            }
-                        });
-                    });
-                    var Y = id.substr(id.length - 1);
-                    var X = id.substr(id.length - 3, 1);
-                    if (placePiece(1, getPieceIndex(game, dragId), game, X, Y) == 0) {
-                        ui.draggable.detach().appendTo($(this));
-
-                        $(ui.helper).remove();
-                        $(ui.draggable).draggable("destroy");
-                        $(this).droppable("destroy");
-
-                        clearDrags();
-
-                        nextTurn(game);
-                    }
-                }
-            });
+            // If takes a pieces uses takePiece()
+            // Else moves
+            // Check if last moveable pieces
+            // Removes Pieces
+            // Sends win receipt if necessary and opens win modal
+            // Updates piece and map
+            // cant move back and forth 3 consecutive turns
         });
 
-
-        // If takes a pieces uses takePiece()
-        // Else moves
-        // Check if last moveable pieces
-        // Removes Pieces
-        // Sends win receipt if necessary and opens win modal
-        // Updates piece and map
-        // cant move back and forth 3 consecutive turns
     }
-
 }
 
-function clearDrags() {
-    $(".enemypiece").each(function() {
-        $(this).draggable("destroy");
-    });
-
-    $(".piece").each(function() {
-        $(this).draggable("destroy");
-    });
+function clearDrags(teamPlaying) {
+    if (teamPlaying == 1) {
+        $(".piece").each(function() {
+            $(this).draggable("disable");
+        });
+    } else {
+        $(".enemypiece").each(function() {
+            $(this).draggable("disable");
+        });
+    }
 
     $(".boardPlace").each(function() {
-        $(this).droppable("destroy");
+        $(this).droppable("disable");
     });
 }
 
