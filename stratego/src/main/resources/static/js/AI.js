@@ -24,9 +24,9 @@ $(function() {
 
 		});
 
-function canCapture(piece) {
+function canCapture(piece, game) {
 	//This loops through the captureArray and checks for a non arbitrary value	
-	let captureArray = getCaptureArray(piece);
+	let captureArray = getCaptureArray(piece, game);
 	for (let i = 0; i < captureArray.length; i++) {
 		if (captureArray[i] != -11) {
 			return true;
@@ -44,42 +44,63 @@ function initEnemyMap() {
 	return map;
 }
 
-function getCaptureArray(piece) {
+function getCaptureArray(piece, game) {
 	//Checks all 4 directions if a piece is within capture range and its values	
 	//By default is -11 if no enemy piece is there
+	//Only the AI is going to use this function so hard code player 2
 	var captureArray = [-11,-11,-11,-11];
+	var value = piece.value;
 	for (let i = 0; i < directions.length; i++) {
 		if (directions[i] == 0) {
 			//up
-			if ((game.map[piece.y-1][piece.x])[0] == "1") {
-				captureArray[i] = (game.map[piece.y-1][piece.x])[1];
+			if (piece.Y > 0 && game.map[piece.Y-1][piece.X].substring(0,1) == "1") {
+				captureArray[i] = game.map[piece.Y-1][piece.X];
+			} else if (game.map[piece.Y-1][piece.X] != "0") {
+				captureArray[i] = "0";
+			} else if (game.map[piece.Y-1][piece.X] != "-1") {
+				captureArray[i] = "-1";
 			}
-		} else if (direction[i] == 1) {
+		} else if (directions[i] == 1) {
 			//left
-			if ((game.map[piece.y][piece.x-1])[0] == "1") {
-				captureArray[i] = (game.map[piece.y][piece.x-1])[1];
+			if (piece.X > 0 && game.map[piece.Y][piece.X-1].substring(0,1) == "1") {
+				captureArray[i] = game.map[piece.Y][piece.X-1];
+			} else if (game.map[piece.Y][piece.X-1] != "0") {
+				captureArray[i] = "0";
+			} else if (game.map[piece.Y][piece.X-1] != "-1") {
+				captureArray[i] = "-1";
 			}
-		} else if (direction[i] == 2) {
+
+		} else if (directions[i] == 2) {
 			//down
-			if ((game.map[piece.y+1][piece.x])[0] == "1") {
-				captureArray[i] = (game.map[piece.y+1][piece.x])[1];
+			if (piece.Y < 9 && game.map[piece.Y+1][piece.X].substring(0,1) == "1") {
+				captureArray[i] = game.map[piece.Y+1][piece.X];
+			} else if (game.map[piece.Y+1][piece.X] != "0") {
+				captureArray[i] = "0";
+			} else if (game.map[piece.Y+1][piece.X] != "-1") {
+				captureArray[i] = "-1";
 			}
-		} else if (direction[i] == 3) {
+
+		} else if (directions[i] == 3) {
 			//right
-			if ((game.map[piece.y-1][piece.x])[0] == "1") {
-				captureArray[i] = (game.map[piece.y][piece.x+1])[1];
+			if (piece.X < 9 && game.map[piece.Y][piece.X+1].substring(0,1) == "1") {
+				captureArray[i] = game.map[piece.Y][piece.X+1];
+			} else if (game.map[piece.Y][piece.X+1] != "0") {
+				captureArray[i] = "0";
+			} else if (game.map[piece.Y][piece.X+1] != "-1") {
+				captureArray[i] = "-1";
 			}
+
 		}
 	}
 	return captureArray;
 }
 
-function findCaptureValue(piece) {
+function findCaptureValue(piece, game) {
 	//This function gets the best capture value if its greater than 0
 	//Otherwise returns worst capture value
 	//For individual piece
 	//If this function returns 11 then there is no capture value
-	let capArray = getCaptureArray(piece);	
+	let capArray = getCaptureArray(piece, game);	
 	let bestCapValue = 11; //Highest possible number
 	let worstCapValue = 11; //Highest possible number
 	for (let i = 0; i < capArray.length; i++) {
@@ -190,43 +211,77 @@ error: function(e) {
 });
 }
 
-function getValue() {
+function getBestValuePiece(game) {
 	//Generates the best valued moved for all pieces
-	let bestValue = 0;
-	let worstValue = 0;
+	var bestValue = 0;
+	var worstValue = 0;
+	var bestPiece = null;
+	var worstPiece = null;
 	for (let i = 0; i < game.p2.length; i++) {
-		if (canCapture(game.p2[i])) {
-			let tempVal = findCapturePiece(game.p2[i]);
+		if (canCapture(game.p2[i],game)) {
+			//If you can capture, get the best/worst value out of capture array
+			let tempVal = findCaptureValue(game.p2[i], game);
 			if (tempVal > bestValue) {
 				bestValue = tempVal; 
+				bestPiece = game.p2[i];
 			}
 			if (tempVal < worstValue) {
 				worstValue = tempVal;
+				worstPiece = game.p2[i];
 			}
 		}
 	}
 	if (bestValue == 11) {
-		//If no piece has a solified capture value then return worst value and run away
-		return worstValue;
+		//If no piece has a solid capture value then return worst valued piece and run away
+		return worstPiece;
 	} else {
 		//Otherwise return bestValue
-		return bestValue;
+		return bestPiece;
 	}
 }
 
-function move(piece) {
-	let captureArray = getCaptureArray(piece);
+function move(piece, game) {
+	let captureArray = getCaptureArray(piece, game);
 	for (let i = 0; i < directions.length; i++) {
-		if (captureArray[i] == 0) {
-			//Moves the game in the first direction that is available
-			getPieceIndex(game, piece.id);
+		if (captureArray[i] == "0") {
+			//Moves the piece in the first direction that is available
+			var piece = game.p1[getPieceIndex(game, piece.id)];
+			if (i == 0) {
+				//Move up
+				placePiece(2, getPieceIndex(game, piece.id), game, piece.X.toString(), (piece.Y-1).toString());
+			} else if (i == 1) {
+				//Move left
+				placePiece(2, getPieceIndex(game, piece.id), game, (piece.X-1).toString(), piece.Y.toString());
+
+			} else if (i == 2) {
+				//Move down
+				placePiece(2, getPieceIndex(game, piece.id), game, piece.X.toString(), (piece.Y+1).toString());
+
+			} else if (i == 3) {
+				//Move right
+				placePiece(2, getPieceIndex(game, piece.id), game, (piece.X+1).toString(), piece.Y.toString());
+			}
+
 		}
 	}
 	//if all spots are taken then just do another piece
+	return -1;
 }
 
-function attack(piece) {
-	let value = findCaptureValue(piece);
+function attack(game) {
+	var piece = getBestValuePiece(game);
+
+	if (piece == null) {
+		//Move random piece
+		var pieceToMove;
+		pieceToMove = game.p2[Math.floor(Math.random() * game.p2.length)]; 
+		while(move(pieceToMove, game) == -1) {
+			pieceToMove = game.p2[Math.floor(Math.random() * game.p2.length)]; 
+		}
+		return;
+	}
+
+	var value = findCaptureValue(piece);
 	//If you can find a valid capture, capture with the most value
 	if (value > 0 && value < 11) {
 		capture(piece, value);
@@ -235,9 +290,4 @@ function attack(piece) {
 	}
 	//Otherwise find the worst value and try to run away
 	//If both bestValue and worstValue are null, pick a random piece and move it in a random direction
-	else {
-		//Move random piece
-		pieceToMove = game.p2[Math.random() * game.p2.length]; 
-		move(pieceToMove)
-	}
 }

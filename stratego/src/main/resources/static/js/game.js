@@ -315,9 +315,9 @@ function setMap() {
     for (var y = 0; y < 10; y++) {
         for (var x = 0; x < 10; x++) {
             if (((1 < x && x < 4) || (5 < x && x < 8)) && (3 < y && y < 6)) {
-                map[y][x] = -1;
+                map[y][x] = "-1";
             } else {
-                map[y][x] = 0;
+                map[y][x] = "0";
             }
 
         }
@@ -436,6 +436,11 @@ function playerTurn(game) {
                 }
             });
         });
+	for (var i = 0; i < boardValues.length; i++) {
+                 index = correlateValues(i, game);
+                 placePiece(2, index, game, i % 10, Math.floor(i / 10));
+		 //Append the svg to the board
+             }
 
     } else {
 
@@ -453,16 +458,10 @@ function playerTurn(game) {
             $(".enemypiece").each(function() {
                 $(this).draggable("enable");
             });
-
+	//make move here
+	attack(game);	
             // Ai Places Piece Here using placePiece(1, getPieceIndex(game, dragId), game, X, Y
-             //Should initialize on turn 0 not here
-	     for (var i = 0; i < boardValues.length; i++) {
-                 index = correlateValues(i, game);
-                 placePiece(2, index, game, i % 10, Math.floor(i / 10));
-		 //Append the svg to the board
 
-             }
-		
         }
 
         $(".boardPlace").each(function() {
