@@ -48,48 +48,55 @@ function getCaptureArray(piece, game) {
 	//Checks all 4 directions if a piece is within capture range and its values	
 	//By default is -11 if no enemy piece is there
 	//Only the AI is going to use this function so hard code player 2
-	var captureArray = [-11,-11,-11,-11];
+	var captureArray = ["-11","-11","-11","-11"];
 	var value = piece.value;
 	for (let i = 0; i < directions.length; i++) {
 		if (directions[i] == 0) {
 			//up
-			if (piece.Y > 0 && game.map[piece.Y-1][piece.X].substring(0,1) == "1") {
-				captureArray[i] = game.map[piece.Y-1][piece.X];
-			} else if (game.map[piece.Y-1][piece.X] != "0") {
-				captureArray[i] = "0";
-			} else if (game.map[piece.Y-1][piece.X] != "-1") {
-				captureArray[i] = "-1";
+			if (piece.Y > 0) {
+				if (game.map[piece.Y-1][piece.X].substring(0,1) == "1") {
+					captureArray[i] = game.map[piece.Y-1][piece.X];
+				} else if (game.map[piece.Y-1][piece.X] == "0") {
+					captureArray[i] = 0;
+				} else if (game.map[piece.Y-1][piece.X] == "-1") {
+					captureArray[i] = "-1";
+				} 
 			}
 		} else if (directions[i] == 1) {
 			//left
-			if (piece.X > 0 && game.map[piece.Y][piece.X-1].substring(0,1) == "1") {
-				captureArray[i] = game.map[piece.Y][piece.X-1];
-			} else if (game.map[piece.Y][piece.X-1] != "0") {
-				captureArray[i] = "0";
-			} else if (game.map[piece.Y][piece.X-1] != "-1") {
-				captureArray[i] = "-1";
+			if (piece.X > 0) {
+				if (game.map[piece.Y][piece.X-1].substring(0,1) == "1") {
+					captureArray[i] = game.map[piece.Y][piece.X-1];
+				} else if (game.map[piece.Y][piece.X-1] == "0") {
+					captureArray[i] = 0;
+				} else if (game.map[piece.Y][piece.X-1] == "-1") {
+					captureArray[i] = "-1";
+				} 
 			}
 
 		} else if (directions[i] == 2) {
 			//down
-			if (piece.Y < 9 && game.map[piece.Y+1][piece.X].substring(0,1) == "1") {
-				captureArray[i] = game.map[piece.Y+1][piece.X];
-			} else if (game.map[piece.Y+1][piece.X] != "0") {
-				captureArray[i] = "0";
-			} else if (game.map[piece.Y+1][piece.X] != "-1") {
-				captureArray[i] = "-1";
+			if (piece.Y < 9) {
+				if (game.map[piece.Y+1][piece.X].substring(0,1) == "1") {
+					captureArray[i] = game.map[piece.Y+1][piece.X];
+				} else if (game.map[piece.Y+1][piece.X] == "0") {
+					captureArray[i] = 0;
+				} else if (game.map[piece.Y+1][piece.X] == "-1") {
+					captureArray[i] = "-1";
+				} 
 			}
 
 		} else if (directions[i] == 3) {
 			//right
-			if (piece.X < 9 && game.map[piece.Y][piece.X+1].substring(0,1) == "1") {
-				captureArray[i] = game.map[piece.Y][piece.X+1];
-			} else if (game.map[piece.Y][piece.X+1] != "0") {
-				captureArray[i] = "0";
-			} else if (game.map[piece.Y][piece.X+1] != "-1") {
-				captureArray[i] = "-1";
+			if (piece.X < 9) {
+				if (game.map[piece.Y][piece.X+1].substring(0,1) == "1") {
+					captureArray[i] = game.map[piece.Y][piece.X+1];
+				} else if (game.map[piece.Y][piece.X+1] == "0") {
+					captureArray[i] = 0;
+				} else if (game.map[piece.Y][piece.X+1] == "-1") {
+					captureArray[i] = "-1";
+				}
 			}
-
 		}
 	}
 	return captureArray;
@@ -99,21 +106,29 @@ function findCaptureValue(piece, game) {
 	//This function gets the best capture value if its greater than 0
 	//Otherwise returns worst capture value
 	//For individual piece
-	//If this function returns 11 then there is no capture value
+	//We either want the lowest positive best value or the lowest negative worst value
 	let capArray = getCaptureArray(piece, game);	
-	let bestCapValue = 11; //Highest possible number
+	let bestCapValue = -11; //Lowest possible number
 	let worstCapValue = 11; //Highest possible number
 	for (let i = 0; i < capArray.length; i++) {
-		if (capArray[i] < bestCapValue && capArray[i] > 0) {
+		//This if statement will check if the index in the capture array is of better value and still positive (assuming combat)
+		if (capArray[i] < bestCapValue && capArray[i] > 0 && typeof capArray[i] == "string") {
 			//Choose the lowest difference in capture value but greater than 0
+			//Need to find a way to differentiate between two pieces of equal value and just terrain (no combat)
+			//equal value = string | just terrain = int 
 			bestCapValue = piece.value - capArray[i];
+		} else if (typeof capArray[i] == "number") {
+			//This assumes walking through terrain
+			bestCapValue = capArray[i];
 		}
-		if (capArray[i] < worstCapValue) {
-			worstCapValue = piece.value - capArray[i];
+		if (parseInt(capArray[i]) < worstCapValue && capArray[i] != -11 && typeof capArray[i] == "string") {
+			//This checks for the worst value
+
+			worstCapValue = piece.value - parseInt(capArray[i]);
 		}
 	}
 
-	if (bestCapValue < 11) {
+	if (bestCapValue >= 0) {
 		return bestCapValue;
 	} else {
 		return worstCapValue;
@@ -137,9 +152,10 @@ function checkIfOnSideboard(id) {
 	}
 }
 
-function capture(piece, value) {
-	//Execute capture	
+function capture(piece, value, game) {
+	//Execute capture
 	let direction = -1; //null by default
+	var capArray = getCaptureArray(piece, game);
 	//Search piece.captureArray for the value then move in that direction
 	for (let i = 0; i < piece.captureArray.length; i++) {
 		if (piece.value - piece.captureArray[i].enemyValue == value) {
@@ -147,13 +163,13 @@ function capture(piece, value) {
 		}
 	}
 	if (direction == 0) {
-		piece.y -= 1;
+		piece.Y -= 1;
 	} else if (direction == 1) {
-		piece.x -= 1;
+		piece.X -= 1;
 	} else if (direction == 2) {
-		piece.y += 1;
+		piece.Y += 1;
 	} else if (direction == 3) {
-		piece.x += 1;
+		piece.X += 1;
 	}
 	//Update captureArray
 	piece.captureArray[i].enemyPiece.lost = true;
@@ -281,10 +297,10 @@ function attack(game) {
 		return;
 	}
 
-	var value = findCaptureValue(piece);
+	var value = findCaptureValue(piece, game);
 	//If you can find a valid capture, capture with the most value
 	if (value > 0 && value < 11) {
-		capture(piece, value);
+		capture(piece, value, game);
 	} else if (value < 0) {
 		run(piece, value);
 	}
