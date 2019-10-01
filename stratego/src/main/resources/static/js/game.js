@@ -452,10 +452,10 @@ function playerTurn(game) {
             });
 
             // Ai Places Piece Here using placePiece(1, getPieceIndex(game, dragId), game, X, Y
-            // for (var i = 0; i < boardValues.length; i++) {
-            //     index = correlateValues(i, game);
-            //     placePiece(2, index, game, i % 10, Math.floor(i / 10));
-            // }
+             for (var i = 0; i < boardValues.length; i++) {
+                 index = correlateValues(i, game);
+                 placePiece(2, index, game, i % 10, Math.floor(i / 10));
+             }
         }
 
         $(".boardPlace").each(function() {
