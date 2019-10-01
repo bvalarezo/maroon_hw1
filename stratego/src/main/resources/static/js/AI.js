@@ -28,7 +28,7 @@ function canCapture(piece, game) {
 	//This loops through the captureArray and checks for a non arbitrary value	
 	let captureArray = getCaptureArray(piece, game);
 	for (let i = 0; i < captureArray.length; i++) {
-		if (captureArray[i] != -11) {
+		if (captureArray[i] != -11 && captureArray[i] !== 0 && captureArray[i] != -1) {
 			return true;
 		}
 	}
@@ -108,18 +108,21 @@ function findCaptureValue(piece, game) {
 	//For individual piece
 	//We either want the lowest positive best value or the lowest negative worst value
 	let capArray = getCaptureArray(piece, game);	
-	let bestCapValue = -11; //Lowest possible number
+	let bestCapValue = 11; //Highest possible number
 	let worstCapValue = 11; //Highest possible number
 	for (let i = 0; i < capArray.length; i++) {
 		//This if statement will check if the index in the capture array is of better value and still positive (assuming combat)
-		if (capArray[i] < bestCapValue && capArray[i] > 0 && typeof capArray[i] == "string") {
-			//Choose the lowest difference in capture value but greater than 0
-			//Need to find a way to differentiate between two pieces of equal value and just terrain (no combat)
-			//equal value = string | just terrain = int 
-			bestCapValue = piece.value - capArray[i];
-		} else if (typeof capArray[i] == "number") {
-			//This assumes walking through terrain
-			bestCapValue = capArray[i];
+		if (capArray[i] >= 0) {
+			//Only change bestCapValue if it is positive
+			if (capArray[i] < bestCapValue && typeof capArray[i] == "string") {
+				//Choose the lowest difference in capture value but greater than 0
+				//Need to find a way to differentiate between two pieces of equal value and just terrain (no combat)
+				//equal value = string | just terrain = int 
+				bestCapValue = piece.value - capArray[i];
+			} else if (typeof capArray[i] == "number") {
+				//This assumes walking through terrain
+				bestCapValue = capArray[i];
+			}
 		}
 		if (parseInt(capArray[i]) < worstCapValue && capArray[i] != -11 && typeof capArray[i] == "string") {
 			//This checks for the worst value
@@ -128,7 +131,7 @@ function findCaptureValue(piece, game) {
 		}
 	}
 
-	if (bestCapValue >= 0) {
+	if (bestCapValue >= 0 && bestCapValue != 11) {
 		return bestCapValue;
 	} else {
 		return worstCapValue;
@@ -152,27 +155,52 @@ function checkIfOnSideboard(id) {
 	}
 }
 
+function parseCapValue(game, piece, captureArray, index) {
+	var str = ""
+		if (index == 0) {
+			//up
+			str = game.map[piece.Y-1][piece.X];
+		} else if (index == 1) {
+			//left
+			str = game.map[piece.Y][piece.X-1];
+		} else if (index == 2) {
+			//down
+			str = game.map[piece.Y+1][piece.X];
+		} else if (index == 3) {
+			//right
+			str = game.map[piece.Y][piece.X+1];
+		}
+	return str.substring(1,str.length);
+}
+
 function capture(piece, value, game) {
 	//Execute capture
 	let direction = -1; //null by default
 	var capArray = getCaptureArray(piece, game);
+	var id;
 	//Search piece.captureArray for the value then move in that direction
-	for (let i = 0; i < piece.captureArray.length; i++) {
-		if (piece.value - piece.captureArray[i].enemyValue == value) {
-			direction = piece.captureArray[i].direction;
+	for (let i = 0; i < capArray.length; i++) {
+		//Map to direction
+		if (parseCapValue(game, piece, capArray, i) != "B" && parseCapValue(game, piece, capArray, i) != "F") {
+			if (piece.value - parseInt(parseCapValue(game, piece, capArray, i)) == value) {
+				direction = i; 
+			}
 		}
 	}
+	id = getPieceIndex(game, piece.id);
 	if (direction == 0) {
-		piece.Y -= 1;
+		//up
+		placePiece(2, id, game, piece.X, piece.Y-1);
 	} else if (direction == 1) {
-		piece.X -= 1;
+		//left
+		placePiece(2, id, game, piece.X-1, piece.Y);
 	} else if (direction == 2) {
-		piece.Y += 1;
+		//down
+		placePiece(2, id, game, piece.X, piece.Y+1);
 	} else if (direction == 3) {
-		piece.X += 1;
+		//right
+		placePiece(2, id, game, piece.X+1, piece.Y);
 	}
-	//Update captureArray
-	piece.captureArray[i].enemyPiece.lost = true;
 	$.ajax({
 type: "POST",
 contentType: "application/json",
@@ -229,8 +257,8 @@ error: function(e) {
 
 function getBestValuePiece(game) {
 	//Generates the best valued moved for all pieces
-	var bestValue = 0;
-	var worstValue = 0;
+	var bestValue = -11; //Lowest possible value
+	var worstValue = 11; //Highest possible value
 	var bestPiece = null;
 	var worstPiece = null;
 	for (let i = 0; i < game.p2.length; i++) {
@@ -247,7 +275,7 @@ function getBestValuePiece(game) {
 			}
 		}
 	}
-	if (bestValue == 11) {
+	if (bestValue == -11) {
 		//If no piece has a solid capture value then return worst valued piece and run away
 		return worstPiece;
 	} else {
@@ -256,26 +284,42 @@ function getBestValuePiece(game) {
 	}
 }
 
-function move(piece, game) {
-	let captureArray = getCaptureArray(piece, game);
+function getAIPiece(piece, game) {
+	for (var i = 0; i < game.p2.length; i++) {
+		if (game.p2[i].id == piece.id) {
+			return game.p2[i];
+		}
+	}
+}
+
+function getAIPieceIndex(piece, game) {
+	for (var i = 0; i < game.p2.length; i++) {
+		if (game.p2[i].id == piece.id) {
+			return i;
+		}
+	}
+}
+
+function move(pieceTemp, game) {
+	let captureArray = getCaptureArray(pieceTemp, game);
 	for (let i = 0; i < directions.length; i++) {
-		if (captureArray[i] == "0") {
+		if (captureArray[i] == "0" && pieceTemp.value != "B" && pieceTemp.value != "F") {
 			//Moves the piece in the first direction that is available
-			var piece = game.p1[getPieceIndex(game, piece.id)];
+			var piece = getAIPiece(pieceTemp, game); 
 			if (i == 0) {
 				//Move up
-				placePiece(2, getPieceIndex(game, piece.id), game, piece.X.toString(), (piece.Y-1).toString());
+				placePiece(2, getAIPieceIndex(piece, game), game, piece.X.toString(), (piece.Y-1).toString());
 			} else if (i == 1) {
 				//Move left
-				placePiece(2, getPieceIndex(game, piece.id), game, (piece.X-1).toString(), piece.Y.toString());
+				placePiece(2, getAIPieceIndex(piece, game), game, (piece.X-1).toString(), piece.Y.toString());
 
 			} else if (i == 2) {
 				//Move down
-				placePiece(2, getPieceIndex(game, piece.id), game, piece.X.toString(), (piece.Y+1).toString());
+				placePiece(2, getAIPieceIndex(piece, game), game, piece.X.toString(), (piece.Y+1).toString());
 
 			} else if (i == 3) {
 				//Move right
-				placePiece(2, getPieceIndex(game, piece.id), game, (piece.X+1).toString(), piece.Y.toString());
+				placePiece(2, getAIPieceIndex(piece, game), game, (piece.X+1).toString(), piece.Y.toString());
 			}
 
 		}

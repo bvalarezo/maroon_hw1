@@ -251,13 +251,13 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
     } else if (piece.taken == true) {
         if (player == 1) {
             $("#P2SideBoard").append(getSVG(piece, 1));
-            game.map[piece.Y][piece.X] = 0;
+            game.map[piece.Y][piece.X] = "0";
             $("#X" + piece.X + "Y" + piece.Y).removeClass("empty");
             piece.X = -1;
             piece.Y = -1;
         } else {
             $("#P1SideBoard").append(getSVG(piece, 2));
-            game.map[piece.Y][piece.X] = 0;
+            game.map[piece.Y][piece.X] = "0";
             $("#X" + piece.X + "Y" + piece.Y).removeClass("empty");
             piece.X = -1;
             piece.Y = -1;
@@ -271,7 +271,7 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
                 newY < 10 && newY > -1 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
 
                 game.map[newY][newX] = game.map[piece.Y][piece.X];
-                game.map[piece.Y][piece.X] = 0;
+                game.map[piece.Y][piece.X] = "0";
                 $("X" + newX + "Y" + newY).removeClass("empty");
                 $("X" + piece.X + "Y" + piece.Y).addClass("empty");
                 piece.X = newX;
@@ -289,7 +289,7 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
                 (newX == piece.X + 0 && newY == piece.Y - 1)) &&
             newY < 10 && newY > -1 && newX < 10 && newX > -1 && piece.value != "B" && piece.value != "F" && isEmpty(newX, newY)) {
             game.map[newY][newX] = game.map[piece.Y][piece.X];
-            game.map[piece.Y][piece.X] = 0;
+            game.map[piece.Y][piece.X] = "0";
             $("X" + newX + "Y" + newY).removeClass("empty");
             $("X" + piece.X + "Y" + piece.Y).addClass("empty");
             piece.X = newX;
