@@ -247,8 +247,10 @@ function renderMap(game, init) {
             }
         }
 
-        clearDrags(player);
-        nextTurn(game);
+        if (game.turn != 0) {
+            clearDrags(player);
+            nextTurn(game);
+        }
     }
 }
 
@@ -368,6 +370,39 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
                     (newX == piece.X && newY != piece.Y)) &&
                 newY < 10 && newY > -1 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
 
+                console.log(newX, newY);
+
+                if ((newX != piece.X && newY == piece.Y)) {
+                    if (newX < piece.X) {
+                        for (var x = piece.X - 1; x > newX; x = x - 1) {
+                            if (!isEmpty(x, newY)) {
+                                return -1;
+                            }
+                        }
+                    } else {
+                        for (var x = piece.X + 1; x < newX; x++) {
+                            if (!isEmpty(x, newY)) {
+                                return -1;
+                            }
+                        }
+                    }
+                } else {
+                    if (newY < piece.Y) {
+                        for (var y = piece.Y - 1; y > newY; y = y - 1) {
+                            console.log(y);
+                            if (!isEmpty(newX, y)) {
+                                return -1;
+                            }
+                        }
+                    } else {
+                        for (var y = piece.Y + 1; y < newY; y++) {
+                            if (!isEmpty(newX, y)) {
+                                return -1;
+                            }
+                        }
+                    }
+                }
+
                 game.map[newY][newX] = game.map[piece.Y][piece.X];
                 game.map[piece.Y][piece.X] = "0";
                 $("X" + newX + "Y" + newY).removeClass("empty");
@@ -457,7 +492,6 @@ function playerTurn(game) {
                     var Y = id.substr(id.length - 1);
                     var X = id.substr(id.length - 3, 1);
                     if (placePiece(1, getPieceIndex(game, dragId), game, X, Y) == 0) {
-                        // ui.draggable.detach().appendTo($(this));
 
                         ui.draggable.detach();
                         $(ui.helper).remove();
@@ -504,7 +538,7 @@ function playerTurn(game) {
 
             //make move here
             AIMove(game);
-            nextTurn(game);
+
 
         }
 
@@ -517,7 +551,6 @@ function playerTurn(game) {
             // Removes Pieces
             // Sends win receipt if necessary and opens win modal
             // Updates piece and map
-            // cant move back and forth 3 consecutive turns
         });
 
     }
