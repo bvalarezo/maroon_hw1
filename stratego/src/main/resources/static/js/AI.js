@@ -112,22 +112,23 @@ function findCaptureValue(piece, game) {
 	let worstCapValue = 11; //Highest possible number
 	for (let i = 0; i < capArray.length; i++) {
 		//This if statement will check if the index in the capture array is of better value and still positive (assuming combat)
+		var value = parseCapValue(game, piece, capArray, i);
 		if (capArray[i] >= 0) {
 			//Only change bestCapValue if it is positive
-			if (capArray[i] < bestCapValue && typeof capArray[i] == "string") {
+			if (value < bestCapValue && typeof capArray[i] == "string") {
 				//Choose the lowest difference in capture value but greater than 0
 				//Need to find a way to differentiate between two pieces of equal value and just terrain (no combat)
 				//equal value = string | just terrain = int 
-				bestCapValue = piece.value - capArray[i];
+				bestCapValue = piece.value - value;
 			} else if (typeof capArray[i] == "number") {
 				//This assumes walking through terrain
 				bestCapValue = capArray[i];
 			}
 		}
-		if (parseInt(capArray[i]) < worstCapValue && capArray[i] != -11 && typeof capArray[i] == "string") {
+		var worseValue = piece.value - parseInt(parseCapValue(game, piece, capArray, i));
+		if (worseValue < worstCapValue && capArray[i] != -11 && typeof capArray[i] == "string") {
 			//This checks for the worst value
-
-			worstCapValue = piece.value - parseInt(capArray[i]);
+			worstCapValue = worseValue; 
 		}
 	}
 
@@ -159,16 +160,32 @@ function parseCapValue(game, piece, captureArray, index) {
 	var str = ""
 		if (index == 0) {
 			//up
-			str = game.map[piece.Y-1][piece.X];
+			if (piece.Y > 0) {
+				str = game.map[piece.Y-1][piece.X];
+			} else {
+				return -11;
+			}
 		} else if (index == 1) {
 			//left
-			str = game.map[piece.Y][piece.X-1];
+			if (piece.X > 0) {
+				str = game.map[piece.Y][piece.X-1];
+			} else {
+				return -11;
+			}
 		} else if (index == 2) {
 			//down
-			str = game.map[piece.Y+1][piece.X];
+			if (piece.Y < 9) {
+				str = game.map[piece.Y+1][piece.X];
+			} else {
+				return -11;
+			}
 		} else if (index == 3) {
 			//right
-			str = game.map[piece.Y][piece.X+1];
+			if (piece.X < 9) {
+				str = game.map[piece.Y][piece.X+1];
+			} else {
+				return -11;
+			}
 		}
 	return str.substring(1,str.length);
 }
@@ -302,7 +319,7 @@ function getAIPieceIndex(piece, game) {
 
 function move(pieceTemp, game) {
 	let captureArray = getCaptureArray(pieceTemp, game);
-	for (let i = 0; i < directions.length; i++) {
+	for (let i = directions.length; i > 0; i--) {
 		if (captureArray[i] == "0" && pieceTemp.value != "B" && pieceTemp.value != "F") {
 			//Moves the piece in the first direction that is available
 			var piece = getAIPiece(pieceTemp, game); 
