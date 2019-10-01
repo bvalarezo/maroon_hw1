@@ -1,95 +1,28 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.1"
-   id="Layer_1"
-   x="0px"
-   y="0px"
-   viewBox="0 0 1366 768"
-   style="enable-background:new 0 0 1366 768;"
-   xml:space="preserve"
-   sodipodi:docname="redbutton.svg"
-   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"><metadata
-   id="metadata3803"><rdf:RDF><cc:Work
-       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
-   id="defs3801" /><sodipodi:namedview
-   pagecolor="#ffffff"
-   bordercolor="#666666"
-   borderopacity="1"
-   objecttolerance="10"
-   gridtolerance="10"
-   guidetolerance="10"
-   inkscape:pageopacity="0"
-   inkscape:pageshadow="2"
-   inkscape:window-width="1920"
-   inkscape:window-height="1001"
-   id="namedview3799"
-   showgrid="false"
-   inkscape:zoom="0.24816984"
-   inkscape:cx="683"
-   inkscape:cy="384"
-   inkscape:window-x="-9"
-   inkscape:window-y="-9"
-   inkscape:window-maximized="1"
-   inkscape:current-layer="g3796" />
-<style
-   type="text/css"
-   id="style3785">
-	.st0{fill:url(#SVGID_1_);stroke:#000000;stroke-width:8;stroke-miterlimit:10;}
-	.st1{fill:#FF0000;stroke:#000000;stroke-width:8;stroke-miterlimit:10;}
-	.st2{font-family:'BodoniSvtyTwoITCTT-Book';}
-	.st3{font-size:593.9796px;}
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1"
+	 id="Layer_1" inkscape:version="0.92.4 (5da689c313, 2019-01-14)" sodipodi:docname="redbutton.svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1366 768"
+	 style="enable-background:new 0 0 1366 768;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:url(#path3792_1_);stroke:#000000;stroke-width:8;stroke-miterlimit:10;}
+	.st1{fill:none;}
+	.st2{font-family:'PoorRichard-Regular';}
+	.st3{font-size:400px;}
 </style>
-<g
-   id="g3796">
+<sodipodi:namedview  bordercolor="#666666" borderopacity="1" gridtolerance="10" guidetolerance="10" id="namedview3799" inkscape:current-layer="g3796" inkscape:cx="683" inkscape:cy="384" inkscape:pageopacity="0" inkscape:pageshadow="2" inkscape:window-height="1001" inkscape:window-maximized="1" inkscape:window-width="1920" inkscape:window-x="-9" inkscape:window-y="-9" inkscape:zoom="0.24816984" objecttolerance="10" pagecolor="#ffffff" showgrid="false">
+	</sodipodi:namedview>
+<g id="g3796">
 	
-		<radialGradient
-   id="SVGID_1_"
-   cx="746.8"
-   cy="394.4"
-   r="342.6"
-   gradientTransform="matrix(1 0 0 1 0 -24)"
-   gradientUnits="userSpaceOnUse">
-		<stop
-   offset="0"
-   style="stop-color:#FFFFFF"
-   id="stop3787" />
-		<stop
-   offset="1"
-   style="stop-color:#FF333A"
-   id="stop3789" />
+		<radialGradient id="path3792_1_" cx="746.8" cy="373.6" r="342.6" gradientTransform="matrix(1 0 0 -1 0 744)" gradientUnits="userSpaceOnUse">
+		<stop  offset="0" style="stop-color:#FFFFFF"/>
+		<stop  offset="1" style="stop-color:#FF333A"/>
 	</radialGradient>
-	<path
-   class="st0"
-   d="M746.8,713L746.8,713c-189.2,0-342.6-153.4-342.6-342.6l0,0c0-189.2,153.4-342.6,342.6-342.6l0,0   c189.2,0,342.6,153.4,342.6,342.6l0,0C1089.4,559.6,936,713,746.8,713z"
-   id="path3792" />
-	<text
-   transform="matrix(1.0675,0,0,1,578.0391,553.8613)"
-   class="st1 st2 st3"
-   id="text3794"
-   style="font-size:593.97961426px;font-family:BodoniSvtyTwoITCTT-Book;fill:#ff0000;stroke:#000000;stroke-width:8;stroke-miterlimit:10" />
-
-<flowRoot
-   xml:space="preserve"
-   id="flowRoot3805"
-   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:1.25;font-family:'Bernard MT Condensed';-inkscape-font-specification:'Bernard MT Condensed, ';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-   transform="matrix(17.783181,0,0,14.708778,-9599.5215,-2878.3588)"><flowRegion
-     id="flowRegion3807"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Bernard MT Condensed';-inkscape-font-specification:'Bernard MT Condensed, '"><rect
-       id="rect3809"
-       width="386.83185"
-       height="411.00885"
-       x="572.18878"
-       y="195.8112"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Bernard MT Condensed';-inkscape-font-specification:'Bernard MT Condensed, '" /></flowRegion><flowPara
-     id="flowPara3811">2</flowPara></flowRoot></g>
+	<path id="path3792" class="st0" d="M746.8,713L746.8,713c-189.2,0-342.6-153.4-342.6-342.6l0,0c0-189.2,153.4-342.6,342.6-342.6
+		l0,0c189.2,0,342.6,153.4,342.6,342.6l0,0C1089.4,559.6,936,713,746.8,713z"/>
+	<g id="flowRoot3805" transform="matrix(17.783181,0,0,14.708778,-9599.5215,-2878.3588)">
+	</g>
+</g>
+<rect x="631" y="214.7" class="st1" width="324" height="338.6"/>
+<text transform="matrix(1 0 0 1 631 493.4969)" class="st2 st3">2</text>
 </svg>
