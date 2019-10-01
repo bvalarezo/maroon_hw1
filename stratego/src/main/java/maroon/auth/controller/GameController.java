@@ -30,17 +30,9 @@ public class GameController {
     @Autowired
     private UserServiceImpl userService;
 
-    Game cachedGame;
-    User cachedUser;
-
-
     //  Model and view for the menu page(menu.html) GET
     @GetMapping("/menu")
     public String menu(Model model) {
-        //get the user in the context
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByUsername(auth.getName());
-        cachedUser = user; //store this user in a variable
         return "menu";
     }
 
@@ -53,24 +45,23 @@ public class GameController {
     @PostMapping("/startNewGame")
     public String startNewGame(){
         //make a new game
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByUsername(auth.getName());
-        cachedUser = user; //store this user in a variable
-        //test
-        Game game = new Game(cachedUser.getUsername());
-        gameRepository.save(game); //make a new game
-        cachedGame = game;//store this game in a variable 
+        User cachedUser = getCachedUser();
+        Game cachedGame = getCachedGame(cachedUser);
+        gameRepository.save(cachedGame); //make a new game
         return "redirect:/game";
     }
   
     @GetMapping("/getGames") 
     public @ResponseBody List<Game> getGames(Model model) {
+        User cachedUser = getCachedUser();
         List<Game> gameList = gameRepository.findByOwner(cachedUser.getUsername());
         return gameList;
     }  
  
     @PostMapping(value="/sendGameData", consumes = "application/json", produces = "application/json")
-    public  @ResponseBody ResponseEntity<RequestWrapper > sendGameData(@RequestBody RequestWrapper gameWrapper){
+    public  @ResponseBody ResponseEntity<RequestWrapper> sendGameData(@RequestBody RequestWrapper gameWrapper){
+        User cachedUser = getCachedUser();
+        Game cachedGame = getCachedGame(cachedUser);
         //strip data from gameWrapper to Board
         Board newBoard = new Board(); 
         newBoard.setP1_pieces(gameWrapper.getP1());
@@ -79,10 +70,10 @@ public class GameController {
         // check turn
         if(newBoard.getTurn() == 0){
             //turn 0, initliaze the first board and Game object
-            // cachedGame.setWinner(-1); //nobody is a winner
+            cachedGame.setWinner(-1); //nobody is a winner
             cachedGame.setTurns(0); //set the turns to start at 0
             List<Board> boardList = new ArrayList<Board>(); //create new list
-             boardList.add(newBoard); //add the board to the list
+            boardList.add(newBoard); //add the board to the list
             cachedGame.setBoards(boardList); //add it to the game
         } 
         else {
@@ -91,12 +82,22 @@ public class GameController {
             cachedGame.addBoard(newBoard); //add board to list
         }
         //check if there was a winner
-
         //update gamerepository.save()
         gameRepository.save(cachedGame);
         //return the JSON back to frontend saying everything went okay
         return new ResponseEntity<RequestWrapper>(gameWrapper, HttpStatus.OK);
     }
 
+    public User getCachedUser(){
+        //GET THE USER logged in 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(auth.getName());
+        return user;
+    }
 
+    public Game getCachedGame(User cachedUser){
+        //GET THE GAME
+        Game game = new Game(cachedUser.getUsername());
+        return game;
+    }
 }
