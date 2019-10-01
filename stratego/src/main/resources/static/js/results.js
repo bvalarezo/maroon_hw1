@@ -55,7 +55,7 @@ result.forEach(function (key, index) {
 		} else {
 			winnerText.innerHTML = "Winner : AI"
 		}
-		totalTurnsText.innerHTML = totalTurns;
+		totalTurnsText.innerHTML = "Turns: " + totalTurns;
 		playerText.innerHTML = "Player 1 : " + player1;
 		var scroll = document.getElementsByClassName('scroll');
 		button.id = "button" + index;
