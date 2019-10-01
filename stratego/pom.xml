@@ -11,7 +11,7 @@
   </parent>  
   <groupId>maroon</groupId>  
   <artifactId>stratego</artifactId>  
-  <version>0.0.3-SNAPSHOT</version>  
+  <version>0.0.4-SNAPSHOT</version>  
   <name>Maroon HW1 | Stratego</name>  
   <description>A web application that plays the popular game, Stratego.</description>  
   <properties> 
