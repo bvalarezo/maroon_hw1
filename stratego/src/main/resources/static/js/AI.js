@@ -321,12 +321,11 @@ function getAIPieceIndex(piece, game) {
 	}
 }
 
-function move(pieceTemp, game) {
-	let captureArray = getCaptureArray(pieceTemp, game);
+function move(piece, game) {
+	let captureArray = getCaptureArray(piece, game);
 	for (let i = directions.length - 1; i > 0; i--) {
-		if (captureArray[i] == "0" && pieceTemp.value != "B" && pieceTemp.value != "F") {
+		if (captureArray[i] == "0" && piece.value != "B" && piece.value != "F") {
 			//Moves the piece in the first direction that is available
-			var piece = getAIPiece(pieceTemp, game); 
 			if (i == 0) {
 				//Move up
 				placePiece(2, getAIPieceIndex(piece, game), game, piece.X.toString(), (piece.Y-1).toString());
@@ -361,6 +360,7 @@ function AIMove(game) {
 		while(move(pieceToMove, game) == -1) {
 			pieceToMove = game.p2[Math.floor(Math.random() * game.p2.length)]; 
 		}
+		nextTurn(game);
 		return;
 	}
 
@@ -368,8 +368,12 @@ function AIMove(game) {
 	//If you can find a valid capture, capture with the most value
 	if (value > 0 && value < 11) {
 		capture(piece, value, game);
+		nextTurn(game);
+		return;
 	} else if (value < 0) {
 		run(piece, value);
+		nextTurn(game);
+		return;
 	}
 	//Otherwise find the worst value and try to run away
 	//If both bestValue and worstValue are null, pick a random piece and move it in a random direction
