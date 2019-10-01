@@ -248,6 +248,7 @@ function renderMap(game, init) {
         }
 
         clearDrags(player);
+	console.log("line 251");
         nextTurn(game);
     }
 }
@@ -396,7 +397,11 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
             piece.X = newX;
             piece.Y = newY;
             // $(getSVG(piece, player)[0]).detach();
-            $("#X" + oldX + "Y" + oldY).empty();
+            var movingImg = getSVG(piece, player)[0];
+	    //console.log(movingImg);
+	    $("#X" + piece.X + "Y" + piece.Y).append(movingImg);
+	    $("#X" + oldX + "Y" + oldY).empty();
+
             return 0;
         } else {
             return -1;
@@ -474,7 +479,6 @@ function playerTurn(game) {
                             }
 
                             clearDrags(teamPlaying)
-                            nextTurn(game);
                         }
                     }
                 }
@@ -504,8 +508,8 @@ function playerTurn(game) {
 
             //make move here
             AIMove(game);
-            nextTurn(game);
-
+	    console.log("line 509");
+	    nextTurn(game);
         }
 
         $(".boardPlace").each(function() {
