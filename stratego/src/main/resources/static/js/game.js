@@ -634,7 +634,31 @@ function attack(game, piece, X, Y) {
 
 // Disables UI and displays modal
 function endScreen(win, game) {
-    // disables canvas below
-    // if win then show win screen
-    // if lose then show lose screen
-}
+	// disables canvas below
+	// if win then show win screen
+	// if lose then show lose screen
+	var modal = document.createElement("div");
+	var modalContent = document.createElement("div");
+	var text = document.createElement("p");
+	modal.setAttribute("id", "endScreen");
+	modal.setAttribute("class", "modal");
+	modal.style.display = "block";
+	modalContent.setAttribute("class", "modal-content");
+	if (win == true) {
+		text.innerHTML = "You Win!";
+	} else {
+		text.innerHTML = "You Lose!";
+	}
+	modalContent.appendChild(text);
+	modal.appendChild(modalContent);
+	document.body.appendChild(modal);
+}	
+
+
+
+
+
+
+
+
+
