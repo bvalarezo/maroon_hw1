@@ -459,7 +459,7 @@ function playerTurn(game) {
             $("#playing").html("Red Teams Move");
 
             $(".enemypiece").each(function() {
-                $(this).draggable("enable");
+                //$(this).draggable("enable");
             });
 	//make move here
 	AIMove(game);	
@@ -490,8 +490,8 @@ function clearDrags(teamPlaying) {
         });
     } else {
         $(".enemypiece").each(function() {
-            $(this).draggable("disable");
-        });
+       	    //$(".enemypiece").draggable("disable");
+	});
     }
 
     $(".boardPlace").each(function() {
