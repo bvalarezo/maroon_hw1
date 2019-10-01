@@ -1,4 +1,4 @@
-/* PIECE ARRANGEMENT
+/* PIECE ARRANGEMENT 
  * 6 2 2 5 2 6 3 10 2 6
  * 5 4 B S 9 2 7 7 8 2
  * 4 B 4 7 8 5 B 5 6 4
@@ -360,7 +360,6 @@ function AIMove(game) {
 		while(move(pieceToMove, game) == -1) {
 			pieceToMove = game.p2[Math.floor(Math.random() * game.p2.length)]; 
 		}
-		nextTurn(game);
 		return;
 	}
 
@@ -368,11 +367,9 @@ function AIMove(game) {
 	//If you can find a valid capture, capture with the most value
 	if (value > 0 && value < 11) {
 		capture(piece, value, game);
-		nextTurn(game);
 		return;
 	} else if (value < 0) {
 		run(piece, value);
-		nextTurn(game);
 		return;
 	}
 	//Otherwise find the worst value and try to run away
