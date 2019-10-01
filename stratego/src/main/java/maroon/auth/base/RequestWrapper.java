@@ -3,16 +3,16 @@ package maroon.auth.base;
 import java.util.List;
 
 public class RequestWrapper {
-    List<List<Integer>> map;
+    List<List<String>> map;
     List<Piece> p1;
     List<Piece> p2;
     int turn;
 
-    public List<List<Integer>> getMap(){
+    public List<List<String>> getMap(){
         return map;
     }
 
-    public void setMap(List<List<Integer>> map){
+    public void setMap(List<List<String>> map){
         this.map = map;
     }
 
