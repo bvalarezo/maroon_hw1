@@ -365,7 +365,7 @@ function AIMove(game) {
 
 	var value = findCaptureValue(piece, game);
 	//If you can find a valid capture, capture with the most value
-	if (value > 0 && value < 11) {
+	if (value >= 0 && value < 11) {
 		capture(piece, value, game);
 		return;
 	} else if (value < 0) {

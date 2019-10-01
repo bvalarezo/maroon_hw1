@@ -431,9 +431,7 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
             piece.X = newX;
             piece.Y = newY;
             // $(getSVG(piece, player)[0]).detach();
-            var movingImg = getSVG(piece, player)[0];
             //console.log(movingImg);
-            $("#X" + piece.X + "Y" + piece.Y).append(movingImg);
             $("#X" + oldX + "Y" + oldY).empty();
 
             return 0;
