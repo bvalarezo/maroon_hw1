@@ -246,6 +246,9 @@ function renderMap(game, init) {
                 $("#X" + x + "Y" + y).append(getSVG(piece, 2));
             }
         }
+
+        clearDrags(player);
+        nextTurn(game);
     }
 }
 
@@ -392,7 +395,7 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
 
             piece.X = newX;
             piece.Y = newY;
-            // $(getSVG(piece, player)[0]).detach().appendTo("#X" + newX + "Y" + newY);
+            // $(getSVG(piece, player)[0]).detach();
             $("#X" + oldX + "Y" + oldY).empty();
             return 0;
         } else {
@@ -446,15 +449,6 @@ function playerTurn(game) {
             });
         });
 
-        $(".enemypiece").each(function() {
-            $(this).draggable({
-                snap: ".boardPlace",
-                revert: true,
-                helper: "clone"
-            });
-
-        });
-
         $(".boardPlace").each(function() {
             $(this).droppable({
                 drop: function(event, ui) {
@@ -464,9 +458,9 @@ function playerTurn(game) {
                     var X = id.substr(id.length - 3, 1);
                     if (placePiece(1, getPieceIndex(game, dragId), game, X, Y) == 0) {
                         // ui.draggable.detach().appendTo($(this));
+
                         ui.draggable.detach();
                         $(ui.helper).remove();
-                        $(ui.draggable).draggable("disable");
                         $(this).droppable("disable");
                         console.log(game);
                         renderMap(game, false);
@@ -479,9 +473,6 @@ function playerTurn(game) {
                                 //Append the svg to the board
                             }
 
-                            clearDrags(teamPlaying)
-                            nextTurn(game);
-                        } else if (game.turn != 0) {
                             clearDrags(teamPlaying)
                             nextTurn(game);
                         }
@@ -511,10 +502,6 @@ function playerTurn(game) {
 
             $("#playing").html("Red Teams Move");
 
-            $(".enemypiece").each(function() {
-                //$(this).draggable("enable");
-            });
-
             //make move here
             AIMove(game);
             nextTurn(game);
@@ -538,15 +525,11 @@ function playerTurn(game) {
 
 
 function clearDrags(teamPlaying) {
-    if (teamPlaying == 1) {
-        $(".piece").each(function() {
+    $(".piece").each(function() {
+        if ($(this).data('ui-draggable')) {
             $(this).draggable("disable");
-        });
-    } else {
-        $(".enemypiece").each(function() {
-            //$(".enemypiece").draggable("disable");
-        });
-    }
+        }
+    });
 
     $(".boardPlace").each(function() {
         $(this).droppable("disable");
