@@ -333,6 +333,12 @@ function run(piece, value, game) {
 		placePiece(2, id, game, piece.X, piece.Y+1);
 	} else if (direction == 3) {
 		placePiece(2, id, game, piece.X+1, piece.Y);
+	} else if (direction == -1) {
+		var pieceToMove;
+		pieceToMove = game.p2[Math.floor(Math.random() * game.p2.length)]; 
+		while(move(pieceToMove, game) == -1) {
+			pieceToMove = game.p2[Math.floor(Math.random() * game.p2.length)] 
+		}
 	}
 $.ajax({
 type: "POST",
