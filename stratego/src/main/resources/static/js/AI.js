@@ -194,6 +194,44 @@ function parseCapValue(game, piece, captureArray, index) {
 	return str.substring(1,str.length);
 }
 
+function findSide(game, piece, captureArray, index, player) {
+	if (captureArray[index] == "-1") {
+		return false;
+	}
+		if (index == 0) {
+			//up
+			if (piece.Y > 0) {
+				return parseInt((game.map[piece.Y-1][piece.X])[0]) != player;
+			} else {
+				return false;
+			}
+		} else if (index == 1) {
+			//left
+			if (piece.X > 0) {
+			return parseInt((game.map[piece.Y-1][piece.X-1])[0]) != player;
+			} else {
+				return false;
+			}
+		} else if (index == 2) {
+			//down
+			if (piece.Y < 9) {
+			return parseInt((game.map[piece.Y+1][piece.X])[0]) != player;
+
+			} else {
+				return false;
+			}
+		} else if (index == 3) {
+			//right
+			if (piece.X < 9) {
+			return parseInt((game.map[piece.Y][piece.X+1])[0]) != player;
+
+			} else {
+				return false;
+			}
+		}
+}
+
+
 function capture(piece, value, game) {
 	//Execute capture
 	let direction = -1; //null by default
@@ -202,13 +240,14 @@ function capture(piece, value, game) {
 	//Search piece.captureArray for the value then move in that direction
 	for (let i = 0; i < capArray.length; i++) {
 		//Map to direction
-		if (parseCapValue(game, piece, capArray, i) != "B" && parseCapValue(game, piece, capArray, i) != "F") {
-			if (piece.value - parseInt(parseCapValue(game, piece, capArray, i)) == value) {
-				direction = i; 
+		if (parseCapValue(game, piece, capArray, i) != "B" && parseCapValue(game, piece, capArray, i) != "F" && findSide(game, piece, capArray, i, 2)) {
+			if (piece.value - parseInt(parseCapValue(game, piece, capArray, i)) == value && findSide(game, piece, capArray, i, 2)) {
+				direction = i;
+				break;
 			}
 		}
 	}
-	id = getPieceIndex(game, piece.id);
+	id = getAIPieceIndex(piece, game);
 	if (direction == 0) {
 		//up
 		placePiece(2, id, game, piece.X, piece.Y-1);
@@ -365,7 +404,7 @@ function AIMove(game) {
 
 	var value = findCaptureValue(piece, game);
 	//If you can find a valid capture, capture with the most value
-	if (value > 0 && value < 11) {
+	if (value >= 0 && value < 11) {
 		capture(piece, value, game);
 		return;
 	} else if (value < 0) {

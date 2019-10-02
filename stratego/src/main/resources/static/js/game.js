@@ -15,7 +15,7 @@ $(function() {
     }
 
     // Render Map
-    renderMap(initGame(setMap()), true);
+    renderMap(initGame(setMap()), true, false);
 });
 
 // Set the Map
@@ -171,7 +171,7 @@ function getSVG(piece, player) {
 }
 
 // Prints Map
-function renderMap(game, init) {
+function renderMap(game, init, noTurn) {
     var n = 10;
     var m = 10;
     var player = ((game.turn + 1) % 2) + 1;
@@ -210,27 +210,34 @@ function renderMap(game, init) {
         playerTurn(game);
     } else {
 
-        console.log(game);
-
         for (i = 0; i < n; i++) {
             for (j = 0; j < m; j++) {
                 var mapVal = game.map[i][j];
-
-                if (mapVal == -1) {
+                $("#X" + j + "Y" + i).removeClass("empty");
+                if (mapVal == "-1") {
                     $("#X" + j + "Y" + i).attr("class", "noMove boardPlace");
                     $("#X" + j + "Y" + i).html("");
-                } else if (mapVal == 0) {
+                } else if (mapVal == "0") {
                     $("#X" + j + "Y" + i).attr("class", "empty boardPlace");
                     $("#X" + j + "Y" + i).html("");
                 }
             }
         }
 
+        if (game.turn != 0) {
+            $("#P1SideBoard").html("");
+            $("#P2SideBoard").html("");
+        }
+
         for (var z = 0; z < game.p1.length; z++) {
             var piece = game.p1[z];
             var x = piece.X;
             var y = piece.Y;
-            if ($("#X" + x + "Y" + y).html() == "") {
+
+            if (piece.lost == true) {
+                $("#P2SideBoard").append(getSVG(piece, 2));
+            } else if ($("#X" + x + "Y" + y).html() == "") {
+                $("#X" + x + "Y" + y).removeClass("empty");
                 $("#X" + x + "Y" + y).attr("class", "boardPlace");
                 $("#X" + x + "Y" + y).append(getSVG(piece, 1));
             }
@@ -241,13 +248,18 @@ function renderMap(game, init) {
             var x = piece.X;
             var y = piece.Y;
 
-            if ($("#X" + x + "Y" + y).html() == "") {
-                $("#X" + x + "Y" + y).attr("class", "boardPlace");
-                $("#X" + x + "Y" + y).append(getSVG(piece, 2));
+            if (piece.lost == true) {
+                $("#P1SideBoard").append(getSVG(piece, 2));
+            } else {
+                $("#X" + x + "Y" + y).removeClass("empty");
+                if ($("#X" + x + "Y" + y).html() == "") {
+                    $("#X" + x + "Y" + y).attr("class", "boardPlace");
+                    $("#X" + x + "Y" + y).append(getSVG(piece, 2));
+                }
             }
         }
 
-        if (game.turn != 0) {
+        if (game.turn != 0 && noTurn == false) {
             clearDrags(player);
             nextTurn(game);
         }
@@ -350,27 +362,12 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
         } else {
             return -1;
         }
-    } else if (piece.taken == true) {
-        if (player == 1) {
-            $("#P1SideBoard").append(getSVG(piece, 1));
-            game.map[piece.Y][piece.X] = "0";
-            piece.X = -1;
-            piece.Y = -1;
-        } else {
-            $("#P2SideBoard").append(getSVG(piece, 2));
-            game.map[piece.Y][piece.X] = "0";
-            piece.X = -1;
-            piece.Y = -1;
-        }
-        return 0;
     } else {
         if (piece.value == "2") {
             if (
                 ((newX != piece.X && newY == piece.Y) ||
                     (newX == piece.X && newY != piece.Y)) &&
-                newY < 10 && newY > -1 && newX < 10 && newX > -1 && isEmpty(newX, newY)) {
-
-                console.log(newX, newY);
+                newY < 10 && newY > -1 && newX < 10 && newX > -1) {
 
                 if ((newX != piece.X && newY == piece.Y)) {
                     if (newX < piece.X) {
@@ -389,7 +386,6 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
                 } else {
                     if (newY < piece.Y) {
                         for (var y = piece.Y - 1; y > newY; y = y - 1) {
-                            console.log(y);
                             if (!isEmpty(newX, y)) {
                                 return -1;
                             }
@@ -403,13 +399,51 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
                     }
                 }
 
-                game.map[newY][newX] = game.map[piece.Y][piece.X];
-                game.map[piece.Y][piece.X] = "0";
-                $("X" + newX + "Y" + newY).removeClass("empty");
-                $("X" + piece.X + "Y" + piece.Y).addClass("empty");
-                piece.X = newX;
-                piece.Y = newY;
-                return 0;
+                if (isEmpty(newX, newY)) {
+                    game.map[newY][newX] = game.map[piece.Y][piece.X];
+                    game.map[piece.Y][piece.X] = "0";
+                    $("#X" + newX + "Y" + newY).removeClass("empty");
+                    $("#X" + piece.X + "Y" + piece.Y).addClass("empty");
+                    piece.X = newX;
+                    piece.Y = newY;
+                    return 0;
+                } else if (attack(game, piece, newX, newY) != -1) {
+                    var attackStatus = attack(game, piece, newX, newY);
+
+                    console.log(attackStatus);
+                    switch (attackStatus) {
+                        case 0:
+                            // 0 = Attacking Piece Removed
+                            removePiece(piece, game);
+                            break;
+                        case 1:
+                            // 1 = Attacked Piece Removed
+                            var attackedPiece;
+
+                            if (player == 1) {
+                                attackedPiece = game.p2[getPieceIndex(game, $("#X" + newX + "Y" + newY).children().first().attr("id"))];
+                            } else {
+                                attackedPiece = game.p1[getPieceIndex(game, $("#X" + newX + "Y" + newY).children().first().attr("id"))];
+                            }
+                            removePiece(attackedPiece, game);
+                            break;
+                        case 2:
+                            // 2 = Both Pieces Removed
+                            var attackedPiece;
+
+                            if (player == 1) {
+                                attackedPiece = game.p2[getPieceIndex(game, $("#X" + newX + "Y" + newY).children().first().attr("id"))];
+                            } else {
+                                attackedPiece = game.p1[getPieceIndex(game, $("#X" + newX + "Y" + newY).children().first().attr("id"))];
+                            }
+
+                            removePiece(attackedPiece, game);
+                            removePiece(piece, game);
+                            break;
+                    }
+                } else {
+                    return -1;
+                }
 
             } else {
                 return -1;
@@ -419,34 +453,113 @@ function placePiece(player, pieceIndex, game, newXStr, newYStr) {
                 (newX == piece.X - 1 && newY == piece.Y + 0) ||
                 (newX == piece.X + 0 && newY == piece.Y + 1) ||
                 (newX == piece.X + 0 && newY == piece.Y - 1)) &&
-            newY < 10 && newY > -1 && newX < 10 && newX > -1 && piece.value != "B" && piece.value != "F" && isEmpty(newX, newY)) {
-            game.map[newY][newX] = game.map[piece.Y][piece.X];
-            game.map[piece.Y][piece.X] = "0";
-            $("X" + newX + "Y" + newY).removeClass("empty");
-            $("X" + piece.X + "Y" + piece.Y).addClass("empty");
+            newY < 10 && newY > -1 && newX < 10 && newX > -1 && piece.value != "B" && piece.value != "F") {
 
-            var oldX = piece.X;
-            var oldY = piece.Y;
 
-            piece.X = newX;
-            piece.Y = newY;
-            // $(getSVG(piece, player)[0]).detach();
-            var movingImg = getSVG(piece, player)[0];
-            //console.log(movingImg);
-            $("#X" + piece.X + "Y" + piece.Y).append(movingImg);
-            $("#X" + oldX + "Y" + oldY).empty();
+            if (isEmpty(newX, newY)) {
+                game.map[newY][newX] = game.map[piece.Y][piece.X];
+                game.map[piece.Y][piece.X] = "0";
+                $("#X" + newX + "Y" + newY).removeClass("empty");
+                $("#X" + piece.X + "Y" + piece.Y).addClass("empty");
+                piece.X = newX;
+                piece.Y = newY;
+                return 0;
+            } else if (attack(game, piece, newX, newY) != -1) {
+                var attackStatus = attack(game, piece, newX, newY);
 
-            return 0;
+                console.log(attackStatus);
+                switch (attackStatus) {
+                    case 0:
+                        // 0 = Attacking Piece Removed
+                        removePiece(piece, game);
+                        break;
+                    case 1:
+                        // 1 = Attacked Piece Removed
+                        var attackedPiece;
+
+                        if (player == 1) {
+                            attackedPiece = game.p2[getPieceIndex(game, $("#X" + newX + "Y" + newY).children().first().attr("id"))];
+                        } else {
+                            attackedPiece = game.p1[getPieceIndex(game, $("#X" + newX + "Y" + newY).children().first().attr("id"))];
+                        }
+                        removePiece(attackedPiece, game);
+                        game.map[newY][newX] = game.map[piece.Y][piece.X];
+                        game.map[piece.Y][piece.X] = "0";
+                        $("#X" + newX + "Y" + newY).removeClass("empty");
+                        $("#X" + piece.X + "Y" + piece.Y).addClass("empty");
+                        piece.X = newX;
+                        piece.Y = newY;
+                        break;
+                    case 2:
+                        // 2 = Both Pieces Removed
+                        var attackedPiece;
+
+                        if (player == 1) {
+                            attackedPiece = game.p2[getPieceIndex(game, $("#X" + newX + "Y" + newY).children().first().attr("id"))];
+                        } else {
+                            attackedPiece = game.p1[getPieceIndex(game, $("#X" + newX + "Y" + newY).children().first().attr("id"))];
+                        }
+
+                        removePiece(attackedPiece, game);
+                        removePiece(piece, game);
+                        break;
+                }
+                return 0;
+            } else {
+                return -1;
+            }
         } else {
             return -1;
         }
     }
 }
 
-// Check if spot is empty
+// Remove Piece
+function removePiece(piece, game) {
+    game.map[piece.Y][piece.X] = "0";
+    piece.X = -1;
+    piece.Y = -1;
+    piece.lost = true;
+    renderMap(game, false, true);
 
+    var Player1Lose = true;
+
+    for (var z = 0; z < game.p1.length; z++) {
+        var piece = game.p1[z];
+
+        if (piece.lost == true && piece.value == "F") {
+            endScreen(false, game);
+        }
+
+        if (piece.lost == false && (piece.value != "F" || piece.value != "B")) {
+            Player1Lose = false;
+        }
+    }
+
+    var Player2Lose = true;
+
+    for (var z = 0; z < game.p2.length; z++) {
+        var piece = game.p1[z];
+
+        if (piece.lost == true && piece.value == "F") {
+            endScreen(true, game);
+        }
+
+        if (piece.lost == false && (piece.value != "F" || piece.value != "B")) {
+            Player2Lose = false;
+        }
+    }
+
+    if (Player1Lose == true) {
+        endScreen(false, game);
+    } else if (Player2Lose == true) {
+        endScreen(true, game);
+    }
+}
+
+// Check if spot is empty
 function isEmpty(X, Y) {
-    if ($("X" + X + "Y" + Y).hasClass("noMove")) {
+    if ($("#X" + X + "Y" + Y).hasClass("noMove")) {
         return 0;
     }
     return $("#X" + X + "Y" + Y).hasClass("empty");
@@ -500,8 +613,7 @@ function playerTurn(game) {
                         ui.draggable.detach();
                         $(ui.helper).remove();
                         $(this).droppable("disable");
-                        console.log(game);
-                        renderMap(game, false);
+                        renderMap(game, false, false);
 
                         if (($("#P1SideBoard").children().length == 0 || testing == true) && game.turn == 0) {
 
@@ -511,7 +623,8 @@ function playerTurn(game) {
                                 //Append the svg to the board
                             }
 
-                            clearDrags(teamPlaying)
+                            clearDrags(teamPlaying);
+                            nextTurn(game);
                         }
                     }
                 }
@@ -547,12 +660,8 @@ function playerTurn(game) {
         $(".boardPlace").each(function() {
             $(this).droppable("enable");
 
-            // If takes a pieces uses takePiece()
-            // Else moves
             // Check if last moveable pieces
-            // Removes Pieces
             // Sends win receipt if necessary and opens win modal
-            // Updates piece and map
         });
 
     }
@@ -573,7 +682,6 @@ function clearDrags(teamPlaying) {
 
 // Iterator for turns
 function nextTurn(game) {
-    console.log(game);
 
     $.ajax({
         type: "POST",
@@ -583,6 +691,8 @@ function nextTurn(game) {
         dataType: 'json'
     }).done(function(data) {
         console.log("Next Turn!");
+        console.log(game);
+        renderMap(game, false, true);
         game.turn++;
         playerTurn(game);
     });
@@ -595,13 +705,13 @@ function nextTurn(game) {
 // 1 = Attacked Piece Removed
 // 2 = Both Pieces Removed
 function attack(game, piece, X, Y) {
-    var pieceBeingAttacked = game.map[y][x];
+    var pieceBeingAttacked = game.map[Y][X];
     var teamAttacked = pieceBeingAttacked.substr(0, 1);
     var valAttacked = pieceBeingAttacked.substr(1, 1);
     var teamAttacking = ((game.turn + 1) % 2) + 1;
-    var valAttacking = piece.val;
+    var valAttacking = piece.value;
 
-    if ($("X" + X + "Y" + Y).hasClass("noMove")) {
+    if ($("#X" + X + "Y" + Y).hasClass("noMove") || $("#X" + X + "Y" + Y).hasClass("empty")) {
         return -1;
     }
 
@@ -619,6 +729,7 @@ function attack(game, piece, X, Y) {
         return 2;
     }
 
+    console.log("Attacked: " + valAttacked + " Attacking: " + valAttacking)
     switch (valAttacked) {
         case "1":
             // Spy
