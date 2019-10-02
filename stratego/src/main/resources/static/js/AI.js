@@ -119,6 +119,9 @@ function findCaptureValue(piece, game) {
 				//Choose the lowest difference in capture value but greater than 0
 				//Need to find a way to differentiate between two pieces of equal value and just terrain (no combat)
 				//equal value = string | just terrain = int 
+				if (parseCapValue(game, piece, capArray, i) == "F") {
+					bestCapValue = "F";
+				}
 				bestCapValue = piece.value - value;
 			} else if (typeof capArray[i] == "number") {
 				//This assumes walking through terrain
@@ -244,6 +247,15 @@ function capture(piece, value, game) {
 				direction = i;
 				break;
 			}
+		} else if (parseCapValue(game, piece, capArray, i) == "F") {
+			//GO WIN THE GAME
+			direction = i;
+			break;
+		} else if (parseCapValue(game, piece, capArray, i) == "B") {
+			if (piece.value == "3") {
+				direction = i;
+				break;
+			}
 		}
 	}
 	id = getAIPieceIndex(piece, game);
@@ -280,6 +292,10 @@ error: function(e) {
 }
 
 function verifyValue(value, game, piece, capArray, index) {
+	if (capArray[index] == "-11") {
+		return false;
+	}
+	
 	if (capArray[index] === value) {
 		return false;
 	}
@@ -447,7 +463,7 @@ function AIMove(game) {
 
 	var value = findCaptureValue(piece, game);
 	//If you can find a valid capture, capture with the most value
-	if (value >= 0 && value < 11) {
+	if ((value >= 0 && value < 11) || value == "F") {
 		capture(piece, value, game);
 		return;
 	} else if (value < 0) {
