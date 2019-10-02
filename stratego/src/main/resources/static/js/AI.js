@@ -280,7 +280,7 @@ error: function(e) {
 }
 
 function verifyValue(value, game, piece, capArray, index) {
-	if (capArray[index] === 0) {
+	if (capArray[index] === value) {
 		return false;
 	}
 	var indexVal = parseInt(capArray[index].substring(1,capArray[index].length))
