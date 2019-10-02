@@ -26,7 +26,7 @@ public class UserController {
     GameRepository gameRepository;
     
     // Return registration form template
-    @GetMapping("/register")
+    @GetMapping({"/register"})
     public String showRegistrationPage(Model model) {
         return "register";
     }
@@ -70,7 +70,7 @@ public class UserController {
     }
 
     // Model and view for the login page(login.html) GET
-    @GetMapping({ "/", "/login"})
+    @GetMapping({"/login" , "/"})
     public String login(Model model, String error, String logout) {
         if (error != null) {
             model.addAttribute("error", "Invalid username and password");

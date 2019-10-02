@@ -30,6 +30,8 @@ public class GameController {
     @Autowired
     private UserServiceImpl userService;
 
+    private Game cachedGame;
+
     //  Model and view for the menu page(menu.html) GET
     @GetMapping("/menu")
     public String menu(Model model) {
@@ -45,8 +47,7 @@ public class GameController {
     @PostMapping("/startNewGame")
     public String startNewGame(){
         //make a new game
-        User cachedUser = getCachedUser();
-        Game cachedGame = getCachedGame(cachedUser);
+        cachedGame = new Game(getCachedUser().getUsername());
         gameRepository.save(cachedGame); //make a new game
         return "redirect:/game";
     }
@@ -60,8 +61,7 @@ public class GameController {
  
     @PostMapping(value="/sendGameData", consumes = "application/json", produces = "application/json")
     public  @ResponseBody ResponseEntity<RequestWrapper> sendGameData(@RequestBody RequestWrapper gameWrapper){
-        User cachedUser = getCachedUser();
-        Game cachedGame = getCachedGame(cachedUser);
+
         //strip data from gameWrapper to Board
         Board newBoard = new Board(); 
         newBoard.setP1_pieces(gameWrapper.getP1());
@@ -93,11 +93,7 @@ public class GameController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUsername(auth.getName());
         return user;
+ 
     }
 
-    public Game getCachedGame(User cachedUser){
-        //GET THE GAME
-        Game game = new Game(cachedUser.getUsername());
-        return game;
-    }
 }
