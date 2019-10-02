@@ -123,7 +123,6 @@ function findCaptureValue(piece, game) {
 			} else if (typeof capArray[i] == "number") {
 				//This assumes walking through terrain
 				bestCapValue = capArray[i];
-				break;
 			}
 		}
 		var worseValue = parseInt(piece.value) - parseInt(parseCapValue(game, piece, capArray, i));
@@ -133,10 +132,10 @@ function findCaptureValue(piece, game) {
 		}
 	}
 
-	if (bestCapValue >= 0 && bestCapValue != 11) {
-		return bestCapValue;
-	} else {
+	if (worstCapValue < 0) {
 		return worstCapValue;
+	} else {
+		return bestCapValue;
 	}
 }
 
@@ -159,38 +158,38 @@ function checkIfOnSideboard(id) {
 
 function parseCapValue(game, piece, captureArray, index) {
 	var str = ""
-	if (captureArray[index] == "-1") {
-		return -11;
-	}
-		if (index == 0) {
-			//up
-			if (piece.Y > 0) {
-				str = game.map[piece.Y-1][piece.X];
-			} else {
-				return -11;
-			}
-		} else if (index == 1) {
-			//left
-			if (piece.X > 0) {
-				str = game.map[piece.Y][piece.X-1];
-			} else {
-				return -11;
-			}
-		} else if (index == 2) {
-			//down
-			if (piece.Y < 9) {
-				str = game.map[piece.Y+1][piece.X];
-			} else {
-				return -11;
-			}
-		} else if (index == 3) {
-			//right
-			if (piece.X < 9) {
-				str = game.map[piece.Y][piece.X+1];
-			} else {
-				return -11;
-			}
+		if (captureArray[index] == "-1") {
+			return -11;
 		}
+	if (index == 0) {
+		//up
+		if (piece.Y > 0) {
+			str = game.map[piece.Y-1][piece.X];
+		} else {
+			return -11;
+		}
+	} else if (index == 1) {
+		//left
+		if (piece.X > 0) {
+			str = game.map[piece.Y][piece.X-1];
+		} else {
+			return -11;
+		}
+	} else if (index == 2) {
+		//down
+		if (piece.Y < 9) {
+			str = game.map[piece.Y+1][piece.X];
+		} else {
+			return -11;
+		}
+	} else if (index == 3) {
+		//right
+		if (piece.X < 9) {
+			str = game.map[piece.Y][piece.X+1];
+		} else {
+			return -11;
+		}
+	}
 	return str.substring(1,str.length);
 }
 
@@ -198,37 +197,37 @@ function findSide(game, piece, captureArray, index, player) {
 	if (captureArray[index] == "-1") {
 		return false;
 	}
-		if (index == 0) {
-			//up
-			if (piece.Y > 0) {
-				return parseInt((game.map[piece.Y-1][piece.X])[0]) != player;
-			} else {
-				return false;
-			}
-		} else if (index == 1) {
-			//left
-			if (piece.X > 0) {
+	if (index == 0) {
+		//up
+		if (piece.Y > 0) {
+			return parseInt((game.map[piece.Y-1][piece.X])[0]) != player;
+		} else {
+			return false;
+		}
+	} else if (index == 1) {
+		//left
+		if (piece.X > 0) {
 			return parseInt((game.map[piece.Y-1][piece.X-1])[0]) != player;
-			} else {
-				return false;
-			}
-		} else if (index == 2) {
-			//down
-			if (piece.Y < 9) {
+		} else {
+			return false;
+		}
+	} else if (index == 2) {
+		//down
+		if (piece.Y < 9) {
 			return parseInt((game.map[piece.Y+1][piece.X])[0]) != player;
 
-			} else {
-				return false;
-			}
-		} else if (index == 3) {
-			//right
-			if (piece.X < 9) {
+		} else {
+			return false;
+		}
+	} else if (index == 3) {
+		//right
+		if (piece.X < 9) {
 			return parseInt((game.map[piece.Y][piece.X+1])[0]) != player;
 
-			} else {
-				return false;
-			}
+		} else {
+			return false;
 		}
+	}
 }
 
 
@@ -240,7 +239,7 @@ function capture(piece, value, game) {
 	//Search piece.captureArray for the value then move in that direction
 	for (let i = 0; i < capArray.length; i++) {
 		//Map to direction
-		if (parseCapValue(game, piece, capArray, i) != "B" && parseCapValue(game, piece, capArray, i) != "F" && findSide(game, piece, capArray, i, 2)) {
+		if (parseCapValue(game, piece, capArray, i) != "B" && parseCapValue(game, piece, capArray, i) != "F") {
 			if (piece.value - parseInt(parseCapValue(game, piece, capArray, i)) == value && findSide(game, piece, capArray, i, 2)) {
 				direction = i;
 				break;
@@ -279,25 +278,63 @@ error: function(e) {
 
 });
 }
-function run(piece, value) {
+
+function verifyValue(value, game, piece, capArray, index) {
+	if (capArray[index] === 0) {
+		return false;
+	}
+	var indexVal = parseInt(capArray[index].substring(1,capArray[index].length))
+	if (parseInt(piece.value) - indexVal == value) {
+		return true;
+	}
+	return false;
+}
+
+function whereToRun(direction, game, piece, capArray) {
+	for (var i = 0; i < capArray.length; i++) {
+		if (i != direction && capArray[i] === 0) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+function findFirstAvailableDirection(capArray) {
+	for (var i = 0; i < capArray.length; i++) {
+		if (capArray[i] === 0) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+function run(piece, value, game) {
 	//Run in random direction
-	let direction = -1; //null by default
+	var direction = -1; //null by default
+	var capArray = getCaptureArray(piece, game);
+	var id = getAIPieceIndex(piece, game);
 	//Search piece.captureArray for the value then move in that direction
-	for (let i = 0; i < piece.captureArray.length; i++) {
-		if (piece.value - piece.captureArray[i].enemyValue == value) {
-			direction = piece.captureArray[i].direction;
+	for (let i = 0; i < capArray.length; i++) {
+		//Map to direction
+		//Find the worst value
+		if (findSide(game, piece, capArray, i, 2) && verifyValue(value, game, piece, capArray, i)) {
+			//Pick the worst piece in the capture array and try to avoid it
+			direction = findFirstAvailableDirection(capArray);
+			break;
 		}
 	}
 	if (direction == 0) {
-		piece.y -= 1;
+		//up
+		//Now run in any direction except for up
+		placePiece(2, id, game, piece.X, piece.Y+1);
 	} else if (direction == 1) {
-		piece.x -= 1;
+		placePiece(2, id, game, piece.X-1, piece.Y);
 	} else if (direction == 2) {
-		piece.y += 1;
+		placePiece(2, id, game, piece.X, piece.Y+1);
 	} else if (direction == 3) {
-		piece.x += 1;
+		placePiece(2, id, game, piece.X+1, piece.Y);
 	}
-	$.ajax({
+$.ajax({
 type: "POST",
 contentType: "application/json",
 url: "",
@@ -408,7 +445,7 @@ function AIMove(game) {
 		capture(piece, value, game);
 		return;
 	} else if (value < 0) {
-		run(piece, value);
+		run(piece, value, game);
 		return;
 	}
 	//Otherwise find the worst value and try to run away
